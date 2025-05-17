@@ -1,0 +1,43 @@
+# Python虚拟环境
+venv/
+env/
+.env/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 缓存文件
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 输出文件
+output_videos/
+data/output/
+
+# 日志
+*.log
+
+# 大文件（超过GitHub限制的100MB）
+models/inswapper_128.onnx
+models/buffalo_l.zip
+models/buffalo_l/1k3d68.onnx
+models/buffalo_l/w600k_r50.onnx
+data/input_videos/VID_20230207_103934.mp4
+data/shape_predictor_68_face_landmarks.dat
+data/input_videos/MV_20250411_190055.mp4
+data/input_videos/MV_20250411_211735.mp4
+data/input_videos/Video_1728365311307.mp4
+models/models/ 
