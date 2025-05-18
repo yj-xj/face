@@ -16,7 +16,7 @@ from PyQt5.QtGui import (QImage, QPixmap, QPalette, QColor, QFont,
                         QPainter, QPen, QBrush, QFontDatabase)
 from PIL import Image
 import logging
-import pyqtdarktheme as qdarktheme
+import qdarktheme
 
 # 配置日志
 os.makedirs(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "logs"), exist_ok=True)

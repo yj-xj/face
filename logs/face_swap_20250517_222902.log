@@ -1,0 +1,413 @@
+2025-05-17 22:29:02,691 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:28: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class VideoProcessingThread(QThread):
+
+2025-05-17 22:29:02,691 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:87: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class CircularProgressBar(QWidget):
+
+2025-05-17 22:29:02,691 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:124: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class GlowingButton(QPushButton):
+
+2025-05-17 22:29:02,691 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:148: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class EnhancedFaceSwapUI(QMainWindow):
+
+2025-05-17 22:29:02,714 - qdarkstyle - INFO - QSS file successfully loaded.
+2025-05-17 22:29:02,714 - qdarkstyle - INFO - Found version patches to be applied.
+2025-05-17 22:29:02,714 - qdarkstyle - INFO - Found application patches to be applied.
+2025-05-17 22:29:02,741 - face_swap - INFO - 成功加载级联分类器
+2025-05-17 22:29:03,672 - face_swap - INFO - 成功加载特征点预测模型
+2025-05-17 22:29:05,984 - face_swap - INFO - 成功加载InsightFace模型: E:\face\models\inswapper_128.onnx
+2025-05-17 22:29:22,105 - face_swap - INFO - 状态: 正在处理视频...
+2025-05-17 22:29:22,142 - face_swap - INFO - 视频信息: 1080x1920, 20.035618878005344fps, 191帧
+2025-05-17 22:29:22,143 - face_swap - INFO - 输出文件: E:\face\output_videos\MV_20250411_190055_face_swap.mp4
+2025-05-17 22:29:22,143 - face_swap - INFO - 状态: 正在处理视频: 1080x1920, 20.035618878005344fps, 191帧
+2025-05-17 22:29:22,144 - face_swap - INFO - 使用InsightFace，限制工作线程数为: 2
+2025-05-17 22:29:22,144 - face_swap - INFO - 进度: 0.0% 准备处理
+2025-05-17 22:29:22,184 - face_swap - INFO - 进度: 0.5% 处理帧 1/191
+2025-05-17 22:29:22,190 - face_swap - INFO - 进度: 1.0% 处理帧 2/191
+2025-05-17 22:29:22,196 - face_swap - INFO - 进度: 1.6% 处理帧 3/191
+2025-05-17 22:29:22,202 - face_swap - INFO - 进度: 2.1% 处理帧 4/191
+2025-05-17 22:29:22,216 - face_swap - INFO - 进度: 2.6% 处理帧 5/191
+2025-05-17 22:29:22,230 - face_swap - INFO - 进度: 3.1% 处理帧 6/191
+2025-05-17 22:29:22,238 - face_swap - INFO - 进度: 3.7% 处理帧 7/191
+2025-05-17 22:29:24,224 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:24,228 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:24,243 - face_swap - INFO - 进度: 4.2% 处理帧 8/191
+2025-05-17 22:29:24,312 - face_swap - INFO - 进度: 4.7% 处理帧 9/191
+2025-05-17 22:29:26,175 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:26,199 - face_swap - INFO - 进度: 5.2% 处理帧 10/191
+2025-05-17 22:29:26,361 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:26,419 - face_swap - INFO - 进度: 5.8% 处理帧 11/191
+2025-05-17 22:29:28,174 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:28,209 - face_swap - INFO - 进度: 6.3% 处理帧 12/191
+2025-05-17 22:29:28,724 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:28,790 - face_swap - INFO - 进度: 6.8% 处理帧 13/191
+2025-05-17 22:29:30,822 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:30,880 - face_swap - INFO - 进度: 7.3% 处理帧 14/191
+2025-05-17 22:29:32,211 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:32,243 - face_swap - INFO - 进度: 7.9% 处理帧 15/191
+2025-05-17 22:29:33,322 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:33,363 - face_swap - INFO - 进度: 8.4% 处理帧 16/191
+2025-05-17 22:29:35,075 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:35,112 - face_swap - INFO - 进度: 8.9% 处理帧 17/191
+2025-05-17 22:29:35,884 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:35,924 - face_swap - INFO - 进度: 9.4% 处理帧 18/191
+2025-05-17 22:29:37,794 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:37,823 - face_swap - INFO - 进度: 9.9% 处理帧 19/191
+2025-05-17 22:29:38,672 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:38,698 - face_swap - INFO - 进度: 10.5% 处理帧 20/191
+2025-05-17 22:29:40,515 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:40,545 - face_swap - INFO - 进度: 11.0% 处理帧 21/191
+2025-05-17 22:29:40,947 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:41,006 - face_swap - INFO - 进度: 11.5% 处理帧 22/191
+2025-05-17 22:29:42,900 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:42,933 - face_swap - INFO - 进度: 12.0% 处理帧 23/191
+2025-05-17 22:29:43,149 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:43,185 - face_swap - INFO - 进度: 12.6% 处理帧 24/191
+2025-05-17 22:29:45,045 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:45,110 - face_swap - INFO - 进度: 13.1% 处理帧 25/191
+2025-05-17 22:29:45,563 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:45,589 - face_swap - INFO - 进度: 13.6% 处理帧 26/191
+2025-05-17 22:29:47,332 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:47,365 - face_swap - INFO - 进度: 14.1% 处理帧 27/191
+2025-05-17 22:29:48,065 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:48,098 - face_swap - INFO - 进度: 14.7% 处理帧 28/191
+2025-05-17 22:29:49,884 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:49,910 - face_swap - INFO - 进度: 15.2% 处理帧 29/191
+2025-05-17 22:29:50,613 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:50,683 - face_swap - INFO - 进度: 15.7% 处理帧 30/191
+2025-05-17 22:29:52,333 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:52,360 - face_swap - INFO - 进度: 16.2% 处理帧 31/191
+2025-05-17 22:29:52,819 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:52,889 - face_swap - INFO - 进度: 16.8% 处理帧 32/191
+2025-05-17 22:29:54,846 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:54,872 - face_swap - INFO - 进度: 17.3% 处理帧 33/191
+2025-05-17 22:29:55,344 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:55,400 - face_swap - INFO - 进度: 17.8% 处理帧 34/191
+2025-05-17 22:29:57,537 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:57,568 - face_swap - INFO - 进度: 18.3% 处理帧 35/191
+2025-05-17 22:29:58,560 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:29:58,617 - face_swap - INFO - 进度: 18.8% 处理帧 36/191
+2025-05-17 22:30:00,308 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:00,341 - face_swap - INFO - 进度: 19.4% 处理帧 37/191
+2025-05-17 22:30:01,092 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:01,118 - face_swap - INFO - 进度: 19.9% 处理帧 38/191
+2025-05-17 22:30:03,218 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:03,252 - face_swap - INFO - 进度: 20.4% 处理帧 39/191
+2025-05-17 22:30:03,672 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:03,754 - face_swap - INFO - 进度: 20.9% 处理帧 40/191
+2025-05-17 22:30:05,876 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:05,915 - face_swap - INFO - 进度: 21.5% 处理帧 41/191
+2025-05-17 22:30:06,777 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:06,808 - face_swap - INFO - 进度: 22.0% 处理帧 42/191
+2025-05-17 22:30:08,716 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:08,748 - face_swap - INFO - 进度: 22.5% 处理帧 43/191
+2025-05-17 22:30:09,952 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:09,978 - face_swap - INFO - 进度: 23.0% 处理帧 44/191
+2025-05-17 22:30:11,756 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:11,794 - face_swap - INFO - 进度: 23.6% 处理帧 45/191
+2025-05-17 22:30:13,285 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:13,324 - face_swap - INFO - 进度: 24.1% 处理帧 46/191
+2025-05-17 22:30:14,651 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:14,683 - face_swap - INFO - 进度: 24.6% 处理帧 47/191
+2025-05-17 22:30:16,600 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:16,639 - face_swap - INFO - 进度: 25.1% 处理帧 48/191
+2025-05-17 22:30:17,955 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:18,016 - face_swap - INFO - 进度: 25.7% 处理帧 49/191
+2025-05-17 22:30:20,171 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:20,207 - face_swap - INFO - 进度: 26.2% 处理帧 50/191
+2025-05-17 22:30:21,770 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:21,800 - face_swap - INFO - 进度: 26.7% 处理帧 51/191
+2025-05-17 22:30:23,134 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:23,205 - face_swap - INFO - 进度: 27.2% 处理帧 52/191
+2025-05-17 22:30:24,931 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:24,962 - face_swap - INFO - 进度: 27.7% 处理帧 53/191
+2025-05-17 22:30:25,893 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:25,951 - face_swap - INFO - 进度: 28.3% 处理帧 54/191
+2025-05-17 22:30:27,637 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:27,666 - face_swap - INFO - 进度: 28.8% 处理帧 55/191
+2025-05-17 22:30:29,336 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:29,383 - face_swap - INFO - 进度: 29.3% 处理帧 56/191
+2025-05-17 22:30:31,149 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:31,182 - face_swap - INFO - 进度: 29.8% 处理帧 57/191
+2025-05-17 22:30:32,915 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:32,950 - face_swap - INFO - 进度: 30.4% 处理帧 58/191
+2025-05-17 22:30:34,246 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:34,279 - face_swap - INFO - 进度: 30.9% 处理帧 59/191
+2025-05-17 22:30:36,067 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:36,098 - face_swap - INFO - 进度: 31.4% 处理帧 60/191
+2025-05-17 22:30:37,373 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:37,406 - face_swap - INFO - 进度: 31.9% 处理帧 61/191
+2025-05-17 22:30:39,074 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:39,113 - face_swap - INFO - 进度: 32.5% 处理帧 62/191
+2025-05-17 22:30:40,525 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:40,558 - face_swap - INFO - 进度: 33.0% 处理帧 63/191
+2025-05-17 22:30:42,125 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:42,156 - face_swap - INFO - 进度: 33.5% 处理帧 64/191
+2025-05-17 22:30:43,956 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:43,991 - face_swap - INFO - 进度: 34.0% 处理帧 65/191
+2025-05-17 22:30:45,408 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:45,451 - face_swap - INFO - 进度: 34.6% 处理帧 66/191
+2025-05-17 22:30:47,173 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:47,252 - face_swap - INFO - 进度: 35.1% 处理帧 67/191
+2025-05-17 22:30:48,245 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:48,275 - face_swap - INFO - 进度: 35.6% 处理帧 68/191
+2025-05-17 22:30:50,138 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:50,171 - face_swap - INFO - 进度: 36.1% 处理帧 69/191
+2025-05-17 22:30:51,285 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:51,319 - face_swap - INFO - 进度: 36.6% 处理帧 70/191
+2025-05-17 22:30:53,072 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:53,106 - face_swap - INFO - 进度: 37.2% 处理帧 71/191
+2025-05-17 22:30:54,367 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:54,397 - face_swap - INFO - 进度: 37.7% 处理帧 72/191
+2025-05-17 22:30:55,966 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:55,996 - face_swap - INFO - 进度: 38.2% 处理帧 73/191
+2025-05-17 22:30:57,982 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:58,075 - face_swap - INFO - 进度: 38.7% 处理帧 74/191
+2025-05-17 22:30:59,618 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:30:59,650 - face_swap - INFO - 进度: 39.3% 处理帧 75/191
+2025-05-17 22:31:01,266 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:01,297 - face_swap - INFO - 进度: 39.8% 处理帧 76/191
+2025-05-17 22:31:02,563 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:02,608 - face_swap - INFO - 进度: 40.3% 处理帧 77/191
+2025-05-17 22:31:04,284 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:04,320 - face_swap - INFO - 进度: 40.8% 处理帧 78/191
+2025-05-17 22:31:05,536 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:05,574 - face_swap - INFO - 进度: 41.4% 处理帧 79/191
+2025-05-17 22:31:07,532 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:07,561 - face_swap - INFO - 进度: 41.9% 处理帧 80/191
+2025-05-17 22:31:08,751 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:08,789 - face_swap - INFO - 进度: 42.4% 处理帧 81/191
+2025-05-17 22:31:10,656 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:10,690 - face_swap - INFO - 进度: 42.9% 处理帧 82/191
+2025-05-17 22:31:11,741 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:11,773 - face_swap - INFO - 进度: 43.5% 处理帧 83/191
+2025-05-17 22:31:13,711 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:13,756 - face_swap - INFO - 进度: 44.0% 处理帧 84/191
+2025-05-17 22:31:14,687 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:14,737 - face_swap - INFO - 进度: 44.5% 处理帧 85/191
+2025-05-17 22:31:16,598 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:16,632 - face_swap - INFO - 进度: 45.0% 处理帧 86/191
+2025-05-17 22:31:17,485 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:17,523 - face_swap - INFO - 进度: 45.5% 处理帧 87/191
+2025-05-17 22:31:19,381 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:19,448 - face_swap - INFO - 进度: 46.1% 处理帧 88/191
+2025-05-17 22:31:20,879 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:20,918 - face_swap - INFO - 进度: 46.6% 处理帧 89/191
+2025-05-17 22:31:22,688 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:22,723 - face_swap - INFO - 进度: 47.1% 处理帧 90/191
+2025-05-17 22:31:23,938 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:24,016 - face_swap - INFO - 进度: 47.6% 处理帧 91/191
+2025-05-17 22:31:25,856 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:25,883 - face_swap - INFO - 进度: 48.2% 处理帧 92/191
+2025-05-17 22:31:27,520 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:27,552 - face_swap - INFO - 进度: 48.7% 处理帧 93/191
+2025-05-17 22:31:29,142 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:29,201 - face_swap - INFO - 进度: 49.2% 处理帧 94/191
+2025-05-17 22:31:30,682 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:30,723 - face_swap - INFO - 进度: 49.7% 处理帧 95/191
+2025-05-17 22:31:32,596 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:32,638 - face_swap - INFO - 进度: 50.3% 处理帧 96/191
+2025-05-17 22:31:33,422 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:33,438 - face_swap - INFO - 进度: 50.8% 处理帧 97/191
+2025-05-17 22:31:33,750 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:33,757 - face_swap - INFO - 进度: 51.3% 处理帧 98/191
+2025-05-17 22:31:33,791 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:33,920 - face_swap - INFO - 进度: 51.8% 处理帧 99/191
+2025-05-17 22:31:34,397 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:34,466 - face_swap - INFO - 进度: 52.4% 处理帧 100/191
+2025-05-17 22:31:34,467 - face_swap - INFO - 状态: 正在处理视频... 100/191 帧
+2025-05-17 22:31:34,467 - face_swap - INFO - 处理进度: 100/191 (52.4%)
+2025-05-17 22:31:34,604 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:34,653 - face_swap - INFO - 进度: 52.9% 处理帧 101/191
+2025-05-17 22:31:34,949 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:35,049 - face_swap - INFO - 进度: 53.4% 处理帧 102/191
+2025-05-17 22:31:35,248 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:35,276 - face_swap - INFO - 进度: 53.9% 处理帧 103/191
+2025-05-17 22:31:35,771 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:35,842 - face_swap - INFO - 进度: 54.5% 处理帧 104/191
+2025-05-17 22:31:36,062 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:36,129 - face_swap - INFO - 进度: 55.0% 处理帧 105/191
+2025-05-17 22:31:36,437 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:36,545 - face_swap - INFO - 进度: 55.5% 处理帧 106/191
+2025-05-17 22:31:39,045 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:39,072 - face_swap - INFO - 进度: 56.0% 处理帧 107/191
+2025-05-17 22:31:39,107 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:39,136 - face_swap - INFO - 进度: 56.5% 处理帧 108/191
+2025-05-17 22:31:39,769 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:39,828 - face_swap - INFO - 进度: 57.1% 处理帧 109/191
+2025-05-17 22:31:40,639 - face_swap - WARNING - 目标帧中未检测到人脸
+2025-05-17 22:31:40,719 - face_swap - INFO - 进度: 57.6% 处理帧 110/191
+2025-05-17 22:31:42,302 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:42,432 - face_swap - INFO - 进度: 58.1% 处理帧 111/191
+2025-05-17 22:31:43,976 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:44,024 - face_swap - INFO - 进度: 58.6% 处理帧 112/191
+2025-05-17 22:31:45,506 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:45,537 - face_swap - INFO - 进度: 59.2% 处理帧 113/191
+2025-05-17 22:31:47,144 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:47,176 - face_swap - INFO - 进度: 59.7% 处理帧 114/191
+2025-05-17 22:31:48,827 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:48,859 - face_swap - INFO - 进度: 60.2% 处理帧 115/191
+2025-05-17 22:31:50,118 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:50,144 - face_swap - INFO - 进度: 60.7% 处理帧 116/191
+2025-05-17 22:31:52,188 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:52,225 - face_swap - INFO - 进度: 61.3% 处理帧 117/191
+2025-05-17 22:31:53,281 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:53,317 - face_swap - INFO - 进度: 61.8% 处理帧 118/191
+2025-05-17 22:31:55,360 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:55,391 - face_swap - INFO - 进度: 62.3% 处理帧 119/191
+2025-05-17 22:31:56,421 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:56,452 - face_swap - INFO - 进度: 62.8% 处理帧 120/191
+2025-05-17 22:31:58,337 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:58,373 - face_swap - INFO - 进度: 63.4% 处理帧 121/191
+2025-05-17 22:31:59,599 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:31:59,718 - face_swap - INFO - 进度: 63.9% 处理帧 122/191
+2025-05-17 22:32:01,707 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:01,738 - face_swap - INFO - 进度: 64.4% 处理帧 123/191
+2025-05-17 22:32:02,367 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:02,402 - face_swap - INFO - 进度: 64.9% 处理帧 124/191
+2025-05-17 22:32:04,275 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:04,326 - face_swap - INFO - 进度: 65.4% 处理帧 125/191
+2025-05-17 22:32:05,865 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:05,899 - face_swap - INFO - 进度: 66.0% 处理帧 126/191
+2025-05-17 22:32:07,440 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:07,471 - face_swap - INFO - 进度: 66.5% 处理帧 127/191
+2025-05-17 22:32:08,870 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:08,993 - face_swap - INFO - 进度: 67.0% 处理帧 128/191
+2025-05-17 22:32:10,760 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:10,794 - face_swap - INFO - 进度: 67.5% 处理帧 129/191
+2025-05-17 22:32:11,635 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:11,666 - face_swap - INFO - 进度: 68.1% 处理帧 130/191
+2025-05-17 22:32:13,402 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:13,431 - face_swap - INFO - 进度: 68.6% 处理帧 131/191
+2025-05-17 22:32:13,957 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:13,997 - face_swap - INFO - 进度: 69.1% 处理帧 132/191
+2025-05-17 22:32:15,943 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:15,976 - face_swap - INFO - 进度: 69.6% 处理帧 133/191
+2025-05-17 22:32:16,702 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:16,729 - face_swap - INFO - 进度: 70.2% 处理帧 134/191
+2025-05-17 22:32:18,757 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:18,786 - face_swap - INFO - 进度: 70.7% 处理帧 135/191
+2025-05-17 22:32:19,341 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:19,368 - face_swap - INFO - 进度: 71.2% 处理帧 136/191
+2025-05-17 22:32:21,599 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:21,631 - face_swap - INFO - 进度: 71.7% 处理帧 137/191
+2025-05-17 22:32:22,990 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:23,030 - face_swap - INFO - 进度: 72.3% 处理帧 138/191
+2025-05-17 22:32:24,782 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:24,814 - face_swap - INFO - 进度: 72.8% 处理帧 139/191
+2025-05-17 22:32:25,863 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:25,899 - face_swap - INFO - 进度: 73.3% 处理帧 140/191
+2025-05-17 22:32:28,082 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:28,110 - face_swap - INFO - 进度: 73.8% 处理帧 141/191
+2025-05-17 22:32:29,051 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:29,134 - face_swap - INFO - 进度: 74.3% 处理帧 142/191
+2025-05-17 22:32:31,222 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:31,258 - face_swap - INFO - 进度: 74.9% 处理帧 143/191
+2025-05-17 22:32:31,988 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:32,021 - face_swap - INFO - 进度: 75.4% 处理帧 144/191
+2025-05-17 22:32:34,129 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:34,160 - face_swap - INFO - 进度: 75.9% 处理帧 145/191
+2025-05-17 22:32:34,889 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:34,915 - face_swap - INFO - 进度: 76.4% 处理帧 146/191
+2025-05-17 22:32:37,021 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:37,056 - face_swap - INFO - 进度: 77.0% 处理帧 147/191
+2025-05-17 22:32:38,088 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:38,120 - face_swap - INFO - 进度: 77.5% 处理帧 148/191
+2025-05-17 22:32:39,727 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:39,798 - face_swap - INFO - 进度: 78.0% 处理帧 149/191
+2025-05-17 22:32:41,455 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:41,486 - face_swap - INFO - 进度: 78.5% 处理帧 150/191
+2025-05-17 22:32:42,863 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:42,896 - face_swap - INFO - 进度: 79.1% 处理帧 151/191
+2025-05-17 22:32:44,381 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:44,407 - face_swap - INFO - 进度: 79.6% 处理帧 152/191
+2025-05-17 22:32:45,652 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:45,683 - face_swap - INFO - 进度: 80.1% 处理帧 153/191
+2025-05-17 22:32:47,289 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:47,328 - face_swap - INFO - 进度: 80.6% 处理帧 154/191
+2025-05-17 22:32:49,007 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:49,036 - face_swap - INFO - 进度: 81.2% 处理帧 155/191
+2025-05-17 22:32:50,327 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:50,360 - face_swap - INFO - 进度: 81.7% 处理帧 156/191
+2025-05-17 22:32:51,779 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:51,811 - face_swap - INFO - 进度: 82.2% 处理帧 157/191
+2025-05-17 22:32:53,338 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:53,366 - face_swap - INFO - 进度: 82.7% 处理帧 158/191
+2025-05-17 22:32:54,588 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:54,639 - face_swap - INFO - 进度: 83.2% 处理帧 159/191
+2025-05-17 22:32:56,508 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:56,576 - face_swap - INFO - 进度: 83.8% 处理帧 160/191
+2025-05-17 22:32:57,615 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:57,694 - face_swap - INFO - 进度: 84.3% 处理帧 161/191
+2025-05-17 22:32:59,688 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:32:59,722 - face_swap - INFO - 进度: 84.8% 处理帧 162/191
+2025-05-17 22:33:00,781 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:00,814 - face_swap - INFO - 进度: 85.3% 处理帧 163/191
+2025-05-17 22:33:02,748 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:02,781 - face_swap - INFO - 进度: 85.9% 处理帧 164/191
+2025-05-17 22:33:03,861 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:03,915 - face_swap - INFO - 进度: 86.4% 处理帧 165/191
+2025-05-17 22:33:05,793 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:05,826 - face_swap - INFO - 进度: 86.9% 处理帧 166/191
+2025-05-17 22:33:06,907 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:06,948 - face_swap - INFO - 进度: 87.4% 处理帧 167/191
+2025-05-17 22:33:08,849 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:08,916 - face_swap - INFO - 进度: 88.0% 处理帧 168/191
+2025-05-17 22:33:10,290 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:10,323 - face_swap - INFO - 进度: 88.5% 处理帧 169/191
+2025-05-17 22:33:12,078 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:12,160 - face_swap - INFO - 进度: 89.0% 处理帧 170/191
+2025-05-17 22:33:13,656 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:13,690 - face_swap - INFO - 进度: 89.5% 处理帧 171/191
+2025-05-17 22:33:15,534 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:15,567 - face_swap - INFO - 进度: 90.1% 处理帧 172/191
+2025-05-17 22:33:16,647 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:16,703 - face_swap - INFO - 进度: 90.6% 处理帧 173/191
+2025-05-17 22:33:18,734 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:18,772 - face_swap - INFO - 进度: 91.1% 处理帧 174/191
+2025-05-17 22:33:20,456 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:20,491 - face_swap - INFO - 进度: 91.6% 处理帧 175/191
+2025-05-17 22:33:21,506 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:21,531 - face_swap - INFO - 进度: 92.1% 处理帧 176/191
+2025-05-17 22:33:23,655 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:23,684 - face_swap - INFO - 进度: 92.7% 处理帧 177/191
+2025-05-17 22:33:24,848 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:24,881 - face_swap - INFO - 进度: 93.2% 处理帧 178/191
+2025-05-17 22:33:26,476 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:26,506 - face_swap - INFO - 进度: 93.7% 处理帧 179/191
+2025-05-17 22:33:27,809 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:27,855 - face_swap - INFO - 进度: 94.2% 处理帧 180/191
+2025-05-17 22:33:29,900 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:29,931 - face_swap - INFO - 进度: 94.8% 处理帧 181/191
+2025-05-17 22:33:30,702 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:30,734 - face_swap - INFO - 进度: 95.3% 处理帧 182/191
+2025-05-17 22:33:32,519 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:32,602 - face_swap - INFO - 进度: 95.8% 处理帧 183/191
+2025-05-17 22:33:33,530 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:33,562 - face_swap - INFO - 进度: 96.3% 处理帧 184/191
+2025-05-17 22:33:35,448 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:35,479 - face_swap - INFO - 进度: 96.9% 处理帧 185/191
+2025-05-17 22:33:36,877 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:36,910 - face_swap - INFO - 进度: 97.4% 处理帧 186/191
+2025-05-17 22:33:38,761 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:38,799 - face_swap - INFO - 进度: 97.9% 处理帧 187/191
+2025-05-17 22:33:39,921 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:39,952 - face_swap - INFO - 进度: 98.4% 处理帧 188/191
+2025-05-17 22:33:41,684 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:41,714 - face_swap - INFO - 进度: 99.0% 处理帧 189/191
+2025-05-17 22:33:43,284 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:43,314 - face_swap - INFO - 进度: 99.5% 处理帧 190/191
+2025-05-17 22:33:44,546 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:44,573 - face_swap - INFO - 进度: 100.0% 处理帧 191/191
+2025-05-17 22:33:44,628 - face_swap - INFO - 状态: 正在处理视频... 191/191 帧
+2025-05-17 22:33:44,658 - face_swap - INFO - 处理进度: 191/191 (100.0%)
+2025-05-17 22:33:46,443 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:47,480 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:49,244 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:50,523 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:52,181 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:53,709 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:54,438 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-17 22:33:54,528 - face_swap - INFO - 状态: 处理完成!
+2025-05-17 22:33:54,528 - face_swap - INFO - 进度: 100.0% 完成
+2025-05-17 22:33:54,529 - face_swap - INFO - 视频处理完成: E:\face\output_videos\MV_20250411_190055_face_swap.mp4

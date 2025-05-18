@@ -1,0 +1,4 @@
+2025-05-17 21:28:59,997 - face_swap - INFO - 成功加载级联分类器
+2025-05-17 21:29:00,946 - face_swap - INFO - 成功加载特征点预测模型
+2025-05-17 21:29:03,826 - face_swap - INFO - 成功加载InsightFace模型: E:\face\models\inswapper_128.onnx
+2025-05-17 21:29:28,789 - face_swap - ERROR - 预览处理错误: 'FaceSwapApp' object has no attribute 'process_frame'

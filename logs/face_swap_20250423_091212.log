@@ -1,0 +1,5 @@
+2025-04-23 09:12:13,008 - face_swap - WARNING - insightface 模块导入失败: No module named 'insightface'
+2025-04-23 09:12:13,051 - face_swap - WARNING - 高级人脸替换功能将不可用，请安装 insightface 库以启用全部功能
+2025-04-23 09:12:13,051 - face_swap - WARNING - torch 模块导入失败: No module named 'torch'
+2025-04-23 09:12:13,051 - face_swap - WARNING - FaceShifter 功能将不可用，请安装 torch 库以启用该功能
+2025-04-23 09:12:13,686 - face_swap - ERROR - 导入基础模块时出错: No module named 'onnxruntime'

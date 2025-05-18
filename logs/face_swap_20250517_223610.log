@@ -1,0 +1,582 @@
+2025-05-17 22:36:10,645 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:28: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class VideoProcessingThread(QThread):
+
+2025-05-17 22:36:10,645 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:87: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class CircularProgressBar(QWidget):
+
+2025-05-17 22:36:10,652 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:124: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class GlowingButton(QPushButton):
+
+2025-05-17 22:36:10,652 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:148: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class EnhancedFaceSwapUI(QMainWindow):
+
+2025-05-17 22:36:10,670 - qdarkstyle - INFO - QSS file successfully loaded.
+2025-05-17 22:36:10,670 - qdarkstyle - INFO - Found version patches to be applied.
+2025-05-17 22:36:10,670 - qdarkstyle - INFO - Found application patches to be applied.
+2025-05-17 22:36:10,695 - face_swap - INFO - 成功加载级联分类器
+2025-05-17 22:36:11,621 - face_swap - INFO - 成功加载特征点预测模型
+2025-05-17 22:36:13,997 - face_swap - INFO - 成功加载InsightFace模型: E:\face\models\inswapper_128.onnx
+2025-05-17 22:36:23,298 - face_swap - INFO - 状态: 正在处理视频...
+2025-05-17 22:36:23,331 - face_swap - INFO - 视频信息: 1080x1920, 20.035618878005344fps, 191帧
+2025-05-17 22:36:23,331 - face_swap - INFO - 输出文件: E:\face\output_videos\MV_20250411_190055_face_swap_1747492583.mp4
+2025-05-17 22:36:23,331 - face_swap - INFO - 状态: 正在处理视频: 1080x1920, 20.035618878005344fps, 191帧
+2025-05-17 22:36:23,332 - face_swap - INFO - 使用InsightFace，限制工作线程数为: 2
+2025-05-17 22:36:23,333 - face_swap - INFO - 进度: 0.0% 准备处理
+2025-05-17 22:36:23,374 - face_swap - INFO - 进度: 0.5% 处理帧 1/191
+2025-05-17 22:36:23,382 - face_swap - INFO - 进度: 1.0% 处理帧 2/191
+2025-05-17 22:36:23,395 - face_swap - INFO - 进度: 1.6% 处理帧 3/191
+2025-05-17 22:36:23,408 - face_swap - INFO - 进度: 2.1% 处理帧 4/191
+2025-05-17 22:36:23,419 - face_swap - INFO - 进度: 2.6% 处理帧 5/191
+2025-05-17 22:36:23,428 - face_swap - INFO - 进度: 3.1% 处理帧 6/191
+2025-05-17 22:36:23,436 - face_swap - INFO - 进度: 3.7% 处理帧 7/191
+2025-05-17 22:36:25,242 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:25,243 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:25,257 - face_swap - INFO - 进度: 4.2% 处理帧 8/191
+2025-05-17 22:36:25,325 - face_swap - INFO - 进度: 4.7% 处理帧 9/191
+2025-05-17 22:36:26,993 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:27,004 - face_swap - INFO - 进度: 5.2% 处理帧 10/191
+2025-05-17 22:36:27,152 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:27,212 - face_swap - INFO - 进度: 5.8% 处理帧 11/191
+2025-05-17 22:36:29,000 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:29,044 - face_swap - INFO - 进度: 6.3% 处理帧 12/191
+2025-05-17 22:36:29,180 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:29,211 - face_swap - INFO - 进度: 6.8% 处理帧 13/191
+2025-05-17 22:36:31,352 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:31,397 - face_swap - INFO - 进度: 7.3% 处理帧 14/191
+2025-05-17 22:36:31,464 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:31,517 - face_swap - INFO - 进度: 7.9% 处理帧 15/191
+2025-05-17 22:36:33,564 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:33,600 - face_swap - INFO - 进度: 8.4% 处理帧 16/191
+2025-05-17 22:36:33,879 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:33,917 - face_swap - INFO - 进度: 8.9% 处理帧 17/191
+2025-05-17 22:36:35,852 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:35,884 - face_swap - INFO - 进度: 9.4% 处理帧 18/191
+2025-05-17 22:36:36,845 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:36,882 - face_swap - INFO - 进度: 9.9% 处理帧 19/191
+2025-05-17 22:36:38,397 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:38,427 - face_swap - INFO - 进度: 10.5% 处理帧 20/191
+2025-05-17 22:36:39,688 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:39,817 - face_swap - INFO - 进度: 11.0% 处理帧 21/191
+2025-05-17 22:36:41,185 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:41,219 - face_swap - INFO - 进度: 11.5% 处理帧 22/191
+2025-05-17 22:36:42,374 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:42,405 - face_swap - INFO - 进度: 12.0% 处理帧 23/191
+2025-05-17 22:36:43,847 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:43,880 - face_swap - INFO - 进度: 12.6% 处理帧 24/191
+2025-05-17 22:36:45,399 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:45,478 - face_swap - INFO - 进度: 13.1% 处理帧 25/191
+2025-05-17 22:36:47,054 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:47,085 - face_swap - INFO - 进度: 13.6% 处理帧 26/191
+2025-05-17 22:36:48,177 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:48,226 - face_swap - INFO - 进度: 14.1% 处理帧 27/191
+2025-05-17 22:36:50,109 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:50,141 - face_swap - INFO - 进度: 14.7% 处理帧 28/191
+2025-05-17 22:36:51,563 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:51,594 - face_swap - INFO - 进度: 15.2% 处理帧 29/191
+2025-05-17 22:36:52,918 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:52,949 - face_swap - INFO - 进度: 15.7% 处理帧 30/191
+2025-05-17 22:36:54,462 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:54,502 - face_swap - INFO - 进度: 16.2% 处理帧 31/191
+2025-05-17 22:36:55,535 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:55,575 - face_swap - INFO - 进度: 16.8% 处理帧 32/191
+2025-05-17 22:36:57,264 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:57,311 - face_swap - INFO - 进度: 17.3% 处理帧 33/191
+2025-05-17 22:36:58,357 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:36:58,427 - face_swap - INFO - 进度: 17.8% 处理帧 34/191
+2025-05-17 22:37:00,344 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:00,376 - face_swap - INFO - 进度: 18.3% 处理帧 35/191
+2025-05-17 22:37:01,400 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:01,436 - face_swap - INFO - 进度: 18.8% 处理帧 36/191
+2025-05-17 22:37:03,407 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:03,448 - face_swap - INFO - 进度: 19.4% 处理帧 37/191
+2025-05-17 22:37:04,533 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:04,566 - face_swap - INFO - 进度: 19.9% 处理帧 38/191
+2025-05-17 22:37:06,345 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:06,386 - face_swap - INFO - 进度: 20.4% 处理帧 39/191
+2025-05-17 22:37:07,697 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:07,730 - face_swap - INFO - 进度: 20.9% 处理帧 40/191
+2025-05-17 22:37:09,419 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:09,478 - face_swap - INFO - 进度: 21.5% 处理帧 41/191
+2025-05-17 22:37:10,375 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:10,412 - face_swap - INFO - 进度: 22.0% 处理帧 42/191
+2025-05-17 22:37:12,219 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:12,255 - face_swap - INFO - 进度: 22.5% 处理帧 43/191
+2025-05-17 22:37:13,417 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:13,456 - face_swap - INFO - 进度: 23.0% 处理帧 44/191
+2025-05-17 22:37:15,197 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:15,238 - face_swap - INFO - 进度: 23.6% 处理帧 45/191
+2025-05-17 22:37:16,509 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:16,554 - face_swap - INFO - 进度: 24.1% 处理帧 46/191
+2025-05-17 22:37:18,381 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:18,454 - face_swap - INFO - 进度: 24.6% 处理帧 47/191
+2025-05-17 22:37:19,859 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:19,900 - face_swap - INFO - 进度: 25.1% 处理帧 48/191
+2025-05-17 22:37:21,439 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:21,483 - face_swap - INFO - 进度: 25.7% 处理帧 49/191
+2025-05-17 22:37:23,211 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:23,283 - face_swap - INFO - 进度: 26.2% 处理帧 50/191
+2025-05-17 22:37:24,376 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:24,413 - face_swap - INFO - 进度: 26.7% 处理帧 51/191
+2025-05-17 22:37:26,372 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:26,415 - face_swap - INFO - 进度: 27.2% 处理帧 52/191
+2025-05-17 22:37:27,669 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:27,709 - face_swap - INFO - 进度: 27.7% 处理帧 53/191
+2025-05-17 22:37:29,344 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:29,384 - face_swap - INFO - 进度: 28.3% 处理帧 54/191
+2025-05-17 22:37:30,795 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:30,832 - face_swap - INFO - 进度: 28.8% 处理帧 55/191
+2025-05-17 22:37:32,288 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:32,334 - face_swap - INFO - 进度: 29.3% 处理帧 56/191
+2025-05-17 22:37:33,969 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:34,017 - face_swap - INFO - 进度: 29.8% 处理帧 57/191
+2025-05-17 22:37:35,590 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:35,634 - face_swap - INFO - 进度: 30.4% 处理帧 58/191
+2025-05-17 22:37:36,724 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:36,793 - face_swap - INFO - 进度: 30.9% 处理帧 59/191
+2025-05-17 22:37:38,862 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:38,899 - face_swap - INFO - 进度: 31.4% 处理帧 60/191
+2025-05-17 22:37:40,688 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:40,729 - face_swap - INFO - 进度: 31.9% 处理帧 61/191
+2025-05-17 22:37:42,325 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:42,434 - face_swap - INFO - 进度: 32.5% 处理帧 62/191
+2025-05-17 22:37:43,760 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:43,797 - face_swap - INFO - 进度: 33.0% 处理帧 63/191
+2025-05-17 22:37:45,682 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:45,721 - face_swap - INFO - 进度: 33.5% 处理帧 64/191
+2025-05-17 22:37:47,032 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:47,091 - face_swap - INFO - 进度: 34.0% 处理帧 65/191
+2025-05-17 22:37:48,322 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:48,358 - face_swap - INFO - 进度: 34.6% 处理帧 66/191
+2025-05-17 22:37:50,160 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:50,199 - face_swap - INFO - 进度: 35.1% 处理帧 67/191
+2025-05-17 22:37:51,571 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:51,604 - face_swap - INFO - 进度: 35.6% 处理帧 68/191
+2025-05-17 22:37:53,491 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:53,528 - face_swap - INFO - 进度: 36.1% 处理帧 69/191
+2025-05-17 22:37:54,636 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:54,681 - face_swap - INFO - 进度: 36.6% 处理帧 70/191
+2025-05-17 22:37:56,442 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:56,480 - face_swap - INFO - 进度: 37.2% 处理帧 71/191
+2025-05-17 22:37:57,907 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:57,942 - face_swap - INFO - 进度: 37.7% 处理帧 72/191
+2025-05-17 22:37:59,327 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:37:59,369 - face_swap - INFO - 进度: 38.2% 处理帧 73/191
+2025-05-17 22:38:01,459 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:01,493 - face_swap - INFO - 进度: 38.7% 处理帧 74/191
+2025-05-17 22:38:02,702 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:02,758 - face_swap - INFO - 进度: 39.3% 处理帧 75/191
+2025-05-17 22:38:04,498 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:04,541 - face_swap - INFO - 进度: 39.8% 处理帧 76/191
+2025-05-17 22:38:05,992 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:06,030 - face_swap - INFO - 进度: 40.3% 处理帧 77/191
+2025-05-17 22:38:07,800 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:07,836 - face_swap - INFO - 进度: 40.8% 处理帧 78/191
+2025-05-17 22:38:09,211 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:09,254 - face_swap - INFO - 进度: 41.4% 处理帧 79/191
+2025-05-17 22:38:11,028 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:11,068 - face_swap - INFO - 进度: 41.9% 处理帧 80/191
+2025-05-17 22:38:12,515 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:12,610 - face_swap - INFO - 进度: 42.4% 处理帧 81/191
+2025-05-17 22:38:14,257 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:14,291 - face_swap - INFO - 进度: 42.9% 处理帧 82/191
+2025-05-17 22:38:15,781 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:15,824 - face_swap - INFO - 进度: 43.5% 处理帧 83/191
+2025-05-17 22:38:17,354 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:17,391 - face_swap - INFO - 进度: 44.0% 处理帧 84/191
+2025-05-17 22:38:19,221 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:19,260 - face_swap - INFO - 进度: 44.5% 处理帧 85/191
+2025-05-17 22:38:20,737 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:20,781 - face_swap - INFO - 进度: 45.0% 处理帧 86/191
+2025-05-17 22:38:22,246 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:22,324 - face_swap - INFO - 进度: 45.5% 处理帧 87/191
+2025-05-17 22:38:23,977 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:24,018 - face_swap - INFO - 进度: 46.1% 处理帧 88/191
+2025-05-17 22:38:24,948 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:24,999 - face_swap - INFO - 进度: 46.6% 处理帧 89/191
+2025-05-17 22:38:27,254 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:27,291 - face_swap - INFO - 进度: 47.1% 处理帧 90/191
+2025-05-17 22:38:28,312 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:28,352 - face_swap - INFO - 进度: 47.6% 处理帧 91/191
+2025-05-17 22:38:30,539 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:30,576 - face_swap - INFO - 进度: 48.2% 处理帧 92/191
+2025-05-17 22:38:31,257 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:31,300 - face_swap - INFO - 进度: 48.7% 处理帧 93/191
+2025-05-17 22:38:33,250 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:33,295 - face_swap - INFO - 进度: 49.2% 处理帧 94/191
+2025-05-17 22:38:34,545 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:34,595 - face_swap - INFO - 进度: 49.7% 处理帧 95/191
+2025-05-17 22:38:36,482 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:36,548 - face_swap - INFO - 进度: 50.3% 处理帧 96/191
+2025-05-17 22:38:36,881 - face_swap - INFO - 进度: 50.8% 处理帧 97/191
+2025-05-17 22:38:37,312 - face_swap - INFO - 进度: 51.3% 处理帧 98/191
+2025-05-17 22:38:37,533 - face_swap - INFO - 进度: 51.8% 处理帧 99/191
+2025-05-17 22:38:37,701 - face_swap - INFO - 进度: 52.4% 处理帧 100/191
+2025-05-17 22:38:37,701 - face_swap - INFO - 状态: 正在处理视频... 100/191 帧
+2025-05-17 22:38:37,701 - face_swap - INFO - 处理进度: 100/191 (52.4%)
+2025-05-17 22:38:37,773 - face_swap - INFO - 进度: 52.9% 处理帧 101/191
+2025-05-17 22:38:37,849 - face_swap - INFO - 进度: 53.4% 处理帧 102/191
+2025-05-17 22:38:37,919 - face_swap - INFO - 进度: 53.9% 处理帧 103/191
+2025-05-17 22:38:37,999 - face_swap - INFO - 进度: 54.5% 处理帧 104/191
+2025-05-17 22:38:38,051 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:38,304 - face_swap - INFO - 进度: 55.0% 处理帧 105/191
+2025-05-17 22:38:38,355 - face_swap - INFO - 进度: 55.5% 处理帧 106/191
+2025-05-17 22:38:40,370 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:40,406 - face_swap - INFO - 进度: 56.0% 处理帧 107/191
+2025-05-17 22:38:40,423 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:40,463 - face_swap - INFO - 进度: 56.5% 处理帧 108/191
+2025-05-17 22:38:40,728 - face_swap - INFO - 进度: 57.1% 处理帧 109/191
+2025-05-17 22:38:40,891 - face_swap - INFO - 进度: 57.6% 处理帧 110/191
+2025-05-17 22:38:42,956 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:43,069 - face_swap - INFO - 进度: 58.1% 处理帧 111/191
+2025-05-17 22:38:43,821 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:43,861 - face_swap - INFO - 进度: 58.6% 处理帧 112/191
+2025-05-17 22:38:45,855 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:45,907 - face_swap - INFO - 进度: 59.2% 处理帧 113/191
+2025-05-17 22:38:46,482 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:46,540 - face_swap - INFO - 进度: 59.7% 处理帧 114/191
+2025-05-17 22:38:48,399 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:48,442 - face_swap - INFO - 进度: 60.2% 处理帧 115/191
+2025-05-17 22:38:49,392 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:49,425 - face_swap - INFO - 进度: 60.7% 处理帧 116/191
+2025-05-17 22:38:51,321 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:51,412 - face_swap - INFO - 进度: 61.3% 处理帧 117/191
+2025-05-17 22:38:52,545 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:52,590 - face_swap - INFO - 进度: 61.8% 处理帧 118/191
+2025-05-17 22:38:54,642 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:54,679 - face_swap - INFO - 进度: 62.3% 处理帧 119/191
+2025-05-17 22:38:55,978 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:56,043 - face_swap - INFO - 进度: 62.8% 处理帧 120/191
+2025-05-17 22:38:57,818 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:57,859 - face_swap - INFO - 进度: 63.4% 处理帧 121/191
+2025-05-17 22:38:59,111 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:38:59,148 - face_swap - INFO - 进度: 63.9% 处理帧 122/191
+2025-05-17 22:39:00,951 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:01,036 - face_swap - INFO - 进度: 64.4% 处理帧 123/191
+2025-05-17 22:39:02,084 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:02,119 - face_swap - INFO - 进度: 64.9% 处理帧 124/191
+2025-05-17 22:39:03,967 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:04,000 - face_swap - INFO - 进度: 65.4% 处理帧 125/191
+2025-05-17 22:39:05,344 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:05,440 - face_swap - INFO - 进度: 66.0% 处理帧 126/191
+2025-05-17 22:39:07,051 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:07,087 - face_swap - INFO - 进度: 66.5% 处理帧 127/191
+2025-05-17 22:39:08,109 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:08,139 - face_swap - INFO - 进度: 67.0% 处理帧 128/191
+2025-05-17 22:39:10,313 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:10,393 - face_swap - INFO - 进度: 67.5% 处理帧 129/191
+2025-05-17 22:39:11,619 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:11,664 - face_swap - INFO - 进度: 68.1% 处理帧 130/191
+2025-05-17 22:39:13,443 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:13,479 - face_swap - INFO - 进度: 68.6% 处理帧 131/191
+2025-05-17 22:39:14,522 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:14,561 - face_swap - INFO - 进度: 69.1% 处理帧 132/191
+2025-05-17 22:39:16,653 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:16,688 - face_swap - INFO - 进度: 69.6% 处理帧 133/191
+2025-05-17 22:39:17,603 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:17,643 - face_swap - INFO - 进度: 70.2% 处理帧 134/191
+2025-05-17 22:39:19,548 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:19,583 - face_swap - INFO - 进度: 70.7% 处理帧 135/191
+2025-05-17 22:39:20,717 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:20,767 - face_swap - INFO - 进度: 71.2% 处理帧 136/191
+2025-05-17 22:39:22,703 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:22,747 - face_swap - INFO - 进度: 71.7% 处理帧 137/191
+2025-05-17 22:39:23,836 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:23,878 - face_swap - INFO - 进度: 72.3% 处理帧 138/191
+2025-05-17 22:39:25,730 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:25,766 - face_swap - INFO - 进度: 72.8% 处理帧 139/191
+2025-05-17 22:39:26,745 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:26,775 - face_swap - INFO - 进度: 73.3% 处理帧 140/191
+2025-05-17 22:39:28,524 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:28,565 - face_swap - INFO - 进度: 73.8% 处理帧 141/191
+2025-05-17 22:39:29,833 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:29,972 - face_swap - INFO - 进度: 74.3% 处理帧 142/191
+2025-05-17 22:39:31,612 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:31,650 - face_swap - INFO - 进度: 74.9% 处理帧 143/191
+2025-05-17 22:39:32,873 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:32,906 - face_swap - INFO - 进度: 75.4% 处理帧 144/191
+2025-05-17 22:39:34,788 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:34,823 - face_swap - INFO - 进度: 75.9% 处理帧 145/191
+2025-05-17 22:39:36,642 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:36,683 - face_swap - INFO - 进度: 76.4% 处理帧 146/191
+2025-05-17 22:39:38,419 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:38,468 - face_swap - INFO - 进度: 77.0% 处理帧 147/191
+2025-05-17 22:39:39,440 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:39,522 - face_swap - INFO - 进度: 77.5% 处理帧 148/191
+2025-05-17 22:39:41,442 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:41,477 - face_swap - INFO - 进度: 78.0% 处理帧 149/191
+2025-05-17 22:39:42,136 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:42,170 - face_swap - INFO - 进度: 78.5% 处理帧 150/191
+2025-05-17 22:39:44,084 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:44,116 - face_swap - INFO - 进度: 79.1% 处理帧 151/191
+2025-05-17 22:39:45,230 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:45,265 - face_swap - INFO - 进度: 79.6% 处理帧 152/191
+2025-05-17 22:39:47,148 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:47,196 - face_swap - INFO - 进度: 80.1% 处理帧 153/191
+2025-05-17 22:39:48,775 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:48,809 - face_swap - INFO - 进度: 80.6% 处理帧 154/191
+2025-05-17 22:39:50,486 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:50,529 - face_swap - INFO - 进度: 81.2% 处理帧 155/191
+2025-05-17 22:39:52,030 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:52,068 - face_swap - INFO - 进度: 81.7% 处理帧 156/191
+2025-05-17 22:39:53,115 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:53,148 - face_swap - INFO - 进度: 82.2% 处理帧 157/191
+2025-05-17 22:39:54,975 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:55,010 - face_swap - INFO - 进度: 82.7% 处理帧 158/191
+2025-05-17 22:39:55,767 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:55,806 - face_swap - INFO - 进度: 83.2% 处理帧 159/191
+2025-05-17 22:39:58,033 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:58,070 - face_swap - INFO - 进度: 83.8% 处理帧 160/191
+2025-05-17 22:39:59,757 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:39:59,826 - face_swap - INFO - 进度: 84.3% 处理帧 161/191
+2025-05-17 22:40:01,092 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:01,131 - face_swap - INFO - 进度: 84.8% 处理帧 162/191
+2025-05-17 22:40:02,859 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:02,894 - face_swap - INFO - 进度: 85.3% 处理帧 163/191
+2025-05-17 22:40:04,228 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:04,259 - face_swap - INFO - 进度: 85.9% 处理帧 164/191
+2025-05-17 22:40:05,246 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:05,280 - face_swap - INFO - 进度: 86.4% 处理帧 165/191
+2025-05-17 22:40:06,981 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:07,026 - face_swap - INFO - 进度: 86.9% 处理帧 166/191
+2025-05-17 22:40:08,120 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:08,157 - face_swap - INFO - 进度: 87.4% 处理帧 167/191
+2025-05-17 22:40:10,028 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:10,063 - face_swap - INFO - 进度: 88.0% 处理帧 168/191
+2025-05-17 22:40:11,451 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:11,486 - face_swap - INFO - 进度: 88.5% 处理帧 169/191
+2025-05-17 22:40:12,908 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:12,951 - face_swap - INFO - 进度: 89.0% 处理帧 170/191
+2025-05-17 22:40:14,836 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:14,882 - face_swap - INFO - 进度: 89.5% 处理帧 171/191
+2025-05-17 22:40:15,768 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:15,809 - face_swap - INFO - 进度: 90.1% 处理帧 172/191
+2025-05-17 22:40:17,815 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:17,861 - face_swap - INFO - 进度: 90.6% 处理帧 173/191
+2025-05-17 22:40:18,557 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:18,588 - face_swap - INFO - 进度: 91.1% 处理帧 174/191
+2025-05-17 22:40:21,067 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:21,104 - face_swap - INFO - 进度: 91.6% 处理帧 175/191
+2025-05-17 22:40:21,888 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:21,920 - face_swap - INFO - 进度: 92.1% 处理帧 176/191
+2025-05-17 22:40:23,640 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:23,734 - face_swap - INFO - 进度: 92.7% 处理帧 177/191
+2025-05-17 22:40:24,826 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:24,878 - face_swap - INFO - 进度: 93.2% 处理帧 178/191
+2025-05-17 22:40:26,417 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:26,494 - face_swap - INFO - 进度: 93.7% 处理帧 179/191
+2025-05-17 22:40:28,096 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:28,132 - face_swap - INFO - 进度: 94.2% 处理帧 180/191
+2025-05-17 22:40:29,185 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:29,228 - face_swap - INFO - 进度: 94.8% 处理帧 181/191
+2025-05-17 22:40:31,086 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:31,132 - face_swap - INFO - 进度: 95.3% 处理帧 182/191
+2025-05-17 22:40:32,375 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:32,420 - face_swap - INFO - 进度: 95.8% 处理帧 183/191
+2025-05-17 22:40:34,204 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:34,245 - face_swap - INFO - 进度: 96.3% 处理帧 184/191
+2025-05-17 22:40:35,684 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:35,765 - face_swap - INFO - 进度: 96.9% 处理帧 185/191
+2025-05-17 22:40:37,197 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:37,247 - face_swap - INFO - 进度: 97.4% 处理帧 186/191
+2025-05-17 22:40:38,862 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:38,898 - face_swap - INFO - 进度: 97.9% 处理帧 187/191
+2025-05-17 22:40:40,898 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:40,941 - face_swap - INFO - 进度: 98.4% 处理帧 188/191
+2025-05-17 22:40:41,893 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:41,933 - face_swap - INFO - 进度: 99.0% 处理帧 189/191
+2025-05-17 22:40:43,804 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:43,838 - face_swap - INFO - 进度: 99.5% 处理帧 190/191
+2025-05-17 22:40:44,831 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:44,923 - face_swap - INFO - 进度: 100.0% 处理帧 191/191
+2025-05-17 22:40:44,925 - face_swap - INFO - 状态: 正在处理视频... 191/191 帧
+2025-05-17 22:40:44,926 - face_swap - INFO - 处理进度: 191/191 (100.0%)
+2025-05-17 22:40:46,749 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:47,755 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:49,789 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:51,234 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:52,918 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:54,220 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:54,920 - face_swap - ERROR - 颜色平衡调整出错: OpenCV(4.11.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\smooth.dispatch.cpp:294: error: (-215:Assertion failed) ksize.width > 0 && ksize.width % 2 == 1 && ksize.height > 0 && ksize.height % 2 == 1 in function 'cv::createGaussianKernels'
+
+2025-05-17 22:40:55,011 - face_swap - INFO - 状态: 处理完成!
+2025-05-17 22:40:55,011 - face_swap - INFO - 进度: 100.0% 完成
+2025-05-17 22:40:55,012 - face_swap - INFO - 视频处理完成: E:\face\output_videos\MV_20250411_190055_face_swap_1747492583.mp4

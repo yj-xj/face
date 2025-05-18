@@ -1,0 +1,10 @@
+2025-05-17 20:59:09,429 - app_launcher - INFO - 尝试导入增强版UI...
+2025-05-17 20:59:10,472 - numexpr.utils - INFO - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2025-05-17 20:59:10,472 - numexpr.utils - INFO - NumExpr defaulting to 16 threads.
+2025-05-17 20:59:11,268 - app_launcher - INFO - 启动增强版UI...
+2025-05-17 20:59:11,290 - qdarkstyle - INFO - QSS file successfully loaded.
+2025-05-17 20:59:11,290 - qdarkstyle - INFO - Found version patches to be applied.
+2025-05-17 20:59:11,291 - qdarkstyle - INFO - Found application patches to be applied.
+2025-05-17 20:59:11,320 - face_swap - INFO - 成功加载级联分类器
+2025-05-17 20:59:12,310 - face_swap - INFO - 成功加载特征点预测模型
+2025-05-17 20:59:15,039 - face_swap - INFO - 成功加载InsightFace模型: E:\face\models\inswapper_128.onnx

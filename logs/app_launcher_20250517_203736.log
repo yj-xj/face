@@ -1,0 +1,14 @@
+2025-05-17 20:37:36,158 - app_launcher - INFO - 尝试导入增强版UI...
+2025-05-17 20:37:37,742 - numexpr.utils - INFO - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2025-05-17 20:37:37,743 - numexpr.utils - INFO - NumExpr defaulting to 16 threads.
+2025-05-17 20:37:38,730 - app_launcher - INFO - 启动增强版UI...
+2025-05-17 20:37:38,758 - qdarkstyle - INFO - QSS file successfully loaded.
+2025-05-17 20:37:38,758 - qdarkstyle - INFO - Found version patches to be applied.
+2025-05-17 20:37:38,758 - qdarkstyle - INFO - Found application patches to be applied.
+2025-05-17 20:37:38,794 - face_swap - INFO - 成功加载级联分类器
+2025-05-17 20:37:39,772 - face_swap - INFO - 成功加载特征点预测模型
+2025-05-17 20:37:42,817 - face_swap - INFO - 成功加载InsightFace模型: E:\face\models\inswapper_128.onnx
+2025-05-17 20:38:11,974 - face_swap - INFO - 开始处理视频: E:\face\data\input_videos\MV_20250411_211735.mp4
+2025-05-17 20:38:12,063 - face_swap - INFO - 使用替换方法: inswapper
+2025-05-17 20:38:12,078 - face_swap - INFO - 视频信息: 1080x1920, 20.035618878005344fps, 174帧
+2025-05-17 20:38:12,081 - face_swap - INFO - 创建线程池，工作线程数: 8

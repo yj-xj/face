@@ -194,9 +194,8 @@ class FaceSwapApp:
         
         # 如果root不为None，则设置标题和大小
         if self.root is not None:
-        self.root.title("人脸替换应用 - InsightFace版")
-        self.root.geometry("1200x800")
-        
+            self.root.title("人脸替换应用 - InsightFace版")
+            self.root.geometry("1200x800")
             # 设置应用程序图标和全局字体
             self.set_app_appearance()
         
@@ -307,15 +306,11 @@ class FaceSwapApp:
                     else:
                         logger.warning(f"InsightFace模型文件不存在: {self.inswapper_path}")
                         if self.root is not None:
-                        self.show_model_download_guide("inswapper")
-                else:
-                    logger.warning(f"InsightFace模型文件不存在: {self.inswapper_path}")
-                    if self.root is not None:
-                    self.show_model_download_guide("inswapper")
+                            self.show_model_download_guide("inswapper")
             except Exception as e:
                 logger.error(f"初始化InsightFace模型时出错: {e}")
                 if self.root is not None:
-                self.show_model_download_guide("inswapper")
+                    self.show_model_download_guide("inswapper")
                 import traceback
                 traceback.print_exc()
         else:
@@ -327,7 +322,7 @@ class FaceSwapApp:
         
         # 创建UI - 只有当root不为None时才创建
         if self.root is not None:
-        self.create_ui()
+            self.create_ui()
         
         # 自动加载数据文件夹中的视频和图片
         self.load_data_folder()
@@ -687,7 +682,8 @@ class FaceSwapApp:
     
     def load_data_folder(self):
         """自动加载data文件夹中的视频和图片"""
-        self.status_var.set("正在加载数据文件夹...")
+        if hasattr(self, 'status_var') and self.status_var is not None:
+            self.status_var.set("正在加载数据文件夹...")
         
         # 加载视频
         video_files = []
@@ -697,7 +693,8 @@ class FaceSwapApp:
         
         if video_files:
             self.video_path = video_files[0]  # 选择第一个视频
-            self.video_path_var.set(self.video_path)
+            if hasattr(self, 'video_path_var'):
+                self.video_path_var.set(self.video_path)
         
         # 加载图片
         image_files = []
@@ -707,15 +704,18 @@ class FaceSwapApp:
         
         if image_files:
             self.face_images = image_files
-            self.display_face_images()
+            if hasattr(self, 'face_frame'):
+                self.display_face_images()
             
             # 自动生成输出路径
             if self.video_path:
                 video_name = os.path.splitext(os.path.basename(self.video_path))[0]
                 self.output_path = os.path.join(self.output_folder, f"{video_name}_face_swap.mp4")
-                self.output_path_var.set(self.output_path)
+                if hasattr(self, 'output_path_var'):
+                    self.output_path_var.set(self.output_path)
         
-        self.status_var.set(f"已加载 {len(video_files)} 个视频和 {len(image_files)} 张图片")
+        if hasattr(self, 'status_var') and self.status_var is not None:
+            self.status_var.set(f"已加载 {len(video_files)} 个视频和 {len(image_files)} 张图片")
     
     def browse_video(self):
         """浏览选择视频文件"""
@@ -775,28 +775,23 @@ class FaceSwapApp:
             # 创建带边框的框架
             image_frame = ttk.Frame(self.face_frame, padding=5)
             image_frame.grid(row=0, column=i, padx=10, pady=10)
-            
             try:
-            # 加载并调整图片大小
-            img = Image.open(img_path)
-            img = img.resize((150, 150), Image.LANCZOS)
-            photo = ImageTk.PhotoImage(img)
-            
-            # 保存引用以防止垃圾回收
+                # 加载并调整图片大小
+                img = Image.open(img_path)
+                img = img.resize((150, 150), Image.LANCZOS)
+                photo = ImageTk.PhotoImage(img)
+                # 保存引用以防止垃圾回收
                 image_frame.photo = photo
-            
-            # 显示图片
+                # 显示图片
                 img_label = ttk.Label(image_frame, image=photo)
                 img_label.pack(padx=5, pady=5)
-                
                 # 图片名称标签
                 filename = os.path.basename(img_path)
                 if len(filename) > 20:
                     filename = filename[:17] + "..."
                 name_label = ttk.Label(image_frame, text=filename, style="TLabel")
                 name_label.pack(pady=(0, 5))
-            
-            # 添加选择按钮
+                # 添加选择按钮
                 select_btn = ttk.Button(image_frame, text=f"选择图片 {i+1}", 
                                      command=lambda idx=i: self.select_face(idx),
                                      style="TButton", width=15)
@@ -805,10 +800,8 @@ class FaceSwapApp:
                 # 处理图片加载失败的情况
                 error_frame = ttk.Frame(self.face_frame, padding=5)
                 error_frame.grid(row=0, column=i, padx=10, pady=10)
-                
                 error_label = ttk.Label(error_frame, text="图片加载失败", style="TLabel")
                 error_label.pack(pady=20)
-                
                 ttk.Label(error_frame, text=f"错误: {str(e)[:30]}", style="TLabel", 
                         foreground="red").pack(pady=5)
     
@@ -896,7 +889,7 @@ class FaceSwapApp:
             # 分析源图像中的人脸
             source_rgb = cv2.cvtColor(source_img, cv2.COLOR_BGR2RGB)
             source_faces = self.face_analyser.get(source_rgb)
-                if len(source_faces) == 0:
+            if len(source_faces) == 0:
                 return frame  # 源图像中没有检测到人脸
             
             # 获取源人脸
@@ -1100,8 +1093,7 @@ class FaceSwapApp:
                         
                         # 使用InsightFace替换
                         processed_frame = self.insightface_face_swap(frame, target_image)
-                        
-                        else:
+                    else:
                         # 传统方法处理
                         use_multi_scale = self.multi_scale_var
                         target_image_rgb = cv2.imread(target_face_path)
@@ -1311,8 +1303,8 @@ class FaceSwapApp:
                     out.write(frame)
                 except Exception as e:
                     logger.error(f"写入帧 {next_frame_to_write} 时出错: {e}")
-                        else:
-                logger.error(f"帧 {next_frame_to_write} 无效，跳过")
+                else:
+                    logger.error(f"帧 {next_frame_to_write} 无效，跳过")
             
             # 更新下一个要写入的帧索引
             next_frame_to_write += 1
@@ -1387,7 +1379,7 @@ class FaceSwapApp:
             
             # 显示成功提示
             messagebox.showinfo("处理完成", "视频处理完成，可以在播放器中查看结果")
-                except Exception as e:
+        except Exception as e:
             logger.error(f"加载视频失败: {str(e)}")
             messagebox.showerror("错误", f"加载视频失败: {str(e)}")
             self.stop_video()
@@ -1408,7 +1400,7 @@ class FaceSwapApp:
             duration = getattr(self, 'duration', 0)
             if hasattr(self, 'format_time'):
                 self.time_label.config(text=f"00:00 / {self.format_time(duration)}")
-                    else:
+            else:
                 # 如果format_time方法不存在，使用简单格式
                 minutes = int(duration // 60)
                 seconds = int(duration % 60)
@@ -2243,61 +2235,77 @@ class FaceSwapApp:
 
     def preview_frame(self):
         """预览当前帧的人脸替换效果"""
-        if not self.video_path or not self.face_images:
-            messagebox.showerror("错误", "请先选择视频和人脸图片")
+        if not hasattr(self, 'current_frame') or self.current_frame is None:
+            messagebox.showwarning("警告", "请先加载视频")
             return
-        
+            
         # 创建预览窗口
         preview_window = tk.Toplevel(self.root)
         preview_window.title("预览")
         preview_window.geometry("800x600")
         
-        # 创建进度标签
-        progress_label = ttk.Label(preview_window, text="正在处理...", style="TLabel")
-        progress_label.pack(pady=10)
+        # 创建预览图像标签
+        preview_label = ttk.Label(preview_window)
+        preview_label.pack(expand=True, fill="both", padx=10, pady=10)
         
-                # 在后台线程中处理图像
+        # 创建进度标签
+        progress_label = ttk.Label(preview_window, text="处理中...")
+        progress_label.pack(pady=5)
+        
         def process_preview():
             try:
-                # 获取视频的中间帧
-                cap = cv2.VideoCapture(self.video_path)
-                total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-            middle_frame = total_frames // 2
-                cap.set(cv2.CAP_PROP_POS_FRAMES, middle_frame)
-                ret, frame = cap.read()
-                cap.release()
-            
-            if not ret:
-                messagebox.showerror("错误", "无法读取视频帧")
-                    preview_window.destroy()
-                return
-            
-                # 显示原始图像
-                original_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                original_img = Image.fromarray(original_frame)
-                original_img = self.resize_image_aspect_ratio(original_img, 380, 300)
-                original_photo = ImageTk.PhotoImage(original_img)
+                # 获取当前帧
+                frame = self.current_frame.copy()
                 
-                # 创建原始图像标签
-                original_label = ttk.Label(preview_window, image=original_photo)
-                original_label.image = original_photo
-                original_label.pack(side=tk.LEFT, padx=10, pady=10)
+                # 检查是否选择了目标人脸
+                if not hasattr(self, 'selected_face_index') or self.selected_face_index is None:
+                    progress_label.config(text="请先选择目标人脸")
+                    return
                 
-                # 处理图像
-                processed_frame = self.process_frame(frame)
+                # 获取目标人脸图像
+                target_image = self.face_images[self.selected_face_index]
+                target_image_rgb = cv2.cvtColor(np.array(target_image), cv2.COLOR_RGB2BGR)
+                
+                # 检测目标人脸特征点
+                target_landmarks = None
+                try:
+                    target_faces = self.detector(target_image_rgb)
+                    if len(target_faces) > 0:
+                        target_shape = self.predictor(target_image_rgb, target_faces[0])
+                        target_landmarks = self.shape_to_np(target_shape)
+                except Exception as e:
+                    logger.error(f"检测目标人脸特征点失败: {e}")
+                    progress_label.config(text="检测目标人脸特征点失败")
+                    return
+                
+                if target_landmarks is None:
+                    progress_label.config(text="未能检测到目标人脸特征点")
+                    return
+                
+                # 处理当前帧
+                processed_frame = self.process_frame_traditional(
+                    frame, 
+                    target_image_rgb,
+                    target_landmarks,
+                    self.detector_choice_var.get(),
+                    self.use_multi_scale_var.get()
+                )
                 
                 if processed_frame is not None:
-                    # 显示处理后的图像
-                    processed_img = Image.fromarray(cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB))
-                    processed_img = self.resize_image_aspect_ratio(processed_img, 380, 300)
-                    processed_photo = ImageTk.PhotoImage(processed_img)
+                    # 转换处理后的帧为PIL图像
+                    processed_frame_rgb = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
+                    processed_pil = Image.fromarray(processed_frame_rgb)
                     
-                    # 创建处理后图像标签
-                    processed_label = ttk.Label(preview_window, image=processed_photo)
-                    processed_label.image = processed_photo
-                    processed_label.pack(side=tk.RIGHT, padx=10, pady=10)
+                    # 调整图像大小以适应预览窗口
+                    preview_width = 780
+                    preview_height = 500
+                    processed_pil = self.resize_image_aspect_ratio(processed_pil, preview_width, preview_height)
                     
-                    # 添加保存按钮
+                    # 转换为PhotoImage并显示
+                    img_tk = ImageTk.PhotoImage(processed_pil)
+                    preview_label.configure(image=img_tk)
+                    preview_label.image = img_tk
+                    
                     def save_preview_image():
                         file_path = filedialog.asksaveasfilename(
                             defaultextension=".png",
@@ -2311,14 +2319,13 @@ class FaceSwapApp:
                                         command=save_preview_image,
                                         style="TButton")
                     save_btn.pack(pady=10)
-                    
                     progress_label.config(text="处理完成")
-                    else:
+                else:
                     progress_label.config(text="处理失败 - 未能检测到人脸或应用替换")
-        except Exception as e:
+            except Exception as e:
                 logger.error(f"预览处理错误: {str(e)}")
                 progress_label.config(text=f"处理错误: {str(e)}")
-    
+        
         # 开始处理线程
         threading.Thread(target=process_preview, daemon=True).start()
     

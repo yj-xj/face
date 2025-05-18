@@ -1,0 +1,4 @@
+2025-04-29 17:01:07,542 - face_swap - INFO - 成功加载级联分类器
+2025-04-29 17:01:10,017 - face_swap - INFO - 成功加载特征点预测模型
+2025-04-29 17:01:14,213 - face_swap - INFO - 成功加载InsightFace模型: E:\face\models\inswapper_128.onnx
+2025-04-29 17:01:14,237 - face_swap - ERROR - 启动应用程序时出错: 'FaceSwapApp' object has no attribute 'preview_frame'

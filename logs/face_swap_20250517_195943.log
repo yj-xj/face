@@ -1,0 +1,10 @@
+2025-05-17 19:59:43,904 - py.warnings - WARNING - E:\face\src\face_swap.py:188: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class FaceSwapApp(QMainWindow):
+
+2025-05-17 19:59:43,941 - face_swap - INFO - 成功加载级联分类器
+2025-05-17 19:59:44,870 - face_swap - INFO - 成功加载特征点预测模型
+2025-05-17 19:59:47,977 - face_swap - INFO - 成功加载InsightFace模型: E:\face\models\inswapper_128.onnx
+2025-05-17 20:00:17,416 - face_swap - INFO - 开始处理视频: E:/face/data/input_videos/MV_20250411_211735.mp4
+2025-05-17 20:00:17,446 - face_swap - INFO - 使用替换方法: inswapper
+2025-05-17 20:00:17,467 - face_swap - INFO - 视频信息: 1080x1920, 20.035618878005344fps, 174帧
+2025-05-17 20:00:17,470 - face_swap - INFO - 创建线程池，工作线程数: 8

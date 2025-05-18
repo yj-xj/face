@@ -1,0 +1,74 @@
+2025-05-18 13:56:44,446 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:28: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class VideoProcessingThread(QThread):
+
+2025-05-18 13:56:44,461 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:87: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class CircularProgressBar(QWidget):
+
+2025-05-18 13:56:44,461 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:124: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class GlowingButton(QPushButton):
+
+2025-05-18 13:56:44,461 - py.warnings - WARNING - E:\face\src\face_swap_ui_enhanced.py:148: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class EnhancedFaceSwapUI(QMainWindow):
+
+2025-05-18 13:56:44,477 - qdarkstyle - INFO - QSS file successfully loaded.
+2025-05-18 13:56:44,477 - qdarkstyle - INFO - Found version patches to be applied.
+2025-05-18 13:56:44,478 - qdarkstyle - INFO - Found application patches to be applied.
+2025-05-18 13:56:44,502 - face_swap - INFO - 成功加载级联分类器
+2025-05-18 13:56:45,441 - face_swap - INFO - 成功加载特征点预测模型
+2025-05-18 13:56:47,824 - face_swap - INFO - 成功加载InsightFace模型: E:\face\models\inswapper_128.onnx
+2025-05-18 13:56:54,014 - face_swap - INFO - 使用替换方法: inswapper
+2025-05-18 13:56:54,016 - face_swap - INFO - 视频信息: 576x1280, 29.80550644102046fps, 118帧
+2025-05-18 13:56:54,028 - face_swap - INFO - 创建线程池，工作线程数: 8
+2025-05-18 13:57:03,419 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:03,614 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:04,021 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:04,086 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:04,190 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:04,862 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:04,924 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:05,240 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:14,287 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:14,624 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:14,719 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:16,297 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:16,315 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:17,442 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:17,470 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:18,005 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:25,981 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:28,955 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:29,017 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:30,491 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:30,685 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:31,834 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:32,097 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:33,783 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:38,384 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:42,403 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:44,979 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:45,855 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:46,285 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:47,801 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:48,535 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:48,748 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:52,324 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:54,410 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:57:57,207 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:03,545 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:03,881 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:04,128 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:04,262 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:04,966 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:05,313 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:06,453 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:08,143 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:16,711 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:18,225 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:18,634 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:18,806 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:19,127 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:19,309 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:19,485 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:19,753 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:21,108 - face_swap - ERROR - InsightFace换脸过程出错: 'bool' object has no attribute 'get'
+2025-05-18 13:58:21,110 - face_swap - ERROR - 处理视频时出错: cannot schedule new futures after interpreter shutdown

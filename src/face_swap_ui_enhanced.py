@@ -1,18 +1,24 @@
-import os
 import sys
+import os
 import cv2
+import time
 import numpy as np
-from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
-    QLabel, QFileDialog, QMessageBox, QProgressBar, QSplitter, QScrollArea,
-    QListWidget, QListWidgetItem, QFrame, QGridLayout, QGroupBox, QLineEdit,
-    QComboBox, QCheckBox, QRadioButton, QStackedWidget, QButtonGroup, QSlider,
-    QInputDialog
-)
-from PyQt5.QtGui import QPixmap, QImage, QIcon, QPalette, QColor, QFont
-from PyQt5.QtCore import Qt, QSize, QTimer, QUrl, pyqtSignal, QThread
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-from PyQt5.QtMultimediaWidgets import QVideoWidget
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
+                            QHBoxLayout, QPushButton, QLabel, QFileDialog, 
+                            QProgressBar, QFrame, QSlider, QStyle, QComboBox,
+                            QScrollArea, QGridLayout, QGroupBox, QCheckBox,
+                            QSplitter, QStackedWidget, QDialog, QSpacerItem,
+                            QSizePolicy, QMenu, QToolButton, QAction, QLineEdit,
+                            QListWidget, QMessageBox, QButtonGroup, QRadioButton, QListWidgetItem)
+from PyQt5.QtCore import (Qt, QThread, pyqtSignal, QTimer, QSize, QUrl, 
+                          QPropertyAnimation, QEasingCurve, QRect, QPoint)
+from PyQt5.QtGui import (QImage, QPixmap, QPalette, QColor, QFont, 
+                        QCursor, QIcon, QRadialGradient, QLinearGradient,
+                        QPainter, QPen, QBrush, QFontDatabase)
+from PIL import Image
+import logging
+import qdarktheme
+from PyQt5.QtMultimedia import QMediaPlayer
 
 # 检查是否需要PyQt5 Multimedia插件
 try:
@@ -160,6 +166,13 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.original_app.detector_var = "dlib"        # 默认使用dlib检测器
         self.original_app.swapper_var = "inswapper"    # 默认使用inswapper
         self.original_app.smoothing_var = 50           # 默认平滑度
+        
+        # 设置窗口属性
+        if self.original_app.root is not None:
+            self.original_app.root.title("人脸替换应用 - InsightFace版")
+            self.original_app.root.geometry("1200x800")
+            # 设置应用程序图标和全局字体
+            self.original_app.set_app_appearance()
         
         # 设置窗口属性
         self.setWindowTitle("人脸替换应用")
@@ -604,7 +617,7 @@ class EnhancedFaceSwapUI(QMainWindow):
     def togglePlayback(self):
         """切换播放/暂停状态"""
         # 检查是否正在使用OpenCV播放
-        if hasattr(self, 'cv_play_timer') and hasattr(self, 'cv_cap') and self.cv_cap is not None and self.cv_cap.isOpened():
+        if hasattr(self, 'cv_play_timer') and hasattr(self, 'cv_cap') and self.cv_cap.isOpened():
             if self.cv_play_timer.isActive():
                 # 暂停OpenCV播放
                 self.cv_play_timer.stop()
@@ -676,7 +689,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             
             # 打开视频
             self.cv_cap = cv2.VideoCapture(self.current_video_path)
-            if self.cv_cap is None or not self.cv_cap.isOpened():
+            if not self.cv_cap.isOpened():
                 error_msg = f"OpenCV无法打开视频文件: {self.current_video_path}"
                 print(error_msg)
                 self.cv_video_label.setText(f"<font color='#FF5555'>视频加载失败</font>")
@@ -819,7 +832,7 @@ class EnhancedFaceSwapUI(QMainWindow):
         
         try:
             # 检查播放器状态
-            if self.cv_cap is None or not self.cv_cap.isOpened():
+            if not self.cv_cap.isOpened():
                 print("视频捕获已关闭，停止播放")
                 self.cv_play_timer.stop()
                 self.play_button.setText("播放")

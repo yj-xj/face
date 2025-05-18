@@ -1,0 +1,30 @@
+2025-04-29 09:23:22,291 - face_swap - INFO - 成功加载级联分类器
+2025-04-29 09:23:23,151 - face_swap - INFO - 成功加载特征点预测模型
+2025-04-29 09:23:25,451 - face_swap - INFO - 成功加载InsightFace模型: e:\face\models\inswapper_128.onnx
+2025-04-29 09:23:36,487 - face_swap - INFO - 开始处理视频: E:/face/data/input_videos/MV_20250411_211735.mp4
+2025-04-29 09:23:36,487 - face_swap - INFO - 使用替换方法: inswapper
+2025-04-29 09:23:36,504 - face_swap - INFO - 视频信息: 1080x1920, 20.035618878005344fps, 174帧
+2025-04-29 09:23:36,516 - face_swap - INFO - 创建线程池，工作线程数: 8
+2025-04-29 09:23:36,568 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (408 bytes not processed)
+2025-04-29 09:23:36,569 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (2156 bytes not processed)
+2025-04-29 09:23:36,570 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,582 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,587 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,595 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,605 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,612 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,640 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,640 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,642 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,643 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,649 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,655 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,661 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,667 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,673 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:36,874 - face_swap - ERROR - InsightFace换脸过程出错: image file is truncated (0 bytes not processed)
+2025-04-29 09:23:45,796 - face_swap - INFO - 开始处理视频: E:/face/data/input_videos/MV_20250411_211735.mp4
+2025-04-29 09:23:45,802 - face_swap - INFO - 使用替换方法: inswapper
+2025-04-29 09:23:45,822 - face_swap - INFO - 视频信息: 1080x1920, 20.035618878005344fps, 174帧
+2025-04-29 09:23:45,824 - face_swap - INFO - 创建线程池，工作线程数: 8
+2025-04-29 09:23:45,875 - face_swap - ERROR - InsightFace换脸过程出错: src/_imaging.c:205: bad argument to internal function

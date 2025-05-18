@@ -1,0 +1,7 @@
+2025-05-17 18:59:10,739 - py.warnings - WARNING - E:\face\src\face_swap.py:188: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class FaceSwapApp(QMainWindow):
+
+2025-05-17 18:59:10,830 - face_swap - WARNING - 加载应用图标失败: 'FaceSwapApp' object has no attribute 'base_dir'
+2025-05-17 18:59:10,858 - face_swap - INFO - 成功加载级联分类器
+2025-05-17 18:59:11,778 - face_swap - INFO - 成功加载特征点预测模型
+2025-05-17 18:59:14,711 - face_swap - INFO - 成功加载InsightFace模型: E:\face\models\inswapper_128.onnx

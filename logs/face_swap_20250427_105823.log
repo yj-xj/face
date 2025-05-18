@@ -1,0 +1,25 @@
+2025-04-27 10:58:23,295 - face_swap - INFO - 成功导入 requests 库
+2025-04-27 10:58:23,782 - face_swap - INFO - 成功导入基础图像处理库 cv2 和 numpy
+2025-04-27 10:58:24,282 - face_swap - INFO - 成功导入 dlib 库
+2025-04-27 10:58:24,395 - face_swap - INFO - 成功导入 PIL 库
+2025-04-27 10:58:24,402 - face_swap - INFO - 成功导入 tkinter 库
+2025-04-27 10:58:24,503 - face_swap - INFO - 成功导入 onnxruntime 模块
+2025-04-27 10:58:24,503 - face_swap - WARNING - InsightFace模块导入失败: No module named 'onnx'
+2025-04-27 10:58:24,503 - face_swap - WARNING - InsightFace相关功能将不可用，请安装: pip install insightface
+2025-04-27 10:58:25,476 - face_swap - INFO - 成功导入 torch 模块
+2025-04-27 10:58:25,476 - face_swap - INFO - 所有基础模块已成功导入
+2025-04-27 10:58:25,992 - face_swap - INFO - 级联分类器路径: e:\face\models\haarcascade_frontalface_default.xml, 是否存在: True
+2025-04-27 10:58:26,008 - face_swap - INFO - 成功加载级联分类器
+2025-04-27 10:58:26,250 - face_swap - INFO - 成功初始化dlib人脸检测器
+2025-04-27 10:58:26,956 - face_swap - INFO - 成功加载特征点预测模型
+2025-04-27 10:58:26,956 - face_swap - WARNING - insightface 模块不可用，无法使用 inswapper 模型
+2025-04-27 10:58:26,956 - face_swap - WARNING - 警告: 未找到 FaceShifter 模型文件: e:\face\models\faceshifter_ffhq.pth
+2025-04-27 10:58:29,904 - face_swap - INFO - 开始下载 FaceShifter 模型...
+2025-04-27 10:58:31,928 - urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002288A4FC280>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')': /datasets/microsoft/FaceShifter/resolve/main/faceshifter_ffhq.pth
+2025-04-27 10:58:33,971 - urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002288A4FC580>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')': /datasets/microsoft/FaceShifter/resolve/main/faceshifter_ffhq.pth
+2025-04-27 10:58:35,999 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002288A4FC760>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')': /datasets/microsoft/FaceShifter/resolve/main/faceshifter_ffhq.pth
+2025-04-27 10:58:38,047 - face_swap - WARNING - 获取文件大小时出错: HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /datasets/microsoft/FaceShifter/resolve/main/faceshifter_ffhq.pth (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002288A4FC940>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+2025-04-27 10:58:40,074 - urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002288A4EECA0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')': /datasets/microsoft/FaceShifter/resolve/main/faceshifter_ffhq.pth
+2025-04-27 10:58:42,110 - urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002288A4FC580>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')': /datasets/microsoft/FaceShifter/resolve/main/faceshifter_ffhq.pth
+2025-04-27 10:58:44,147 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002288A4FC880>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')': /datasets/microsoft/FaceShifter/resolve/main/faceshifter_ffhq.pth
+2025-04-27 10:58:46,206 - face_swap - ERROR - 下载请求失败: HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /datasets/microsoft/FaceShifter/resolve/main/faceshifter_ffhq.pth (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002288A4FC820>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))

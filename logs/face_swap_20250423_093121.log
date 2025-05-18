@@ -1,0 +1,16 @@
+2025-04-23 09:31:21,375 - face_swap - INFO - 成功导入基础图像处理库 cv2 和 numpy
+2025-04-23 09:31:21,455 - face_swap - INFO - 成功导入 dlib 库
+2025-04-23 09:31:21,508 - face_swap - INFO - 成功导入 PIL 库
+2025-04-23 09:31:21,512 - face_swap - INFO - 成功导入 tkinter 库
+2025-04-23 09:31:21,573 - face_swap - INFO - 成功导入 onnxruntime 模块
+2025-04-23 09:31:21,573 - face_swap - WARNING - insightface 模块导入失败: No module named 'insightface'
+2025-04-23 09:31:21,573 - face_swap - WARNING - 高级人脸替换功能将不可用，请安装 insightface 库以启用全部功能
+2025-04-23 09:31:22,359 - face_swap - INFO - 成功导入 torch 模块
+2025-04-23 09:31:22,547 - face_swap - INFO - 成功导入视频处理相关模块
+2025-04-23 09:31:22,547 - face_swap - INFO - 所有基础模块已成功导入
+2025-04-23 09:31:22,637 - face_swap - INFO - 级联分类器路径: E:\face\models\haarcascade_frontalface_default.xml, 是否存在: True
+2025-04-23 09:31:22,656 - face_swap - INFO - 成功加载级联分类器
+2025-04-23 09:31:22,963 - face_swap - INFO - 成功初始化dlib人脸检测器
+2025-04-23 09:31:24,199 - face_swap - INFO - 成功加载特征点预测模型
+2025-04-23 09:31:24,199 - face_swap - WARNING - insightface 模块不可用，无法使用 inswapper 模型
+2025-04-23 09:31:24,199 - face_swap - WARNING - 警告: 未找到 FaceShifter 模型文件: E:\face\models\faceshifter_ffhq.pth

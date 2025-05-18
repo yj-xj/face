@@ -1,0 +1,25 @@
+2025-04-29 09:25:59,963 - face_swap - INFO - 成功加载级联分类器
+2025-04-29 09:26:00,824 - face_swap - INFO - 成功加载特征点预测模型
+2025-04-29 09:26:03,084 - face_swap - INFO - 成功加载InsightFace模型: e:\face\models\inswapper_128.onnx
+2025-04-29 09:26:16,575 - face_swap - INFO - 开始处理视频: E:/face/data/input_videos/MV_20250411_211735.mp4
+2025-04-29 09:26:16,575 - face_swap - INFO - 使用替换方法: inswapper
+2025-04-29 09:26:16,593 - face_swap - INFO - 视频信息: 1080x1920, 20.035618878005344fps, 174帧
+2025-04-29 09:26:16,603 - face_swap - INFO - 创建线程池，工作线程数: 8
+2025-04-29 09:26:16,648 - face_swap - ERROR - 图像转换失败: image file is truncated (408 bytes not processed)
+2025-04-29 09:26:16,648 - face_swap - ERROR - 图像转换失败: image file is truncated (2156 bytes not processed)
+2025-04-29 09:26:16,655 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:16,661 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:16,664 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:16,750 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:16,769 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:16,891 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:22,475 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:22,479 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:22,479 - face_swap - ERROR - 处理帧结果时出错: name 'frames_buffer' is not defined
+2025-04-29 09:26:22,798 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:22,859 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:22,938 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:23,020 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:23,032 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:23,071 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)
+2025-04-29 09:26:27,861 - face_swap - ERROR - 图像转换失败: image file is truncated (0 bytes not processed)

@@ -1,0 +1,18 @@
+2025-05-18 20:52:21,627 - py.warnings - WARNING - e:\face\src\face_swap_ui_enhanced.py:32: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class VideoProcessingThread(QThread):
+
+2025-05-18 20:52:21,627 - py.warnings - WARNING - e:\face\src\face_swap_ui_enhanced.py:91: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class CircularProgressBar(QWidget):
+
+2025-05-18 20:52:21,627 - py.warnings - WARNING - e:\face\src\face_swap_ui_enhanced.py:128: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class GlowingButton(QPushButton):
+
+2025-05-18 20:52:21,627 - py.warnings - WARNING - e:\face\src\face_swap_ui_enhanced.py:152: DeprecationWarning: sipPyTypeDict() is deprecated, the extension module should use sipPyTypeDictRef() instead
+  class EnhancedFaceSwapUI(QMainWindow):
+
+2025-05-18 20:52:21,685 - qdarkstyle - INFO - QSS file successfully loaded.
+2025-05-18 20:52:21,686 - qdarkstyle - INFO - Found version patches to be applied.
+2025-05-18 20:52:21,687 - qdarkstyle - INFO - Found application patches to be applied.
+2025-05-18 20:52:21,730 - face_swap - INFO - 成功加载级联分类器
+2025-05-18 20:52:22,570 - face_swap - INFO - 成功加载特征点预测模型
+2025-05-18 20:52:25,845 - face_swap - INFO - 成功加载InsightFace模型: e:\face\models\inswapper_128.onnx

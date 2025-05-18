@@ -1,0 +1,3 @@
+2025-05-03 14:04:59,811 - face_swap - INFO - 成功加载级联分类器
+2025-05-03 14:05:00,920 - face_swap - INFO - 成功加载特征点预测模型
+2025-05-03 14:05:04,662 - face_swap - INFO - 成功加载InsightFace模型: E:\face\models\inswapper_128.onnx

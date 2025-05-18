@@ -1,0 +1,9 @@
+2025-04-29 09:27:59,139 - face_swap - INFO - 成功加载级联分类器
+2025-04-29 09:27:59,987 - face_swap - INFO - 成功加载特征点预测模型
+2025-04-29 09:28:02,295 - face_swap - INFO - 成功加载InsightFace模型: e:\face\models\inswapper_128.onnx
+2025-04-29 09:28:10,546 - face_swap - INFO - 开始处理视频: E:/face/data/input_videos/MV_20250411_211735.mp4
+2025-04-29 09:28:10,559 - face_swap - INFO - 使用替换方法: inswapper
+2025-04-29 09:28:10,586 - face_swap - INFO - 视频信息: 1080x1920, 20.035618878005344fps, 174帧
+2025-04-29 09:28:10,587 - face_swap - INFO - 创建线程池，工作线程数: 8
+2025-04-29 09:29:48,511 - face_swap - INFO - 处理进度: 100/174 (57.5%)
+2025-04-29 09:31:17,357 - face_swap - INFO - 处理进度: 174/174 (100.0%)

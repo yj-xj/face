@@ -183,11 +183,22 @@ class FaceSwapApp:
         global cv2, dlib, INSIGHTFACE_AVAILABLE
         
         self.root = root
+        
+        # 设置一些基本颜色，即使没有UI也需要
+        self.primary_color = "#4287f5"     # 主色调蓝色
+        self.secondary_color = "#f0f0f0"   # 背景色浅灰
+        self.success_color = "#4CAF50"     # 成功色绿色
+        self.warning_color = "#FF9800"     # 警告色橙色
+        self.accent_color = "#2962FF"      # 强调色深蓝
+        self.text_color = "#212121"        # 文字色深灰
+        
+        # 如果root不为None，则设置标题和大小
+        if self.root is not None:
         self.root.title("人脸替换应用 - InsightFace版")
         self.root.geometry("1200x800")
         
-        # 设置应用程序图标和全局字体
-        self.set_app_appearance()
+            # 设置应用程序图标和全局字体
+            self.set_app_appearance()
         
         # 存储路径
         self.video_path = ""
@@ -295,12 +306,15 @@ class FaceSwapApp:
                             traceback.print_exc()
                     else:
                         logger.warning(f"InsightFace模型文件不存在: {self.inswapper_path}")
+                        if self.root is not None:
                         self.show_model_download_guide("inswapper")
                 else:
                     logger.warning(f"InsightFace模型文件不存在: {self.inswapper_path}")
+                    if self.root is not None:
                     self.show_model_download_guide("inswapper")
             except Exception as e:
                 logger.error(f"初始化InsightFace模型时出错: {e}")
+                if self.root is not None:
                 self.show_model_download_guide("inswapper")
                 import traceback
                 traceback.print_exc()
@@ -311,7 +325,8 @@ class FaceSwapApp:
         self.detection_confidence = 0.5  # 人脸检测置信度阈值
         self.multi_scale_detection = True  # 启用多尺度检测
         
-        # 创建UI
+        # 创建UI - 只有当root不为None时才创建
+        if self.root is not None:
         self.create_ui()
         
         # 自动加载数据文件夹中的视频和图片
@@ -761,7 +776,7 @@ class FaceSwapApp:
             image_frame = ttk.Frame(self.face_frame, padding=5)
             image_frame.grid(row=0, column=i, padx=10, pady=10)
             
-            try:
+                        try:
                 # 加载并调整图片大小
                 img = Image.open(img_path)
                 img = img.resize((150, 150), Image.LANCZOS)
@@ -780,7 +795,7 @@ class FaceSwapApp:
                     filename = filename[:17] + "..."
                 name_label = ttk.Label(image_frame, text=filename, style="TLabel")
                 name_label.pack(pady=(0, 5))
-            
+                
                 # 添加选择按钮
                 select_btn = ttk.Button(image_frame, text=f"选择图片 {i+1}", 
                                      command=lambda idx=i: self.select_face(idx),
@@ -862,103 +877,62 @@ class FaceSwapApp:
     def insightface_face_swap(self, frame, source_img):
         """使用InsightFace进行人脸替换"""
         try:
+            # 检查人脸分析器和交换器
             if self.face_analyser is None or self.inswapper is None:
-                # 如果模型未加载，返回原始帧
-                return frame
+                return frame  # 直接返回原始帧
             
-            # 将PIL图像转换为OpenCV格式
-            try:
-                # 添加异常处理
-                if isinstance(source_img, Image.Image):
-                    # 使用更健壮的方式处理PIL图像，尝试修复截断的图像
-                    try:
-                        # 先尝试转换
-                        source_array = np.array(source_img.convert("RGB"))
-                        source_bgr = cv2.cvtColor(source_array, cv2.COLOR_RGB2BGR)
-                    except Exception as pil_error:
-                        logger.error(f"PIL图像转换失败: {pil_error}")
-                        # 直接读取源文件而不是使用可能已损坏的PIL对象
-                        if hasattr(self, 'selected_face_index') and self.selected_face_index >= 0:
-                            target_face_path = self.face_images[self.selected_face_index]
-                            source_bgr = cv2.imread(target_face_path)
-                        else:
-                            return frame
-                else:
-                    # 假设已经是cv2格式
-                    source_bgr = source_img.copy()  # 使用副本防止修改原始数据
-            except Exception as e:
-                logger.error(f"图像转换失败: {e}")
-                # 尝试直接使用cv2读取原始图像文件
-                if hasattr(self, 'selected_face_index') and self.selected_face_index >= 0:
-                    try:
-                        target_face_path = self.face_images[self.selected_face_index]
-                        source_bgr = cv2.imread(target_face_path)
-                        if source_bgr is None:
-                            logger.error(f"无法读取图像文件: {target_face_path}")
-                            return frame
-                    except Exception as img_e:
-                        logger.error(f"读取图像文件失败: {img_e}")
-                        return frame
-                else:
+            # 检查输入帧是否有效
+            if frame is None or frame.size == 0:
                     return frame
             
-            # 确保source_bgr是有效的图像
-            if source_bgr is None or source_bgr.size == 0:
-                logger.error("源图像无效")
-                return frame
+            # 将BGR帧转换为RGB
+            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            
+            # 检测和分析人脸
+            input_faces = self.face_analyser.get(rgb_frame)
+            if len(input_faces) == 0:
+                return frame  # 没有检测到人脸
                 
-            # 分析源图像，检测人脸
-            try:
-                source_faces = self.face_analyser.get(source_bgr)
+            # 分析源图像中的人脸
+            source_rgb = cv2.cvtColor(source_img, cv2.COLOR_BGR2RGB)
+            source_faces = self.face_analyser.get(source_rgb)
                 if len(source_faces) == 0:
-                    logger.warning("源图像中未检测到人脸")
-                    return frame
-            except Exception as e:
-                logger.error(f"分析源图像时出错: {e}")
-                return frame
+                return frame  # 源图像中没有检测到人脸
             
-            # 选择第一张脸作为源脸
+            # 获取源人脸
             source_face = source_faces[0]
             
-            # 分析目标帧，检测人脸
-            try:
-                target_faces = self.face_analyser.get(frame)
-                if len(target_faces) == 0:
-                    logger.warning("目标帧中未检测到人脸")
-                    return frame
-            except Exception as e:
-                logger.error(f"分析目标帧时出错: {e}")
-                return frame
-            
-            # 创建结果图像副本
+            # 替换每个检测到的人脸
             result = frame.copy()
             
-            # 对每个检测到的人脸进行替换
-            for target_face in target_faces:
-                try:
-                    # 获取人脸边界框，用于日志记录
-                    bbox = target_face.bbox.astype(int)
-                    logger.debug(f"检测到人脸位置: {bbox}")
+            # 检查是否需要颜色校正
+            use_color_correction = False
+            if hasattr(self, 'color_correction_var'):
+                if hasattr(self.color_correction_var, 'get'):
+                    # 如果是Tkinter变量
+                    use_color_correction = self.color_correction_var.get()
+                else:
+                    # 如果是普通变量（布尔值）
+                    use_color_correction = self.color_correction_var
+            
+            for face in input_faces:
+                # 应用人脸交换
+                result = self.inswapper.get(result, face, source_face, paste_back=True)
+                
+                # 应用颜色校正（如果启用）
+                if use_color_correction:
+                    # 创建面部区域蒙版
+                    mask = np.zeros_like(frame)
                     
-                    # 使用InsightFace的模型进行换脸
-                    # paste_back=True表示将结果直接粘贴回原始图像
-                    result = self.inswapper.get(result, target_face, source_face, paste_back=True)
-                except Exception as face_e:
-                    logger.error(f"处理单个脸部时出错: {face_e}")
-                    continue  # 跳过这个脸，处理下一个
-            
-            # 优化结果 - 可以根据需要应用额外的后处理
-            if self.color_correction_var.get():
-                # 应用全局颜色校正
-                try:
-                    result = self.adjust_color_balance(result, frame)
-                except Exception as color_e:
-                    logger.error(f"颜色校正出错: {color_e}")
-                    # 如果颜色校正失败，使用未校正的结果
-            
-            # 确保返回类型正确
-            if result.dtype != np.uint8:
-                result = result.astype(np.uint8)
+                    # 获取人脸关键点
+                    kps = face.kps.astype(int)
+                    hull = cv2.convexHull(kps)
+                    
+                    # 绘制凸包形成蒙版
+                    cv2.fillConvexPoly(mask, hull, (255, 255, 255))
+                    
+                    # 应用颜色校正
+                    result = self.adjust_color_balance(result, frame, mask=mask[:,:,0], blur_amount=10)
             
             return result
             
@@ -966,10 +940,9 @@ class FaceSwapApp:
             logger.error(f"InsightFace换脸过程出错: {e}")
             import traceback
             traceback.print_exc()
-            # 发生错误时返回原始帧
-            return frame
+            return frame  # 出错时返回原始帧
     
-    def adjust_color_balance(self, target_img, source_img):
+    def adjust_color_balance(self, target_img, source_img, mask=None, blur_amount=0):
         """
         调整目标图像的颜色平衡以匹配源图像
         这是一个简化版的颜色校正，适用于InsightFace处理后的结果
@@ -1003,6 +976,10 @@ class FaceSwapApp:
             alpha = 0.7  # 混合因子
             result = cv2.addWeighted(adjusted_img, alpha, target_img, 1-alpha, 0)
             
+            # 应用高斯模糊（如果启用）
+            if blur_amount > 0:
+                result = cv2.GaussianBlur(result, (blur_amount, blur_amount), 0)
+            
             return result
             
         except Exception as e:
@@ -1012,172 +989,174 @@ class FaceSwapApp:
     def process_video(self):
         """处理视频的主函数，应用人脸替换效果并保存结果"""
         try:
-            if not self.video_path or not os.path.exists(self.video_path):
-                messagebox.showerror("错误", "请选择有效的视频文件")
-                return
-                
-            if self.selected_face_index < 0 or self.selected_face_index >= len(self.face_images):
-                messagebox.showerror("错误", "请先选择一个人脸图片")
-                return
-                
-            if not self.output_path:
-                messagebox.showerror("错误", "请指定输出路径")
-                return
+            # 检查是否选择了视频
+            if not self.video_path:
+                # 使用回调或UI更新状态
+                self.update_status("请先选择一个视频文件")
+                return False
             
-            self.status_var.set("正在处理视频...")
-            logger.info(f"开始处理视频: {self.video_path}")
+            # 检查视频文件是否存在
+            if not os.path.exists(self.video_path):
+                self.update_status(f"视频文件不存在: {self.video_path}")
+                return False
             
-            # 重置进度条
-            self.progress_var.set(0)
-            self.progress_label.config(text="0%")
+            # 检查是否选择了人脸图片
+            if not self.face_images or self.selected_face_index < 0 or self.selected_face_index >= len(self.face_images):
+                self.update_status("请先选择一张人脸图片")
+                return False
             
-            # 获取选中的人脸图片
+            # 检查人脸图片是否存在
             target_face_path = self.face_images[self.selected_face_index]
+            if not os.path.exists(target_face_path):
+                self.update_status(f"人脸图片不存在: {target_face_path}")
+                return False
             
-            # 使用cv2直接读取人脸图片，避免PIL可能出现的问题
-            target_image = cv2.imread(target_face_path)
-            if target_image is None:
-                messagebox.showerror("错误", f"无法读取人脸图片: {target_face_path}")
-                return
-                
-            target_image_rgb = cv2.cvtColor(target_image, cv2.COLOR_BGR2RGB)
+            # 检查是否设置了输出路径
+            if not self.output_path:
+                # 根据输入文件创建一个默认输出路径
+                video_dir = os.path.dirname(self.video_path)
+                video_name = os.path.basename(self.video_path)
+                base_name, ext = os.path.splitext(video_name)
+                self.output_path = os.path.join(video_dir, f"{base_name}_face_swap{ext}")
             
-            # 仅在需要使用PIL时才创建PIL对象
-            try:
-                source_image = Image.open(target_face_path)
-            except Exception as e:
-                logger.error(f"无法用PIL打开图像: {e}")
-                # 使用CV2图像作为后备
-                source_image = target_image
-
-            # 获取用户选择的人脸替换方法
-            swapper_choice = self.swapper_var.get()
-            logger.info(f"使用替换方法: {swapper_choice}")
+            # 更新状态
+            self.update_status("正在处理视频...")
             
-            # 检查是否可以使用InsightFace
-            can_use_insightface = (swapper_choice == "inswapper" and 
-                                  self.inswapper is not None and 
-                                  self.face_analyser is not None)
+            # 初始化日志文件
+            log_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "logs")
+            os.makedirs(log_dir, exist_ok=True)
             
-            # 如果选择了InsightFace但不可用，则回退到传统方法
-            if swapper_choice == "inswapper" and not can_use_insightface:
-                logger.warning("InsightFace模型未加载，回退到传统方法")
-                swapper_choice = "traditional"
-                messagebox.showwarning("警告", "InsightFace模型未加载，将使用传统方法继续")
-            
-            # 如果使用传统方法，需要提取特征点
-            if swapper_choice == "traditional":
-                if self.predictor is None:
-                    if not os.path.exists(self.predictor_path):
-                        messagebox.showerror("错误", "缺少面部特征点模型，无法继续")
-                        return
-                    try:
-                        self.predictor = dlib.shape_predictor(self.predictor_path)
-                    except Exception as e:
-                        logger.error(f"加载特征点预测模型失败: {e}")
-                        messagebox.showerror("错误", f"加载特征点预测模型失败: {e}")
-                        return
-                
-                # 获取人脸特征点
-                detector_choice = self.detector_var.get()
-                use_multi_scale = self.multi_scale_var.get()
-                
-                # 从人脸图片中提取特征点
-                if detector_choice == "dlib":
-                    # 使用dlib检测
-                    upsample = 1 if use_multi_scale else 0
-                    target_faces = self.detector(target_image_rgb, upsample)
-                    
-                    if len(target_faces) == 0:
-                        messagebox.showerror("错误", "在源图片中未检测到人脸")
-                        return
-                    
-                    # 获取特征点
-                    target_shape = self.predictor(target_image_rgb, target_faces[0])
-                    target_landmarks = self.shape_to_np(target_shape)
-                else:
-                    # 使用OpenCV检测
-                    if self.face_cascade is None:
-                        messagebox.showerror("错误", "未加载OpenCV级联分类器")
-                        return
-                        
-                    gray = cv2.cvtColor(target_image, cv2.COLOR_BGR2GRAY)
-                    scale_factor = 1.3 if use_multi_scale else 1.1
-                    faces = self.face_cascade.detectMultiScale(
-                        gray, scaleFactor=scale_factor, minNeighbors=5, minSize=(30, 30)
-                    )
-                    
-                    if len(faces) == 0:
-                        messagebox.showerror("错误", "在源图片中未检测到人脸")
-                        return
-                    
-                    # 获取特征点
-                    x, y, w, h = faces[0]
-                    face_rect = dlib.rectangle(x, y, x + w, y + h)
-                    target_shape = self.predictor(target_image_rgb, face_rect)
-                    target_landmarks = self.shape_to_np(target_shape)
-            
-            # 打开视频文件
+            # 打开视频
             video = cv2.VideoCapture(self.video_path)
             if not video.isOpened():
-                raise ValueError(f"无法打开视频文件: {self.video_path}")
+                self.update_status(f"无法打开视频文件: {self.video_path}")
+                return False
             
-            # 获取视频属性
+            # 获取视频基本信息
             width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
             height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
             fps = video.get(cv2.CAP_PROP_FPS)
             total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
             
-            # 存储以供日志记录和进度计算
+            # 保存视频总帧数，供其他函数使用
             self.total_frames = total_frames
             
-            logger.info(f"视频信息: {width}x{height}, {fps}fps, {total_frames}帧")
-            
-            # 创建临时输出文件
-            temp_dir = os.path.dirname(self.output_path)
-            os.makedirs(temp_dir, exist_ok=True)
-            
-            temp_output = os.path.join(temp_dir, f"temp_{os.path.basename(self.output_path)}")
+            # 创建目录
+            os.makedirs(os.path.dirname(os.path.abspath(self.output_path)), exist_ok=True)
             
             # 创建视频写入器
-            fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # 使用MP4编码
-            out = cv2.VideoWriter(temp_output, fourcc, fps, (width, height))
+            fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # MP4格式
+            output_file = self.output_path
             
-            if not out.isOpened():
-                raise ValueError(f"无法创建输出视频文件: {temp_output}")
+            # 检查文件是否已存在，如果存在则添加时间戳
+            if os.path.exists(output_file):
+                base_name, ext = os.path.splitext(output_file)
+                output_file = f"{base_name}_{int(time.time())}{ext}"
+                self.output_path = output_file
             
-            # 多线程处理帧
-            frame_count = 0
+            out = cv2.VideoWriter(output_file, fourcc, fps, (width, height))
             
-            # 决定使用的线程数
-            max_workers = min(os.cpu_count() or 4, 8)  # 最多使用8个线程
-            logger.info(f"创建线程池，工作线程数: {max_workers}")
+            # 更新状态
+            logger.info(f"视频信息: {width}x{height}, {fps}fps, {total_frames}帧")
+            logger.info(f"输出文件: {output_file}")
+            self.update_status(f"正在处理视频: {width}x{height}, {fps}fps, {total_frames}帧")
             
+            # 使用线程池并行处理视频帧
+            max_workers = os.cpu_count() or 4  # 如果无法获取CPU核心数，则默认使用4个线程
+            
+            # 如果使用InsightFace，由于GPU内存限制，减少工作线程数量
+            if self.swapper_var == "inswapper" and self.inswapper is not None:
+                # GPU模式下只使用1个线程，否则模型会占用大量显存
+                max_workers = min(2, max_workers)
+                logger.info(f"使用InsightFace，限制工作线程数为: {max_workers}")
+            
+            # 更新进度
+            self.update_progress(0, "准备处理")
+            
+            # 使用线程池处理视频帧
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-                # 定义帧处理任务
+                # 保存所有处理任务的future对象
+                futures = set()
+                
+                # 处理一帧视频的任务
                 def process_frame_task(frame_data):
-                    frame_idx, frame = frame_data
-                    try:
-                        # 根据选择的方法处理帧
-                        if can_use_insightface:
-                            # 使用InsightFace进行人脸替换
-                            return frame_idx, self.insightface_face_swap(frame, source_image)
-                        else:
-                            # 使用传统方法
-                            return frame_idx, self.process_frame_traditional(
-                                frame, target_image_rgb, target_landmarks, detector_choice, use_multi_scale
+                    # 解构参数
+                    index, frame = frame_data
+                    
+                    # 获取用户选择的人脸替换方法和参数
+                    swapper_choice = self.swapper_var
+                    detector_choice = self.detector_var
+                    target_face_path = self.face_images[self.selected_face_index]
+                
+                    # 处理图像 - 这里需要适配你的处理流程
+                    processed_frame = None
+                    
+                    # 根据不同的处理方法调用不同的函数
+                    if swapper_choice == "inswapper" and self.inswapper is not None and self.face_analyser is not None:
+                        # 读取目标人脸
+                        target_image = cv2.imread(target_face_path)
+                        if target_image is None:
+                            raise ValueError(f"无法读取人脸图片: {target_face_path}")
+                        
+                        # 使用InsightFace替换
+                        processed_frame = self.insightface_face_swap(frame, target_image)
+                        
+                    else:
+                        # 传统方法处理
+                        use_multi_scale = self.multi_scale_var
+                        target_image_rgb = cv2.imread(target_face_path)
+                        if target_image_rgb is None:
+                            raise ValueError(f"无法读取人脸图片: {target_face_path}")
+                            
+                        # 处理目标图像的人脸特征点
+                        target_landmarks = None
+                        
+                        # 检测目标人脸
+                        target_rgb = cv2.cvtColor(target_image_rgb, cv2.COLOR_BGR2RGB)
+                        if detector_choice == "dlib":
+                            target_faces = self.detector(target_rgb, 1)
+                            if len(target_faces) > 0:
+                                target_landmarks = self.predictor(target_rgb, target_faces[0])
+                                target_landmarks = self.shape_to_np(target_landmarks)
+                        else:  # OpenCV检测器
+                            target_gray = cv2.cvtColor(target_image_rgb, cv2.COLOR_BGR2GRAY)
+                            target_faces = self.opencv_detector.detectMultiScale(
+                                target_gray, 
+                                scaleFactor=1.1, 
+                                minNeighbors=5,
+                                minSize=(30, 30)
                             )
-                    except Exception as e:
-                        logger.error(f"处理帧 {frame_idx} 时出错: {e}")
-                        return frame_idx, frame  # 返回原始帧
+                            
+                            if len(target_faces) > 0:
+                                x, y, w, h = target_faces[0]
+                                target_face_rect = dlib.rectangle(x, y, x+w, y+h)
+                                target_landmarks = self.predictor(target_rgb, target_face_rect)
+                                target_landmarks = self.shape_to_np(target_landmarks)
+                        
+                        if target_landmarks is None:
+                            # 如果没有检测到目标人脸，返回原始帧
+                            return (index, frame)
+                        
+                        # 使用传统方法处理帧
+                        processed_frame = self.process_frame_traditional(
+                            frame, 
+                            target_image_rgb, 
+                            target_landmarks, 
+                            detector_choice, 
+                            use_multi_scale
+                        )
+                    
+                    # 返回处理后的帧和索引
+                    if processed_frame is not None:
+                        return (index, processed_frame)
+                    else:
+                        # 如果处理失败，返回原始帧
+                        return (index, frame)
                 
-                # 提交初始批次的任务
-                futures = set()  # 使用集合而不是列表
-                frames_buffer = {}  # 用于存储处理好的帧
+                # 初始化变量
+                frame_count = 0
+                frame_buffer = {}  # 存储处理好的帧
                 next_frame_to_write = 0  # 下一个要写入的帧索引
-                
-                # 跟踪成功处理的帧数
-                successful_frames = 0
                 
                 while True:
                     ret, frame = video.read()
@@ -1187,169 +1166,177 @@ class FaceSwapApp:
                     # 更新进度
                     frame_count += 1
                     progress = (frame_count / total_frames) * 100
-                    self.progress_var.set(progress)
-                    progress_text = f"{progress:.1f}%"
-                    self.root.after(0, lambda t=progress_text: self.progress_label.config(text=t))
-                    self.root.update_idletasks()
+                    # 使用回调更新进度
+                    self.update_progress(progress, f"处理帧 {frame_count}/{total_frames}")
                     
                     # 每100帧显示一次进度
                     if frame_count % 100 == 0 or frame_count == total_frames:
-                        self.status_var.set(f"正在处理视频... {frame_count}/{total_frames} 帧")
+                        self.update_status(f"正在处理视频... {frame_count}/{total_frames} 帧")
                         logger.info(f"处理进度: {frame_count}/{total_frames} ({progress:.1f}%)")
                     
                     # 提交处理任务
                     future = executor.submit(process_frame_task, (frame_count-1, frame))
-                    futures.add(future)  # 使用add而不是append
+                    futures.add(future)
                     
-                    # 如果积累了太多任务，等待一些完成
-                    if len(futures) > max_workers * 2:
-                        # 等待部分任务完成
-                        done, futures = concurrent.futures.wait(
+                    # 检查已完成的任务
+                    done_futures = set()
+                    for future in list(futures):
+                        if future.done():
+                            try:
+                                # 获取处理结果
+                                idx, processed_frame = future.result()
+                                # 将结果添加到帧缓冲区
+                                frame_buffer[idx] = processed_frame
+                                
+                                # 从futures集合中移除已完成的任务
+                                done_futures.add(future)
+                                
+                                # 检查是否可以按顺序写入帧
+                                if idx == next_frame_to_write:
+                                    next_frame_to_write = self.write_frames_in_order(out, frame_buffer, next_frame_to_write)
+                                
+                            except Exception as e:
+                                logger.error(f"处理帧时出错: {e}")
+                                import traceback
+                                traceback.print_exc()
+                    
+                    # 从futures集合中移除已完成的任务
+                    futures -= done_futures
+                    
+                    # 控制任务队列大小，避免内存溢出
+                    max_pending_tasks = max_workers * 3  # 允许的最大待处理任务数
+                    while len(futures) > max_pending_tasks:
+                        # 等待其中一个任务完成
+                        done, futures_set = concurrent.futures.wait(
                             futures, 
-                            return_when=concurrent.futures.FIRST_COMPLETED
+                            return_when=concurrent.futures.FIRST_COMPLETED,
+                            timeout=1.0  # 设置超时，防止无限等待
                         )
                         
                         # 处理完成的任务
                         for future in done:
                             try:
-                                idx, processed = future.result()
-                                frames_buffer[idx] = processed
-                                successful_frames += 1
+                                idx, processed_frame = future.result()
+                                frame_buffer[idx] = processed_frame
+                                
+                                # 检查是否可以按顺序写入帧
+                                if idx == next_frame_to_write:
+                                    next_frame_to_write = self.write_frames_in_order(out, frame_buffer, next_frame_to_write)
+                                
                             except Exception as e:
-                                logger.error(f"处理帧结果时出错: {e}")
-                                # 如果无法获取结果，使用原始帧
-                                if 'idx' in locals():
-                                    frames_buffer[idx] = frame
+                                logger.error(f"处理帧时出错: {e}")
+                                import traceback
+                                traceback.print_exc()
                         
-                        # 按顺序写入处理好的帧
-                        next_frame_to_write = self.write_frames_in_order(out, frames_buffer, next_frame_to_write)
+                        # 更新futures集合
+                        futures = futures_set
                 
-                # 等待所有剩余任务完成
+                # 等待所有任务完成
                 for future in concurrent.futures.as_completed(futures):
                     try:
-                        idx, processed = future.result()
-                        frames_buffer[idx] = processed
-                        successful_frames += 1
+                        idx, processed_frame = future.result()
+                        frame_buffer[idx] = processed_frame
                     except Exception as e:
-                        logger.error(f"处理最终帧结果时出错: {e}")
-                        # 无法处理的情况下跳过
+                        logger.error(f"处理帧时出错: {e}")
+                        import traceback
+                        traceback.print_exc()
                 
-                # 写入所有剩余的帧
-                self.write_frames_in_order(out, frames_buffer, next_frame_to_write)
+                # 写入剩余的帧
+                while len(frame_buffer) > 0:
+                    next_frame_to_write = self.write_frames_in_order(out, frame_buffer, next_frame_to_write)
+                    # 如果没有更多帧可写，则退出循环
+                    if next_frame_to_write >= total_frames:
+                        break
                 
                 # 释放资源
                 video.release()
                 out.release()
                 
-                # 检查是否有足够的成功处理帧
-                if successful_frames < 5:  # 如果成功帧少于5帧，可能处理失败
-                    raise ValueError(f"处理成功的帧数过少({successful_frames}/{total_frames})，视频处理失败")
-                
-                # 使用moviepy添加音频
-                self.status_var.set("正在添加音频...")
-                
-                # 检查临时文件大小和有效性
-                if not os.path.exists(temp_output):
-                    raise FileNotFoundError(f"临时视频文件不存在: {temp_output}")
-                
-                temp_file_size = os.path.getsize(temp_output)
-                if temp_file_size < 10000:  # 小于10KB的视频文件很可能是无效的
-                    logger.error(f"临时视频文件大小异常: {temp_file_size} 字节")
-                    
-                    # 检查是否有任何帧被写入
-                    if successful_frames == 0:
-                        raise ValueError("没有成功处理任何帧，无法创建视频")
-                    
-                    # 尝试使用FFMPEG直接从临时文件创建最终视频，跳过音频添加
-                    import shutil
-                    shutil.copy(temp_output, self.output_path)
-                    
-                    if os.path.exists(self.output_path) and os.path.getsize(self.output_path) > 10000:
-                        messagebox.showwarning("警告", "视频处理部分成功，但无法添加音频。")
-                        self.status_var.set("处理完成(无音频)!")
-                        return
-                    else:
-                        raise ValueError(f"临时视频文件大小异常({temp_file_size}字节)，处理失败")
-                
-                # 尝试添加音频
-                try:
-                    # 使用moviepy添加音频
-                    try:
-                        original_clip = VideoFileClip(self.video_path)
-                        new_clip = VideoFileClip(temp_output)
-                        
-                        # 检查原始视频是否有音频轨道
-                        if original_clip.audio is not None:
-                            # 复制原始音频
-                            final_clip = new_clip.set_audio(original_clip.audio)
-                            final_clip.write_videofile(self.output_path, codec='libx264', threads=4)
-                            final_clip.close()
-                        else:
-                            # 如果没有音频，只需保存视频部分
-                            new_clip.write_videofile(self.output_path, codec='libx264', threads=4)
-                        
-                        # 关闭所有clip
-                        if 'final_clip' in locals():
-                            final_clip.close()
-                        original_clip.close()
-                        new_clip.close()
-                    except Exception as audio_e:
-                        logger.error(f"添加音频失败，尝试直接复制视频: {audio_e}")
-                        # 如果添加音频失败，尝试直接复制临时视频文件
-                        import shutil
-                        shutil.copy(temp_output, self.output_path)
-                        
-                        # 检查复制后的文件是否存在且大小合理
-                        if not os.path.exists(self.output_path) or os.path.getsize(self.output_path) < 10000:
-                            raise ValueError("无法创建最终视频文件")
-                    
-                    # 清理临时文件
-                    if os.path.exists(temp_output):
-                        try:
-                            os.remove(temp_output)
-                        except Exception as rm_e:
-                            logger.warning(f"无法删除临时文件 {temp_output}: {rm_e}")
-                    
-                    # 更新状态并显示成功消息
-                    self.status_var.set("处理完成!")
-                    messagebox.showinfo("成功", "视频处理完成!")
-                    
-                except Exception as e:
-                    # 处理最终的错误
-                    error_msg = f"完成视频处理时出错: {str(e)}"
-                    logger.error(error_msg)
-                    
-                    # 尝试直接使用临时文件作为结果
-                    if os.path.exists(temp_output) and os.path.getsize(temp_output) > 10000:
-                        try:
-                            import shutil
-                            shutil.copy(temp_output, self.output_path)
-                            self.status_var.set("处理部分完成!")
-                            messagebox.showwarning("警告", "视频处理部分成功，但出现了一些问题。")
-                        except Exception as copy_e:
-                            logger.error(f"无法复制临时文件: {copy_e}")
-                            raise ValueError(error_msg)
-                    else:
-                        raise ValueError(error_msg)
-
-            # 处理完成后，显示视频播放器并加载视频
-            if os.path.exists(self.output_path) and os.path.getsize(self.output_path) > 10000:
-                self.status_var.set("处理完成! 正在加载视频播放器...")
-                # 更新进度为100%
-                self.progress_var.set(100)
-                self.progress_label.config(text="100%")
-                self.load_video_player(self.output_path)
-            else:
-                self.status_var.set("处理完成! 但无法加载视频播放器")
+            # 更新状态
+            self.update_status("处理完成!")
+            self.update_progress(100, "完成")
             
-            return True
-
+            logger.info(f"视频处理完成: {self.output_path}")
+            return self.output_path
+            
         except Exception as e:
-            self.status_var.set(f"错误: {str(e)}")
-            messagebox.showerror("错误", f"处理视频时出错: {str(e)}")
+            self.update_status(f"错误: {str(e)}")
             import traceback
             traceback.print_exc()
-    
+            return False
+            
+    def update_progress(self, value, text=None):
+        """更新进度条，支持无UI模式"""
+        try:
+            # 如果有progress_var（Tkinter界面）
+            if hasattr(self, 'progress_var') and self.progress_var is not None:
+                self.progress_var.set(value)
+                # 如果有progress_label
+                if hasattr(self, 'progress_label') and self.progress_label is not None and self.root is not None:
+                    progress_text = f"{value:.1f}%"
+                    self.root.after(0, lambda t=progress_text: self.progress_label.config(text=t))
+            # 打印日志
+            logger.info(f"进度: {value:.1f}% {text if text else ''}")
+        except Exception as e:
+            logger.error(f"更新进度时出错: {e}")
+            
+    def update_status(self, text):
+        """更新状态文本，支持无UI模式"""
+        try:
+            # 如果有status_var（Tkinter界面）
+            if hasattr(self, 'status_var') and self.status_var is not None:
+                self.status_var.set(text)
+            # 打印日志
+            logger.info(f"状态: {text}")
+        except Exception as e:
+            logger.error(f"更新状态时出错: {e}")
+            
+    def write_frames_in_order(self, out, frames_buffer, next_frame_to_write):
+        """按顺序写入已处理的视频帧，返回下一个要写入的帧索引"""
+        # 复制一份帧缓冲区的键，并进行排序
+        keys = sorted(list(frames_buffer.keys()))
+        
+        # 确保有需要写入的帧
+        if not keys:
+            return next_frame_to_write
+        
+        # 找出连续的帧并写入
+        while keys and keys[0] == next_frame_to_write:
+            # 写入帧并从缓冲区中移除
+            frame = frames_buffer.pop(keys[0])
+                        
+            # 确保帧是有效的
+            if frame is not None and frame.size > 0:
+                try:
+                    out.write(frame)
+                except Exception as e:
+                    logger.error(f"写入帧 {next_frame_to_write} 时出错: {e}")
+                        else:
+                logger.error(f"帧 {next_frame_to_write} 无效，跳过")
+            
+            # 更新下一个要写入的帧索引
+            next_frame_to_write += 1
+            
+            # 从排序后的键列表中移除已处理的键
+            keys.pop(0)
+        
+        # 更新进度条
+        if hasattr(self, 'progress_var'):
+            # 安全获取total_frames属性
+            total_frames = getattr(self, 'total_frames', 0)
+            if total_frames > 0:
+                progress_value = min(100, int((next_frame_to_write / total_frames) * 100))
+                self.progress_var.set(progress_value)
+                # 更新进度标签
+                progress_text = f"{progress_value}%"
+                self.root.after(0, lambda t=progress_text: self.progress_label.config(text=t))
+                
+                # 更新状态文本
+                status_text = f"处理中... {progress_value}%"
+                self.root.after(0, lambda t=status_text: self.status_var.set(t))
+                
+        return next_frame_to_write
+
     def load_video_player(self, video_path):
         """加载视频到播放器"""
         try:
@@ -1363,7 +1350,7 @@ class FaceSwapApp:
             
             # 显示视频播放器框架
             self.video_player_frame.pack(fill=tk.X, padx=10, pady=10)
-            
+                        
             # 获取视频信息
             cap = cv2.VideoCapture(video_path)
             if not cap.isOpened():
@@ -1381,7 +1368,7 @@ class FaceSwapApp:
             # 设置视频实际播放尺寸
             canvas_width = self.video_canvas.winfo_width()
             canvas_height = self.video_canvas.winfo_height()
-            
+                    
             # 设置缩放比例，保持宽高比
             ratio = min(canvas_width/width, canvas_height/height)
             self.video_width = int(width * ratio)
@@ -1394,13 +1381,13 @@ class FaceSwapApp:
             total_time = self.format_time(self.duration)
             self.time_label.config(text=f"00:00 / {total_time}")
             self.status_var.set(f"视频已加载: {os.path.basename(video_path)} ({width}x{height}, {self.fps:.1f}fps)")
-            
+                    
             # 显示第一帧
             self.update_video_frame(0)
             
             # 显示成功提示
             messagebox.showinfo("处理完成", "视频处理完成，可以在播放器中查看结果")
-        except Exception as e:
+                except Exception as e:
             logger.error(f"加载视频失败: {str(e)}")
             messagebox.showerror("错误", f"加载视频失败: {str(e)}")
             self.stop_video()
@@ -1421,7 +1408,7 @@ class FaceSwapApp:
             duration = getattr(self, 'duration', 0)
             if hasattr(self, 'format_time'):
                 self.time_label.config(text=f"00:00 / {self.format_time(duration)}")
-            else:
+                    else:
                 # 如果format_time方法不存在，使用简单格式
                 minutes = int(duration // 60)
                 seconds = int(duration % 60)
@@ -1510,7 +1497,7 @@ class FaceSwapApp:
                 self.is_playing = False
             
             cap.release()
-        
+
         except Exception as e:
             logger.error(f"播放视频时出错: {str(e)}")
             import traceback
@@ -2280,10 +2267,10 @@ class FaceSwapApp:
                 ret, frame = cap.read()
                 cap.release()
             
-                if not ret:
-                    messagebox.showerror("错误", "无法读取视频帧")
+            if not ret:
+                messagebox.showerror("错误", "无法读取视频帧")
                     preview_window.destroy()
-                    return
+                return
             
                 # 显示原始图像
                 original_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -2324,11 +2311,11 @@ class FaceSwapApp:
                                         command=save_preview_image,
                                         style="TButton")
                     save_btn.pack(pady=10)
-                    
                     progress_label.config(text="处理完成")
-                else:
+                    else:
                     progress_label.config(text="处理失败 - 未能检测到人脸或应用替换")
-            except Exception as e:
+            
+        except Exception as e:
                 logger.error(f"预览处理错误: {str(e)}")
                 progress_label.config(text=f"处理错误: {str(e)}")
     

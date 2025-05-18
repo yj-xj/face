@@ -1,0 +1,4 @@
+2025-04-29 23:24:56,524 - face_swap_cli - INFO - 正在初始化模型...
+2025-04-29 23:24:56,544 - face_swap_cli - INFO - 成功加载级联分类器
+2025-04-29 23:24:57,515 - face_swap_cli - INFO - 成功加载特征点预测模型
+2025-04-29 23:25:01,261 - face_swap_cli - INFO - 成功加载InsightFace ONNX模型: E:\face\models\inswapper_128.onnx
