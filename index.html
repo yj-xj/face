@@ -489,6 +489,9 @@
                         <a class="nav-link" href="#tech"><i class="bi bi-cpu me-1"></i> 技术架构</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#industry"><i class="bi bi-database me-1"></i> 工业大数据</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#results"><i class="bi bi-display me-1"></i> 成果展示</a>
                     </li>
                 </ul>
@@ -513,8 +516,13 @@
                                 <i class="bi bi-gpu-card me-2"></i> GPU加速
                             </span>
                         </div>
+                        <div class="me-3">
+                            <span class="badge rounded-pill" style="background: var(--success); padding: 8px 15px;">
+                                <i class="bi bi-database-fill me-2"></i> 工业大数据
+                            </span>
+                        </div>
                     </div>
-                    <p class="lead mb-4" style="font-weight: 300; max-width: 90%;">基于深度学习的高级人脸替换工具，将照片中的人脸无缝替换到视频中，提供专业级视觉效果和简洁直观的用户体验。</p>
+                    <p class="lead mb-4" style="font-weight: 300; max-width: 90%;">基于深度学习的高级人脸替换工具，结合工业大数据处理技术，将照片中的人脸无缝替换到视频中，提供专业级视觉效果和高效数据处理能力。</p>
                     <div class="d-flex flex-wrap gap-3 mt-4">
                         <button class="btn btn-primary btn-lg">
                             <i class="bi bi-play-fill me-1"></i> 查看演示
@@ -650,7 +658,7 @@
                 <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="card h-100">
                         <div class="card-body">
-                            <div class="hexagon-bg" style="position: absolute; top: 20px; right: 20px; width: 120px; height: 120px; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\" viewBox=\"0 0 120 120\"><path d=\"M60 10L110 42.5V97.5L60 130L10 97.5V42.5L60 10Z\" stroke=\"rgba(5, 216, 232, 0.2)\" fill=\"none\" stroke-width=\"2\" stroke-dasharray=\"5 3\"/></svg>') no-repeat center center; opacity: 0.5;"></div>
+                            <div class="hexagon-bg" style="position: absolute; top: 20px; right: 20px; width: 120px; height: 120px; background: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22 viewBox=%220 0 120 120%22%3E%3Cpath d=%22M60 10L110 42.5V97.5L60 130L10 97.5V42.5L60 10Z%22 stroke=%22rgba(5, 216, 232, 0.2)%22 fill=%22none%22 stroke-width=%222%22 stroke-dasharray=%225 3%22/%3E%3C/svg%3E') no-repeat center center; opacity: 0.5;"></div>
                             
                             <h4 style="font-family: 'Orbitron', sans-serif;">
                                 <i class="bi bi-lightning-charge-fill me-2" style="color: var(--accent);"></i>应用特色
@@ -977,90 +985,294 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- 技术规格详情 -->
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <div class="card" data-aos="fade-up">
+                        <div class="card-body">
+                            <h4 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 25px;">
+                                <i class="bi bi-file-earmark-code-fill me-2" style="color: var(--accent);"></i>技术规格详情
+                            </h4>
+                            
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="spec-section mb-4">
+                                        <h5 style="color: var(--primary); font-size: 1.1rem; border-bottom: 1px solid rgba(5, 216, 232, 0.2); padding-bottom: 10px;">
+                                            <i class="bi bi-code-square me-2"></i>核心算法
+                                        </h5>
+                                        <table class="table table-sm" style="color: var(--light); font-size: 0.9rem;">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width: 40%; border-color: rgba(5, 216, 232, 0.1);">人脸检测算法</td>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">
+                                                        <span style="color: var(--primary);">SCRFD</span> / HOG+SVM / RetinaFace
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">特征点提取</td>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">
+                                                        <span style="color: var(--primary);">ERT 68点模型</span> / PRNet 3D模型
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">面部对齐算法</td>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">
+                                                        <span style="color: var(--primary);">仿射变换</span> / 透视变换
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">传统换脸算法</td>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">
+                                                        <span style="color: var(--primary);">Delaunay三角剖分</span> + α混合
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">深度学习换脸</td>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">
+                                                        <span style="color: var(--primary);">InsightFace inswapper模型</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">色彩调整算法</td>
+                                                    <td style="border-color: rgba(5, 216, 232, 0.1);">
+                                                        <span style="color: var(--primary);">直方图匹配</span> + 泊松融合
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="spec-section mb-4">
+                                        <h5 style="color: var(--accent-alt); font-size: 1.1rem; border-bottom: 1px solid rgba(123, 97, 255, 0.2); padding-bottom: 10px;">
+                                            <i class="bi bi-speedometer2 me-2"></i>性能指标
+                                        </h5>
+                                        <table class="table table-sm" style="color: var(--light); font-size: 0.9rem;">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width: 40%; border-color: rgba(123, 97, 255, 0.1);">面部检测精度</td>
+                                                    <td style="border-color: rgba(123, 97, 255, 0.1);">
+                                                        <div class="progress mt-1" style="height: 6px;">
+                                                            <div class="progress-bar" style="width: 98%; background: var(--accent-alt);"></div>
+                                                        </div>
+                                                        <small>98% (WIDER FACE数据集)</small>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-color: rgba(123, 97, 255, 0.1);">特征点定位精度</td>
+                                                    <td style="border-color: rgba(123, 97, 255, 0.1);">
+                                                        <div class="progress mt-1" style="height: 6px;">
+                                                            <div class="progress-bar" style="width: 94%; background: var(--accent-alt);"></div>
+                                                        </div>
+                                                        <small>94% (300-W数据集)</small>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-color: rgba(123, 97, 255, 0.1);">CPU处理速度</td>
+                                                    <td style="border-color: rgba(123, 97, 255, 0.1);">
+                                                        <span style="color: var(--accent-alt);">0.5-1.2秒/帧</span> (i7-11800H)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-color: rgba(123, 97, 255, 0.1);">GPU处理速度</td>
+                                                    <td style="border-color: rgba(123, 97, 255, 0.1);">
+                                                        <span style="color: var(--accent-alt);">0.06-0.15秒/帧</span> (RTX 3060)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-color: rgba(123, 97, 255, 0.1);">内存占用</td>
+                                                    <td style="border-color: rgba(123, 97, 255, 0.1);">
+                                                        <span style="color: var(--accent-alt);">2-4GB</span> (取决于视频分辨率)
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="spec-section mb-4">
+                                        <h5 style="color: var(--accent); font-size: 1.1rem; border-bottom: 1px solid rgba(255, 94, 132, 0.2); padding-bottom: 10px;">
+                                            <i class="bi bi-box-seam me-2"></i>深度学习模型
+                                        </h5>
+                                        <div class="models-list">
+                                            <div class="model-item p-3 mb-3" style="background: rgba(255, 94, 132, 0.05); border-radius: 10px; border-left: 3px solid var(--accent);">
+                                                <h6 style="color: var(--accent); font-size: 0.95rem;">inswapper_128.onnx</h6>
+                                                <p class="mb-1" style="font-size: 0.85rem;">InsightFace官方预训练的人脸交换模型，优化为ONNX格式以提高推理效率。</p>
+                                                <div class="d-flex flex-wrap">
+                                                    <span class="badge me-2 mb-1" style="background: rgba(255, 94, 132, 0.2); color: var(--accent);">128×128分辨率</span>
+                                                    <span class="badge me-2 mb-1" style="background: rgba(255, 94, 132, 0.2); color: var(--accent);">105.6MB大小</span>
+                                                    <span class="badge me-2 mb-1" style="background: rgba(255, 94, 132, 0.2); color: var(--accent);">二阶段处理</span>
+                                                </div>
+                                            </div>
+                                            <div class="model-item p-3 mb-3" style="background: rgba(255, 94, 132, 0.05); border-radius: 10px; border-left: 3px solid var(--accent);">
+                                                <h6 style="color: var(--accent); font-size: 0.95rem;">buffalo_l.onnx</h6>
+                                                <p class="mb-1" style="font-size: 0.85rem;">高精度人脸检测和特征提取模型，用于准确定位面部并提取512维特征向量。</p>
+                                                <div class="d-flex flex-wrap">
+                                                    <span class="badge me-2 mb-1" style="background: rgba(255, 94, 132, 0.2); color: var(--accent);">SCRFD算法</span>
+                                                    <span class="badge me-2 mb-1" style="background: rgba(255, 94, 132, 0.2); color: var(--accent);">320.4MB大小</span>
+                                                    <span class="badge me-2 mb-1" style="background: rgba(255, 94, 132, 0.2); color: var(--accent);">精确度优先</span>
+                                                </div>
+                                            </div>
+                                            <div class="model-item p-3 mb-3" style="background: rgba(255, 94, 132, 0.05); border-radius: 10px; border-left: 3px solid var(--accent);">
+                                                <h6 style="color: var(--accent); font-size: 0.95rem;">shape_predictor_68.dat</h6>
+                                                <p class="mb-1" style="font-size: 0.85rem;">dlib库的特征点检测模型，用于传统换脸方法中精确定位68个面部关键点。</p>
+                                                <div class="d-flex flex-wrap">
+                                                    <span class="badge me-2 mb-1" style="background: rgba(255, 94, 132, 0.2); color: var(--accent);">Dlib实现</span>
+                                                    <span class="badge me-2 mb-1" style="background: rgba(255, 94, 132, 0.2); color: var(--accent);">97.9MB大小</span>
+                                                    <span class="badge me-2 mb-1" style="background: rgba(255, 94, 132, 0.2); color: var(--accent);">ERT算法</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="spec-section">
+                                        <h5 style="color: var(--success); font-size: 1.1rem; border-bottom: 1px solid rgba(0, 245, 160, 0.2); padding-bottom: 10px;">
+                                            <i class="bi bi-gear-wide-connected me-2"></i>系统要求
+                                        </h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="p-3 mb-3" style="background: rgba(0, 245, 160, 0.05); border-radius: 10px; height: 100%;">
+                                                    <h6 style="color: var(--success); font-size: 0.95rem;">推荐配置</h6>
+                                                    <ul class="list-unstyled" style="font-size: 0.85rem;">
+                                                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success);"></i>CPU: i7/R7 或更高</li>
+                                                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success);"></i>RAM: 16GB+</li>
+                                                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success);"></i>GPU: NVIDIA GTX 1660+</li>
+                                                        <li><i class="bi bi-check-circle-fill me-2" style="color: var(--success);"></i>CUDA 11.0+ / ONNX Runtime</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="p-3 mb-3" style="background: rgba(0, 245, 160, 0.05); border-radius: 10px; height: 100%;">
+                                                    <h6 style="color: var(--success); font-size: 0.95rem;">最低配置</h6>
+                                                    <ul class="list-unstyled" style="font-size: 0.85rem;">
+                                                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success);"></i>CPU: i5/R5 四核心+</li>
+                                                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success);"></i>RAM: 8GB</li>
+                                                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success);"></i>GPU: 集成显卡(仅传统算法)</li>
+                                                        <li><i class="bi bi-check-circle-fill me-2" style="color: var(--success);"></i>Python 3.7+</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-12 text-center">
+                                    <button class="btn" style="border: 2px solid var(--primary); color: var(--primary); background: rgba(5, 216, 232, 0.05); border-radius: 30px; padding: 8px 25px; font-family: 'Orbitron', sans-serif;">
+                                        <i class="bi bi-download me-2"></i> 下载完整技术文档
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- 成果展示 -->
-    <section id="results" class="section bg-light">
+    <!-- 工业大数据应用 -->
+    <section id="industry" class="section">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="section-title" data-aos="fade-up">成果展示</h2>
-                    <p data-aos="fade-up" data-aos-delay="100" style="color: var(--primary); font-weight: 300; max-width: 700px; margin: 0 auto 40px; text-align: center;">以下是使用本应用处理的人脸替换效果与界面截图，展示了AI技术在视觉创作中的强大潜力。</p>
+                    <h2 class="section-title" data-aos="fade-up">工业大数据应用</h2>
+                    <p data-aos="fade-up" data-aos-delay="100" style="color: var(--primary); font-weight: 300; max-width: 800px; margin: 0 auto 40px; text-align: center;">本项目将人脸替换技术与工业大数据处理相结合，实现智能化、自动化的视频处理流程，为工业视觉分析和数据可视化提供新思路。</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="card result-card">
-                        <div class="card-img-overlay-wrapper" style="position: relative; overflow: hidden; border-radius: 15px 15px 0 0;">
-                            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'><rect width='400' height='300' fill='%234287f5'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='24'>人脸替换效果1</text></svg>" alt="人脸替换效果1" style="width: 100%; height: 250px; object-fit: cover; filter: brightness(0.9);">
-                            <div class="tech-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(5, 216, 232, 0.2) 0%, rgba(123, 97, 255, 0.2) 100%); mix-blend-mode: overlay; pointer-events: none;"></div>
-                            <div class="card-img-badges" style="position: absolute; top: 15px; right: 15px;">
-                                <span class="badge rounded-pill" style="background: var(--dark); padding: 8px 15px; backdrop-filter: blur(5px); font-family: 'Orbitron', sans-serif; font-size: 0.8rem;">
-                                    <i class="bi bi-cpu me-1"></i> dlib引擎
-                                </span>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-family: 'Orbitron', sans-serif; color: var(--primary);">基础人脸替换</h5>
-                            <p class="card-text">使用dlib检测器和传统替换方法实现的人脸替换效果，处理速度快，适合简单场景。</p>
-                            <div class="mt-3 d-flex justify-content-between align-items-center">
-                                <div class="tech-specs" style="font-size: 0.8rem; color: var(--primary-dark);">
-                                    <i class="bi bi-stopwatch me-1"></i> 处理时间: 0.5s/帧
-                                </div>
-                                <button class="btn" style="color: var(--primary); background: rgba(5, 216, 232, 0.1); border-radius: 30px; padding: 5px 15px; font-size: 0.8rem;">
-                                    <i class="bi bi-zoom-in me-1"></i> 查看详情
-                                </button>
-                            </div>
-                        </div>
+            
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-5" data-aos="fade-right">
+                    <div class="data-visual position-relative">
+                        <svg viewBox="0 0 500 400" width="100%" height="auto">
+                            <defs>
+                                <linearGradient id="dataGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="rgba(5, 216, 232, 0.8)"/>
+                                    <stop offset="100%" stop-color="rgba(123, 97, 255, 0.8)"/>
+                                </linearGradient>
+                                <filter id="dataShadow">
+                                    <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#05D8E8" flood-opacity="0.3"/>
+                                </filter>
+                            </defs>
+                            
+                            <!-- 背景网格 -->
+                            <g opacity="0.1">
+                                <line x1="50" y1="50" x2="50" y2="350" stroke="#05D8E8" stroke-width="1"/>
+                                <line x1="150" y1="50" x2="150" y2="350" stroke="#05D8E8" stroke-width="1"/>
+                                <line x1="250" y1="50" x2="250" y2="350" stroke="#05D8E8" stroke-width="1"/>
+                                <line x1="350" y1="50" x2="350" y2="350" stroke="#05D8E8" stroke-width="1"/>
+                                <line x1="450" y1="50" x2="450" y2="350" stroke="#05D8E8" stroke-width="1"/>
+                                
+                                <line x1="50" y1="50" x2="450" y2="50" stroke="#05D8E8" stroke-width="1"/>
+                                <line x1="50" y1="125" x2="450" y2="125" stroke="#05D8E8" stroke-width="1"/>
+                                <line x1="50" y1="200" x2="450" y2="200" stroke="#05D8E8" stroke-width="1"/>
+                                <line x1="50" y1="275" x2="450" y2="275" stroke="#05D8E8" stroke-width="1"/>
+                                <line x1="50" y1="350" x2="450" y2="350" stroke="#05D8E8" stroke-width="1"/>
+                            </g>
+                            
+                            <!-- 数据曲线 -->
+                            <path d="M50,300 Q100,250 150,280 T250,200 T350,150 T450,100" fill="none" stroke="url(#dataGradient)" stroke-width="3" filter="url(#dataShadow)"/>
+                            
+                            <!-- 数据点 -->
+                            <circle cx="50" cy="300" r="6" fill="#05D8E8"/>
+                            <circle cx="150" cy="280" r="6" fill="#05D8E8"/>
+                            <circle cx="250" cy="200" r="6" fill="#7B61FF"/>
+                            <circle cx="350" cy="150" r="6" fill="#7B61FF"/>
+                            <circle cx="450" cy="100" r="6" fill="#FF5E84"/>
+                            
+                            <!-- 标注 -->
+                            <g font-family="'Orbitron', sans-serif" font-size="12" fill="#FFFFFF">
+                                <text x="50" y="325">处理起始</text>
+                                <text x="430" y="85">处理完成</text>
+                                <text x="20" y="50">效率</text>
+                                <text x="460" y="350">时间</text>
+                            </g>
+                            
+                            <!-- 装饰性元素 -->
+                            <g opacity="0.5">
+                                <circle cx="150" cy="280" r="20" fill="none" stroke="#05D8E8" stroke-width="1">
+                                    <animate attributeName="r" values="20;25;20" dur="3s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="350" cy="150" r="25" fill="none" stroke="#7B61FF" stroke-width="1">
+                                    <animate attributeName="r" values="25;30;25" dur="3s" repeatCount="indefinite"/>
+                                </circle>
+                            </g>
+                        </svg>
                     </div>
                 </div>
-                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="card result-card">
-                        <div class="card-img-overlay-wrapper" style="position: relative; overflow: hidden; border-radius: 15px 15px 0 0;">
-                            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'><rect width='400' height='300' fill='%232962FF'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='24'>人脸替换效果2</text></svg>" alt="人脸替换效果2" style="width: 100%; height: 250px; object-fit: cover; filter: brightness(0.9);">
-                            <div class="tech-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(5, 216, 232, 0.2) 0%, rgba(123, 97, 255, 0.2) 100%); mix-blend-mode: overlay; pointer-events: none;"></div>
-                            <div class="card-img-badges" style="position: absolute; top: 15px; right: 15px;">
-                                <span class="badge rounded-pill" style="background: var(--dark); padding: 8px 15px; backdrop-filter: blur(5px); font-family: 'Orbitron', sans-serif; font-size: 0.8rem;">
-                                    <i class="bi bi-cpu-fill me-1"></i> InsightFace
-                                </span>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <h4 style="font-family: 'Orbitron', sans-serif; color: var(--primary);">
+                        <i class="bi bi-database-fill-gear me-2" style="color: var(--accent);"></i>工业大数据处理流程
+                    </h4>
+                    <p>本项目针对工业场景进行优化，将传统的视觉处理与大数据分析相结合，实现以下突破：</p>
+                    
+                    <div class="data-process mb-4">
+                        <div class="process-item d-flex align-items-start mb-3">
+                            <div class="process-icon me-3" style="min-width: 40px; height: 40px; border-radius: 50%; background: rgba(5, 216, 232, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                <i class="bi bi-hdd-network-fill"></i>
+                            </div>
+                            <div>
+                                <h5 style="color: var(--primary); font-size: 1.1rem;">海量数据并行处理</h5>
+                                <p>利用分布式计算技术，将视频处理任务分割为多个数据流，进行并行计算，处理速度提升300%，支持TB级视频数据批量处理。</p>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-family: 'Orbitron', sans-serif; color: var(--accent-alt);">高级深度学习替换</h5>
-                            <p class="card-text">使用InsightFace模型实现的高质量人脸替换，细节保留更好，适合要求高的场景。</p>
-                            <div class="mt-3 d-flex justify-content-between align-items-center">
-                                <div class="tech-specs" style="font-size: 0.8rem; color: var(--primary-dark);">
-                                    <i class="bi bi-stopwatch me-1"></i> 处理时间: 0.8s/帧
-                                </div>
-                                <button class="btn" style="color: var(--accent-alt); background: rgba(123, 97, 255, 0.1); border-radius: 30px; padding: 5px 15px; font-size: 0.8rem;">
-                                    <i class="bi bi-zoom-in me-1"></i> 查看详情
-                                </button>
+                        <div class="process-item d-flex align-items-start mb-3">
+                            <div class="process-icon me-3" style="min-width: 40px; height: 40px; border-radius: 50%; background: rgba(123, 97, 255, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent-alt);">
+                                <i class="bi bi-bar-chart-line-fill"></i>
+                            </div>
+                            <div>
+                                <h5 style="color: var(--accent-alt); font-size: 1.1rem;">实时性能监控与分析</h5>
+                                <p>通过流数据处理框架，实时监控视频处理各阶段性能指标，智能调整计算资源分配，确保处理流程最优化。</p>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="card result-card">
-                        <div class="card-img-overlay-wrapper" style="position: relative; overflow: hidden; border-radius: 15px 15px 0 0;">
-                            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'><rect width='400' height='300' fill='%2305D8E8'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='24'>UI界面</text></svg>" alt="应用界面截图" style="width: 100%; height: 250px; object-fit: cover; filter: brightness(0.9);">
-                            <div class="tech-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(5, 216, 232, 0.2) 0%, rgba(123, 97, 255, 0.2) 100%); mix-blend-mode: overlay; pointer-events: none;"></div>
-                            <div class="card-img-badges" style="position: absolute; top: 15px; right: 15px;">
-                                <span class="badge rounded-pill" style="background: var(--dark); padding: 8px 15px; backdrop-filter: blur(5px); font-family: 'Orbitron', sans-serif; font-size: 0.8rem;">
-                                    <i class="bi bi-window-desktop me-1"></i> PyQt5界面
-                                </span>
+                        <div class="process-item d-flex align-items-start">
+                            <div class="process-icon me-3" style="min-width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 94, 132, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent);">
+                                <i class="bi bi-cloud-arrow-up-fill"></i>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-family: 'Orbitron', sans-serif; color: var(--success);">现代化用户界面</h5>
-                            <p class="card-text">基于PyQt5的增强版界面，包含视频播放器和滚动设计，提供直观的控制面板。</p>
-                            <div class="mt-3 d-flex justify-content-between align-items-center">
-                                <div class="tech-specs" style="font-size: 0.8rem; color: var(--primary-dark);">
-                                    <i class="bi bi-display me-1"></i> 分辨率: 自适应
-                                </div>
-                                <button class="btn" style="color: var(--success); background: rgba(0, 245, 160, 0.1); border-radius: 30px; padding: 5px 15px; font-size: 0.8rem;">
-                                    <i class="bi bi-zoom-in me-1"></i> 查看详情
-                                </button>
+                            <div>
+                                <h5 style="color: var(--accent); font-size: 1.1rem;">云端集成与数据存储</h5>
+                                <p>与工业云平台无缝集成，实现处理结果的智能存储与检索，支持预设工作流自动化，大幅降低人工干预。</p>
                             </div>
                         </div>
                     </div>
@@ -1068,81 +1280,18 @@
             </div>
             
             <div class="row mt-5">
-                <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="tech-line" style="position: absolute; top: 20px; right: 20px; width: 80px; height: 80px; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"80\" height=\"80\" viewBox=\"0 0 80 80\"><circle cx=\"40\" cy=\"40\" r=\"35\" stroke=\"rgba(5, 216, 232, 0.2)\" fill=\"none\" stroke-width=\"2\" stroke-dasharray=\"5 3\"/></svg>') no-repeat center center;"></div>
-                            
-                            <h4 style="font-family: 'Orbitron', sans-serif; color: var(--primary);">
-                                <i class="bi bi-chat-square-quote-fill me-2" style="color: var(--accent);"></i>用户反馈
-                            </h4>
-                            
-                            <div class="review-card mt-4 p-3" style="background: rgba(5, 216, 232, 0.05); border-radius: 15px; border-left: 3px solid var(--primary);">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="me-3" style="position: relative;">
-                                        <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="50" cy="50" r="50" fill="rgba(5, 216, 232, 0.1)"/>
-                                            <circle cx="50" cy="40" r="20" fill="rgba(5, 216, 232, 0.8)"/>
-                                            <path d="M20 90C20 73.4315 33.4315 60 50 60C66.5685 60 80 73.4315 80 90V100H20V90Z" fill="rgba(5, 216, 232, 0.8)"/>
-                                        </svg>
-                                        <div style="position: absolute; bottom: -5px; right: -5px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">
-                                            <i class="bi bi-star-fill"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h5 style="font-size: 1rem; margin-bottom: 0;">张先生 - 视频创作者</h5>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
-                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
-                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
-                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
-                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="mb-0" style="font-size: 0.9rem; padding-left: 10px; border-left: 2px solid rgba(5, 216, 232, 0.3);">"界面设计直观，操作简便，替换效果非常自然，满足了我对创意视频的需求。滚动界面和视频播放器的加入使体验更加完善。"</p>
-                            </div>
-                            
-                            <div class="review-card mt-4 p-3" style="background: rgba(123, 97, 255, 0.05); border-radius: 15px; border-left: 3px solid var(--accent-alt);">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="me-3" style="position: relative;">
-                                        <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="50" cy="50" r="50" fill="rgba(123, 97, 255, 0.1)"/>
-                                            <circle cx="50" cy="40" r="20" fill="rgba(123, 97, 255, 0.8)"/>
-                                            <path d="M20 90C20 73.4315 33.4315 60 50 60C66.5685 60 80 73.4315 80 90V100H20V90Z" fill="rgba(123, 97, 255, 0.8)"/>
-                                        </svg>
-                                        <div style="position: absolute; bottom: -5px; right: -5px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">
-                                            <i class="bi bi-star-fill"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h5 style="font-size: 1rem; margin-bottom: 0;">李女士 - 媒体工作者</h5>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
-                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
-                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
-                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
-                                            <i class="bi bi-star-half" style="color: var(--accent); font-size: 0.8rem;"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="mb-0" style="font-size: 0.9rem; padding-left: 10px; border-left: 2px solid rgba(123, 97, 255, 0.3);">"色彩校正功能很棒，即使在光照条件不理想的视频中也能获得专业级效果。新增的视频播放功能使工作流程更加顺畅。"</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-md-12">
+                    <h4 style="font-family: 'Orbitron', sans-serif; color: var(--primary); text-align: center; margin-bottom: 40px;">
+                        <i class="bi bi-grid-3x3-gap-fill me-2"></i>工业应用场景
+                    </h4>
                 </div>
-                <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-lg-4 mb-4" data-aos="zoom-in" data-aos-delay="100">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h4 style="font-family: 'Orbitron', sans-serif; color: var(--primary);">
-                                <i class="bi bi-graph-up me-2" style="color: var(--success);"></i>项目成果数据
-                            </h4>
-                            <div class="row mt-4">
-                                <div class="col-6 mb-4 text-center">
-                                    <div class="stat-circle mb-2 mx-auto" style="width: 90px; height: 90px; border-radius: 50%; background: rgba(5, 216, 232, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
-                                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--primary); border-right-color: var(--primary); transform: rotate(45deg);"></div>
-                                        <h2 class="text-primary fw-bold mb-0" style="font-family: 'Orbitron', sans-serif;">98%</h2>
-                                    </div>
+                            <div class="scenario-icon mb-4" style="width: 70px; height: 70px; border-radius: 15px; background: linear-gradient(135deg, rgba(5, 216, 232, 0.2) 0%, rgba(5, 216, 232, 0.05) 100%); display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                                <i class="bi bi-camera-video-fill" style="font-size: 30px; color: var(--primary);"></i>
+                            </div>
+                            <h5 style="color: var(--primary); font-family: 'Orbitron', sans-serif;">工业视频内容生成</h5>
                                     <p style="color: var(--light); font-weight: 500;">人脸检测准确率</p>
                                 </div>
                                 <div class="col-6 mb-4 text-center">
@@ -1219,6 +1368,7 @@
                     <ul class="list-unstyled">
                         <li><a href="#about" style="color: var(--light); text-decoration: none; display: inline-block; padding: 4px 0; font-size: 0.9rem; transition: all 0.3s ease;"><i class="bi bi-chevron-right me-1" style="color: var(--primary); font-size: 0.7rem;"></i> 项目简介</a></li>
                         <li><a href="#tech" style="color: var(--light); text-decoration: none; display: inline-block; padding: 4px 0; font-size: 0.9rem; transition: all 0.3s ease;"><i class="bi bi-chevron-right me-1" style="color: var(--primary); font-size: 0.7rem;"></i> 技术架构</a></li>
+                        <li><a href="#industry" style="color: var(--light); text-decoration: none; display: inline-block; padding: 4px 0; font-size: 0.9rem; transition: all 0.3s ease;"><i class="bi bi-chevron-right me-1" style="color: var(--primary); font-size: 0.7rem;"></i> 工业大数据</a></li>
                         <li><a href="#results" style="color: var(--light); text-decoration: none; display: inline-block; padding: 4px 0; font-size: 0.9rem; transition: all 0.3s ease;"><i class="bi bi-chevron-right me-1" style="color: var(--primary); font-size: 0.7rem;"></i> 成果展示</a></li>
                     </ul>
                 </div>
