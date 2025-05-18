@@ -6,54 +6,171 @@
     <title>AI人脸替换应用 - 个人项目展示</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap">
     <style>
         :root {
-            --primary: #4287f5;
-            --secondary: #f0f0f0;
-            --dark: #212121;
+            --primary: #05D8E8;
+            --primary-dark: #0389A6;
+            --secondary: #192841;
+            --dark: #0F1A2E;
             --light: #ffffff;
-            --accent: #2962FF;
-            --success: #4CAF50;
+            --accent: #FF5E84;
+            --accent-alt: #7B61FF;
+            --success: #00F5A0;
+            --tech-grad-1: rgba(5, 216, 232, 0.15);
+            --tech-grad-2: rgba(123, 97, 255, 0.15);
         }
         
         body {
             font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
-            color: var(--dark);
-            background-color: #f8f9fa;
+            color: var(--light);
+            background-color: var(--dark);
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, var(--tech-grad-1) 0%, transparent 30%),
+                radial-gradient(circle at 90% 80%, var(--tech-grad-2) 0%, transparent 30%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .tech-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(15, 26, 46, 0.95), rgba(15, 26, 46, 0.95)), 
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2305D8E8' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: -1;
+            opacity: 0.8;
         }
         
         .navbar {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            background-color: white;
+            background-color: rgba(15, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(5, 216, 232, 0.2);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--primary) !important;
+            letter-spacing: 1px;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--light) !important;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--primary) !important;
+        }
+        
+        .navbar-nav .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .navbar-nav .nav-link:hover::after {
+            width: 70%;
+        }
+        
+        .navbar-toggler {
+            border: none;
+            color: var(--primary);
         }
         
         .hero-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--dark) 100%);
             color: white;
-            padding: 120px 0 100px;
+            padding: 160px 0 120px;
             position: relative;
             overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" fill="none"/><circle cx="50" cy="50" r="40" stroke="rgba(5, 216, 232, 0.1)" stroke-width="2"/></svg>');
+            opacity: 0.5;
+            z-index: 0;
         }
         
         .hero-section::after {
             content: "";
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
+            width: 800px;
+            height: 800px;
+            top: -200px;
+            right: -200px;
+            background: radial-gradient(circle, rgba(5, 216, 232, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
             left: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" fill="none"/><circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>');
-            opacity: 0.3;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent-alt) 100%);
         }
         
         .section {
-            padding: 100px 0;
+            padding: 120px 0;
+            position: relative;
         }
         
         .section-title {
-            margin-bottom: 50px;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 60px;
             position: relative;
+            display: inline-block;
         }
         
         .section-title::after {
@@ -63,20 +180,39 @@
             left: 0;
             width: 60px;
             height: 4px;
-            background-color: var(--primary);
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent-alt) 100%);
+        }
+        
+        .bg-light {
+            background-color: var(--secondary) !important;
         }
         
         .card {
             border: none;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
+            background-color: rgba(25, 40, 65, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             margin-bottom: 30px;
+            border: 1px solid rgba(5, 216, 232, 0.1);
         }
         
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(5, 216, 232, 0.3);
+        }
+        
+        .card-body {
+            padding: 2rem;
+        }
+        
+        .card h4, .card h5 {
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
         }
         
         .feature-icon {
@@ -86,42 +222,129 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background-color: var(--accent);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-alt) 100%);
             color: white;
             font-size: 30px;
             margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 20px rgba(5, 216, 232, 0.3);
+        }
+        
+        .feature-icon::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            animation: spin 15s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .btn-primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
             border-radius: 30px;
-            padding: 10px 25px;
+            padding: 12px 30px;
             font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 20px rgba(5, 216, 232, 0.3);
+        }
+        
+        .btn-primary::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
         }
         
         .btn-outline-primary {
             color: var(--primary);
-            border-color: var(--primary);
+            background: transparent;
+            border: 2px solid var(--primary);
             border-radius: 30px;
             padding: 10px 25px;
             font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s ease;
         }
         
-        .btn-primary:hover, .btn-outline-primary:hover {
-            background-color: var(--accent);
-            border-color: var(--accent);
+        .btn-outline-primary:hover {
+            color: var(--dark);
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-light {
+            color: var(--dark);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline-light {
+            color: var(--light);
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 30px;
+            padding: 10px 25px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s ease;
+        }
+        
+        .btn-outline-light:hover {
+            color: var(--dark);
+            background-color: var(--light);
+            border-color: var(--light);
         }
         
         .tech-pill {
             display: inline-block;
-            padding: 8px 15px;
-            border-radius: 20px;
-            background-color: rgba(66, 135, 245, 0.1);
+            padding: 10px 18px;
+            border-radius: 30px;
+            background: rgba(5, 216, 232, 0.1);
             color: var(--primary);
-            margin: 5px;
+            margin: 8px;
             font-size: 0.9rem;
             font-weight: 500;
+            border: 1px solid rgba(5, 216, 232, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .tech-pill:hover {
+            background: rgba(5, 216, 232, 0.2);
+            border-color: rgba(5, 216, 232, 0.4);
+            transform: translateY(-2px);
         }
         
         .tech-stack {
@@ -135,40 +358,138 @@
         }
         
         footer {
-            background-color: var(--dark);
+            background-color: var(--secondary);
             color: white;
-            padding: 40px 0;
+            padding: 60px 0 40px;
+            position: relative;
+            border-top: 1px solid rgba(5, 216, 232, 0.2);
+        }
+        
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2305D8E8' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+            z-index: 0;
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(5, 216, 232, 0.3), 0 0 20px rgba(5, 216, 232, 0.3); }
+            to { text-shadow: 0 0 20px rgba(5, 216, 232, 0.6), 0 0 30px rgba(5, 216, 232, 0.6); }
+        }
+        
+        .accordion-item {
+            background-color: rgba(15, 26, 46, 0.7);
+            border: 1px solid rgba(5, 216, 232, 0.1);
+            margin-bottom: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .accordion-button {
+            background-color: rgba(25, 40, 65, 0.7);
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            padding: 1.2rem;
+            border: none;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            color: var(--primary);
+            background-color: rgba(5, 216, 232, 0.1);
+        }
+        
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(5, 216, 232, 0.2);
+        }
+        
+        .accordion-button::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2305D8E8'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        }
+        
+        .accordion-body {
+            padding: 1.5rem;
+            color: var(--light);
+            font-size: 0.95rem;
+        }
+        
+        .progress {
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            margin-bottom: 15px;
+            overflow: visible;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(to right, var(--primary), var(--accent-alt));
+            border-radius: 30px;
+            position: relative;
+        }
+        
+        .progress-bar::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            border: 2px solid var(--dark);
         }
         
         @media (max-width: 768px) {
             .hero-section {
-                padding: 80px 0 60px;
+                padding: 100px 0 80px;
             }
             
             .section {
-                padding: 60px 0;
+                padding: 80px 0;
             }
         }
     </style>
 </head>
 <body>
+    <div class="tech-bg"></div>
+    
     <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">AI人脸替换</a>
+            <a class="navbar-brand glow" href="#">AI<span style="color: var(--accent);">·</span>人脸替换</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+                <i class="bi bi-grid"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">项目简介</a>
+                        <a class="nav-link" href="#about"><i class="bi bi-info-circle me-1"></i> 项目简介</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#tech">技术架构</a>
+                        <a class="nav-link" href="#tech"><i class="bi bi-cpu me-1"></i> 技术架构</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#results">成果展示</a>
+                        <a class="nav-link" href="#results"><i class="bi bi-display me-1"></i> 成果展示</a>
                     </li>
                 </ul>
             </div>
@@ -177,18 +498,90 @@
 
     <!-- 主题区域 -->
     <section class="hero-section">
-        <div class="container">
+        <div class="container hero-content">
             <div class="row align-items-center">
                 <div class="col-md-7" data-aos="fade-right">
-                    <h1 class="display-4 fw-bold mb-4">AI人脸替换应用</h1>
-                    <p class="lead mb-4">基于深度学习的高级人脸替换工具，将照片中的人脸无缝替换到视频中，提供专业级视觉效果和简洁直观的用户体验。</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-light btn-lg">查看演示</button>
-                        <button class="btn btn-outline-light btn-lg">了解技术</button>
+                    <h1 class="display-4 fw-bold mb-4 hero-title">AI人脸替换<span style="color: var(--accent);">应用</span></h1>
+                    <div class="d-flex align-items-center mb-1">
+                        <div class="me-3">
+                            <span class="badge rounded-pill" style="background: var(--accent); padding: 8px 15px;">
+                                <i class="bi bi-stars me-2"></i> 深度学习技术
+                            </span>
+                        </div>
+                        <div class="me-3">
+                            <span class="badge rounded-pill" style="background: var(--accent-alt); padding: 8px 15px;">
+                                <i class="bi bi-gpu-card me-2"></i> GPU加速
+                            </span>
+                        </div>
+                    </div>
+                    <p class="lead mb-4" style="font-weight: 300; max-width: 90%;">基于深度学习的高级人脸替换工具，将照片中的人脸无缝替换到视频中，提供专业级视觉效果和简洁直观的用户体验。</p>
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <button class="btn btn-primary btn-lg">
+                            <i class="bi bi-play-fill me-1"></i> 查看演示
+                        </button>
+                        <button class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-code-slash me-1"></i> 了解技术
+                        </button>
+                    </div>
+                    
+                    <div class="tech-stats d-flex mt-5">
+                        <div class="me-4">
+                            <div style="color: var(--primary); font-size: 0.9rem; font-weight: 500;">
+                                <i class="bi bi-check-circle-fill me-2"></i> 高精度检测
+                            </div>
+                        </div>
+                        <div class="me-4">
+                            <div style="color: var(--primary); font-size: 0.9rem; font-weight: 500;">
+                                <i class="bi bi-check-circle-fill me-2"></i> 视频自动处理
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color: var(--primary); font-size: 0.9rem; font-weight: 500;">
+                                <i class="bi bi-check-circle-fill me-2"></i> 交互式预览
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-5" data-aos="fade-left">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='400' viewBox='0 0 500 400' fill='none'><rect width='500' height='400' fill='none'/><circle cx='250' cy='200' r='100' fill='rgba(255,255,255,0.2)'/><circle cx='250' cy='150' r='50' fill='rgba(255,255,255,0.2)'/><rect x='200' y='200' width='100' height='150' rx='50' fill='rgba(255,255,255,0.2)'/></svg>" alt="人脸替换示意图" class="img-fluid">
+                    <div class="position-relative floating">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="100%" height="auto">
+                            <defs>
+                                <linearGradient id="techGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="rgba(5, 216, 232, 0.8)"/>
+                                    <stop offset="100%" stop-color="rgba(123, 97, 255, 0.8)"/>
+                                </linearGradient>
+                                <linearGradient id="techGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="rgba(5, 216, 232, 0.1)"/>
+                                    <stop offset="100%" stop-color="rgba(123, 97, 255, 0.1)"/>
+                                </linearGradient>
+                            </defs>
+                            <circle cx="250" cy="200" r="120" fill="none" stroke="url(#techGrad)" stroke-width="2" stroke-dasharray="8 4"/>
+                            <circle cx="250" cy="150" r="60" fill="none" stroke="url(#techGrad)" stroke-width="2"/>
+                            <rect x="200" y="190" width="100" height="150" rx="50" fill="none" stroke="url(#techGrad)" stroke-width="2"/>
+                            
+                            <circle cx="250" cy="200" r="140" fill="none" stroke="url(#techGlow)" stroke-width="15" opacity="0.5"/>
+                            <circle cx="250" cy="150" r="40" fill="rgba(5, 216, 232, 0.1)"/>
+                            
+                            <g>
+                                <path d="M210,150 Q250,130 290,150" fill="none" stroke="rgba(255, 94, 132, 0.8)" stroke-width="2" stroke-dasharray="5 2"/>
+                                <circle cx="210" cy="150" r="3" fill="rgba(255, 94, 132, 0.8)"/>
+                                <circle cx="290" cy="150" r="3" fill="rgba(255, 94, 132, 0.8)"/>
+                                <circle cx="230" cy="140" r="3" fill="rgba(255, 94, 132, 0.8)"/>
+                                <circle cx="250" cy="135" r="3" fill="rgba(255, 94, 132, 0.8)"/>
+                                <circle cx="270" cy="140" r="3" fill="rgba(255, 94, 132, 0.8)"/>
+                            </g>
+                            
+                            <path id="orbitPath" d="M250,60 a100,100 0 1,0 1,0" fill="none" stroke="none"/>
+                            <circle cx="0" cy="0" r="10" fill="url(#techGrad)">
+                                <animateMotion dur="6s" repeatCount="indefinite" path="M250,60 a100,100 0 1,0 1,0"/>
+                            </circle>
+                        </svg>
+                        
+                        <!-- 数字雨效果 -->
+                        <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none;">
+                            <div class="digital-rain"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -204,66 +597,116 @@
             </div>
             <div class="row">
                 <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <p>本项目是一款基于Python开发的高级人脸替换应用，使用深度学习技术实现照片到视频的无缝人脸替换。该应用支持多种人脸检测和替换算法，能够处理各种角度、光照和表情的人脸，提供接近专业级别的视觉效果。</p>
-                    
-                    <p>核心功能包括：</p>
-                    <ul>
-                        <li>支持图片到视频的人脸替换</li>
-                        <li>提供基于Tkinter/ttk的基础UI和基于PyQt5的增强UI</li>
-                        <li>支持高级面部特征点检测和跟踪</li>
-                        <li>智能色彩校正和面部融合</li>
-                        <li>内置视频播放器，支持实时预览</li>
-                        <li>可滚动界面设计，适应各种屏幕尺寸</li>
-                    </ul>
+                    <div class="about-content" style="position: relative;">
+                        <div class="tech-badge" style="position: absolute; top: -15px; right: -15px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent-alt) 100%); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; color: white; z-index: 1;">
+                            <i class="bi bi-stars me-1"></i> 前沿技术
+                        </div>
+                        <p class="lead" style="color: var(--primary); font-weight: 500;">基于Python开发的高级人脸替换应用</p>
+                        <p>本项目使用深度学习技术实现照片到视频的无缝人脸替换。该应用支持多种人脸检测和替换算法，能够处理各种角度、光照和表情的人脸，提供接近专业级别的视觉效果。</p>
+                        
+                        <h5 style="color: var(--primary); font-family: 'Orbitron', sans-serif; margin-top: 2rem;">
+                            <i class="bi bi-diamond-half me-2"></i> 核心功能
+                        </h5>
+                        <div class="core-features">
+                            <div class="feature-item d-flex align-items-center mb-3">
+                                <div class="feature-icon-sm me-3" style="width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(5, 216, 232, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                    <i class="bi bi-person-video"></i>
+                                </div>
+                                <div>支持图片到视频的人脸替换</div>
+                            </div>
+                            <div class="feature-item d-flex align-items-center mb-3">
+                                <div class="feature-icon-sm me-3" style="width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(5, 216, 232, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                    <i class="bi bi-window"></i>
+                                </div>
+                                <div>提供基于Tkinter/ttk的基础UI和基于PyQt5的增强UI</div>
+                            </div>
+                            <div class="feature-item d-flex align-items-center mb-3">
+                                <div class="feature-icon-sm me-3" style="width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(5, 216, 232, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                    <i class="bi bi-bullseye"></i>
+                                </div>
+                                <div>支持高级面部特征点检测和跟踪</div>
+                            </div>
+                            <div class="feature-item d-flex align-items-center mb-3">
+                                <div class="feature-icon-sm me-3" style="width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(5, 216, 232, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                    <i class="bi bi-palette"></i>
+                                </div>
+                                <div>智能色彩校正和面部融合</div>
+                            </div>
+                            <div class="feature-item d-flex align-items-center mb-3">
+                                <div class="feature-icon-sm me-3" style="width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(5, 216, 232, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                    <i class="bi bi-film"></i>
+                                </div>
+                                <div>内置视频播放器，支持实时预览</div>
+                            </div>
+                            <div class="feature-item d-flex align-items-center mb-3">
+                                <div class="feature-icon-sm me-3" style="width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(5, 216, 232, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                    <i class="bi bi-arrows-fullscreen"></i>
+                                </div>
+                                <div>可滚动界面设计，适应各种屏幕尺寸</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h4>应用特色</h4>
+                            <div class="hexagon-bg" style="position: absolute; top: 20px; right: 20px; width: 120px; height: 120px; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\" viewBox=\"0 0 120 120\"><path d=\"M60 10L110 42.5V97.5L60 130L10 97.5V42.5L60 10Z\" stroke=\"rgba(5, 216, 232, 0.2)\" fill=\"none\" stroke-width=\"2\" stroke-dasharray=\"5 3\"/></svg>') no-repeat center center; opacity: 0.5;"></div>
+                            
+                            <h4 style="font-family: 'Orbitron', sans-serif;">
+                                <i class="bi bi-lightning-charge-fill me-2" style="color: var(--accent);"></i>应用特色
+                            </h4>
                             <div class="row mt-4">
                                 <div class="col-6 mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <div class="feature-icon me-3">
+                                    <div class="feature-card" style="background: rgba(5, 216, 232, 0.05); border-radius: 15px; padding: 20px; height: 100%; border: 1px solid rgba(5, 216, 232, 0.1); transition: all 0.3s ease;">
+                                        <div class="feature-icon me-0 mb-3" style="width: 60px; height: 60px;">
                                             <i class="bi bi-person-bounding-box"></i>
                                         </div>
                                         <div>
-                                            <h5>高精度检测</h5>
-                                            <p class="mb-0">利用dlib和InsightFace实现精确人脸检测</p>
+                                            <h5 style="font-size: 1.1rem;">高精度检测</h5>
+                                            <p class="mb-0" style="font-size: 0.9rem;">利用dlib和InsightFace实现精确人脸检测</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-6 mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <div class="feature-icon me-3">
+                                    <div class="feature-card" style="background: rgba(5, 216, 232, 0.05); border-radius: 15px; padding: 20px; height: 100%; border: 1px solid rgba(5, 216, 232, 0.1); transition: all 0.3s ease;">
+                                        <div class="feature-icon me-0 mb-3" style="width: 60px; height: 60px;">
                                             <i class="bi bi-palette"></i>
                                         </div>
                                         <div>
-                                            <h5>智能色彩校正</h5>
-                                            <p class="mb-0">自动调整肤色和光照匹配度</p>
+                                            <h5 style="font-size: 1.1rem;">智能色彩校正</h5>
+                                            <p class="mb-0" style="font-size: 0.9rem;">自动调整肤色和光照匹配度</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-6 mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <div class="feature-icon me-3">
+                                    <div class="feature-card" style="background: rgba(5, 216, 232, 0.05); border-radius: 15px; padding: 20px; height: 100%; border: 1px solid rgba(5, 216, 232, 0.1); transition: all 0.3s ease;">
+                                        <div class="feature-icon me-0 mb-3" style="width: 60px; height: 60px;">
                                             <i class="bi bi-film"></i>
                                         </div>
                                         <div>
-                                            <h5>视频播放器</h5>
-                                            <p class="mb-0">内置多格式支持的视频预览和播放功能</p>
+                                            <h5 style="font-size: 1.1rem;">视频播放器</h5>
+                                            <p class="mb-0" style="font-size: 0.9rem;">内置多格式支持的视频预览和播放功能</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-6 mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <div class="feature-icon me-3">
+                                    <div class="feature-card" style="background: rgba(5, 216, 232, 0.05); border-radius: 15px; padding: 20px; height: 100%; border: 1px solid rgba(5, 216, 232, 0.1); transition: all 0.3s ease;">
+                                        <div class="feature-icon me-0 mb-3" style="width: 60px; height: 60px;">
                                             <i class="bi bi-gpu-card"></i>
                                         </div>
                                         <div>
-                                            <h5>GPU加速</h5>
-                                            <p class="mb-0">支持CUDA和ONNX优化的高性能处理</p>
+                                            <h5 style="font-size: 1.1rem;">GPU加速</h5>
+                                            <p class="mb-0" style="font-size: 0.9rem;">支持CUDA和ONNX优化的高性能处理</p>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <div class="d-inline-block" style="background: linear-gradient(90deg, var(--primary) 0%, var(--accent-alt) 100%); padding: 1px; border-radius: 30px;">
+                                    <button class="btn" style="background: var(--dark); color: var(--primary); border-radius: 30px; padding: 8px 25px; font-family: 'Orbitron', sans-serif; font-size: 0.9rem;">
+                                        <i class="bi bi-arrow-right-circle me-2"></i> 了解更多技术细节
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -281,79 +724,251 @@
                     <h2 class="section-title" data-aos="fade-up">技术架构</h2>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <h4>核心技术栈</h4>
-                    <div class="tech-stack">
-                        <span class="tech-pill">Python</span>
-                        <span class="tech-pill">OpenCV</span>
-                        <span class="tech-pill">dlib</span>
-                        <span class="tech-pill">InsightFace</span>
-                        <span class="tech-pill">ONNX Runtime</span>
-                        <span class="tech-pill">NumPy</span>
-                        <span class="tech-pill">Tkinter/ttk</span>
-                        <span class="tech-pill">PyQt5</span>
-                        <span class="tech-pill">FFmpeg</span>
+            <div class="row align-items-center">
+                <div class="col-md-5" data-aos="fade-up" data-aos-delay="100">
+                    <!-- 技术架构图表 -->
+                    <div class="tech-diagram position-relative mb-4">
+                        <svg viewBox="0 0 500 400" width="100%" height="auto">
+                            <defs>
+                                <linearGradient id="techBoxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="rgba(5, 216, 232, 0.2)"/>
+                                    <stop offset="100%" stop-color="rgba(123, 97, 255, 0.2)"/>
+                                </linearGradient>
+                                <filter id="techGlow">
+                                    <feGaussianBlur stdDeviation="5" result="blur"/>
+                                    <feComposite in="SourceGraphic" in2="blur" operator="atop"/>
+                                </filter>
+                            </defs>
+                            
+                            <!-- 架构层级框架 -->
+                            <!-- UI层 -->
+                            <rect x="100" y="50" width="300" height="60" rx="10" fill="url(#techBoxGrad)" stroke="rgba(5, 216, 232, 0.5)" stroke-width="1.5"/>
+                            <text x="250" y="85" text-anchor="middle" fill="var(--primary)" style="font-size: 16px; font-family: 'Orbitron', sans-serif;">前端界面层</text>
+                            
+                            <!-- 连接线 -->
+                            <line x1="250" y1="110" x2="250" y2="140" stroke="rgba(5, 216, 232, 0.5)" stroke-width="1.5" stroke-dasharray="5 3"/>
+                            
+                            <!-- 核心层 -->
+                            <rect x="100" y="140" width="300" height="60" rx="10" fill="url(#techBoxGrad)" stroke="rgba(123, 97, 255, 0.5)" stroke-width="1.5"/>
+                            <text x="250" y="175" text-anchor="middle" fill="var(--accent-alt)" style="font-size: 16px; font-family: 'Orbitron', sans-serif;">人脸处理核心层</text>
+                            
+                            <!-- 连接线 -->
+                            <line x1="250" y1="200" x2="250" y2="230" stroke="rgba(123, 97, 255, 0.5)" stroke-width="1.5" stroke-dasharray="5 3"/>
+                            
+                            <!-- 视频处理层 -->
+                            <rect x="100" y="230" width="300" height="60" rx="10" fill="url(#techBoxGrad)" stroke="rgba(255, 94, 132, 0.5)" stroke-width="1.5"/>
+                            <text x="250" y="265" text-anchor="middle" fill="var(--accent)" style="font-size: 16px; font-family: 'Orbitron', sans-serif;">视频处理层</text>
+                            
+                            <!-- 连接线 -->
+                            <line x1="250" y1="290" x2="250" y2="320" stroke="rgba(255, 94, 132, 0.5)" stroke-width="1.5" stroke-dasharray="5 3"/>
+                            
+                            <!-- 多媒体播放层 -->
+                            <rect x="100" y="320" width="300" height="60" rx="10" fill="url(#techBoxGrad)" stroke="rgba(0, 245, 160, 0.5)" stroke-width="1.5"/>
+                            <text x="250" y="355" text-anchor="middle" fill="var(--success)" style="font-size: 16px; font-family: 'Orbitron', sans-serif;">多媒体播放层</text>
+                            
+                            <!-- 装饰性元素 -->
+                            <circle cx="80" cy="80" r="10" fill="none" stroke="rgba(5, 216, 232, 0.3)" stroke-width="1">
+                                <animate attributeName="r" values="10;15;10" dur="3s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="420" cy="170" r="12" fill="none" stroke="rgba(123, 97, 255, 0.3)" stroke-width="1">
+                                <animate attributeName="r" values="12;18;12" dur="4s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="80" cy="350" r="8" fill="none" stroke="rgba(255, 94, 132, 0.3)" stroke-width="1">
+                                <animate attributeName="r" values="8;12;8" dur="2.5s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="420" cy="260" r="15" fill="none" stroke="rgba(0, 245, 160, 0.3)" stroke-width="1">
+                                <animate attributeName="r" values="15;20;15" dur="3.5s" repeatCount="indefinite"/>
+                            </circle>
+                        </svg>
                     </div>
                     
-                    <h4 class="mt-4">系统架构</h4>
-                    <ul class="mt-3">
-                        <li><strong>前端界面层</strong>：基于Tkinter/ttk和PyQt5构建的用户交互界面</li>
-                        <li><strong>人脸处理核心层</strong>：实现人脸检测、特征点提取和替换算法</li>
-                        <li><strong>视频处理层</strong>：处理视频输入/输出和帧级操作</li>
-                        <li><strong>多媒体播放层</strong>：集成视频播放和预览功能</li>
-                    </ul>
+                    <h4 style="color: var(--primary); font-family: 'Orbitron', sans-serif; margin-top: 2rem;">
+                        <i class="bi bi-layers-half me-2"></i> 系统架构
+                    </h4>
+                    <div class="system-arch">
+                        <div class="arch-item d-flex align-items-center mb-3" style="border-left: 3px solid var(--primary); padding-left: 15px;">
+                            <div class="arch-content">
+                                <h6 style="color: var(--primary); margin-bottom: 5px; font-family: 'Orbitron', sans-serif;">前端界面层</h6>
+                                <p class="mb-0" style="font-size: 0.9rem;">基于Tkinter/ttk和PyQt5构建的用户交互界面</p>
+                            </div>
+                        </div>
+                        <div class="arch-item d-flex align-items-center mb-3" style="border-left: 3px solid var(--accent-alt); padding-left: 15px;">
+                            <div class="arch-content">
+                                <h6 style="color: var(--accent-alt); margin-bottom: 5px; font-family: 'Orbitron', sans-serif;">人脸处理核心层</h6>
+                                <p class="mb-0" style="font-size: 0.9rem;">实现人脸检测、特征点提取和替换算法</p>
+                            </div>
+                        </div>
+                        <div class="arch-item d-flex align-items-center mb-3" style="border-left: 3px solid var(--accent); padding-left: 15px;">
+                            <div class="arch-content">
+                                <h6 style="color: var(--accent); margin-bottom: 5px; font-family: 'Orbitron', sans-serif;">视频处理层</h6>
+                                <p class="mb-0" style="font-size: 0.9rem;">处理视频输入/输出和帧级操作</p>
+                            </div>
+                        </div>
+                        <div class="arch-item d-flex align-items-center mb-3" style="border-left: 3px solid var(--success); padding-left: 15px;">
+                            <div class="arch-content">
+                                <h6 style="color: var(--success); margin-bottom: 5px; font-family: 'Orbitron', sans-serif;">多媒体播放层</h6>
+                                <p class="mb-0" style="font-size: 0.9rem;">集成视频播放和预览功能</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-md-7" data-aos="fade-up" data-aos-delay="200">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h4>技术实现细节</h4>
+                            <div class="tech-circle" style="position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; border-radius: 60px; background: radial-gradient(circle, rgba(5, 216, 232, 0.1) 0%, transparent 70%);"></div>
+                            
+                            <h4 style="font-family: 'Orbitron', sans-serif;">
+                                <i class="bi bi-cpu me-2" style="color: var(--accent);"></i>核心技术栈
+                            </h4>
+                            
+                            <div class="tech-stack mt-4" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                <span class="tech-pill" data-aos="zoom-in" data-aos-delay="100">
+                                    <i class="bi bi-filetype-py me-2"></i>Python
+                                </span>
+                                <span class="tech-pill" data-aos="zoom-in" data-aos-delay="150">
+                                    <i class="bi bi-camera me-2"></i>OpenCV
+                                </span>
+                                <span class="tech-pill" data-aos="zoom-in" data-aos-delay="200">
+                                    <i class="bi bi-box me-2"></i>dlib
+                                </span>
+                                <span class="tech-pill" data-aos="zoom-in" data-aos-delay="250">
+                                    <i class="bi bi-person-bounding-box me-2"></i>InsightFace
+                                </span>
+                                <span class="tech-pill" data-aos="zoom-in" data-aos-delay="300">
+                                    <i class="bi bi-speedometer2 me-2"></i>ONNX Runtime
+                                </span>
+                                <span class="tech-pill" data-aos="zoom-in" data-aos-delay="350">
+                                    <i class="bi bi-calculator me-2"></i>NumPy
+                                </span>
+                                <span class="tech-pill" data-aos="zoom-in" data-aos-delay="400">
+                                    <i class="bi bi-window me-2"></i>Tkinter/ttk
+                                </span>
+                                <span class="tech-pill" data-aos="zoom-in" data-aos-delay="450">
+                                    <i class="bi bi-window-desktop me-2"></i>PyQt5
+                                </span>
+                                <span class="tech-pill" data-aos="zoom-in" data-aos-delay="500">
+                                    <i class="bi bi-film me-2"></i>FFmpeg
+                                </span>
+                            </div>
+                            
+                            <h5 style="font-family: 'Orbitron', sans-serif; margin-top: 2rem; color: var(--primary);">
+                                <i class="bi bi-braces-asterisk me-2"></i>技术实现细节
+                            </h5>
+                            
                             <div class="accordion mt-4" id="techAccordion">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                                            人脸检测与特征点提取
+                                            <i class="bi bi-person-bounding-box me-2"></i> 人脸检测与特征点提取
                                         </button>
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#techAccordion">
                                         <div class="accordion-body">
-                                            同时支持dlib的HOG检测器和InsightFace的Buffalo模型，提取68个面部特征点，实现高精度面部对齐和特征映射。支持多尺度检测以增强检测能力。
+                                            <div class="d-flex">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>同时支持dlib的HOG检测器和InsightFace的Buffalo模型</div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>提取68个面部特征点，实现高精度面部对齐和特征映射</div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>支持多尺度检测以增强检测能力</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                                            面部替换与融合
+                                            <i class="bi bi-arrow-repeat me-2"></i> 面部替换与融合
                                         </button>
                                     </h2>
                                     <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#techAccordion">
                                         <div class="accordion-body">
-                                            使用Delaunay三角剖分和仿射变换进行传统替换，或使用InsightFace的inswapper_128模型进行深度学习替换。两种方法各有优势，可根据场景选择。
+                                            <div class="d-flex">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>使用Delaunay三角剖分和仿射变换进行传统替换</div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>使用InsightFace的inswapper_128模型进行深度学习替换</div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>两种方法各有优势，可根据场景选择</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
-                                            色彩校正与无缝融合
+                                            <i class="bi bi-palette2 me-2"></i> 色彩校正与无缝融合
                                         </button>
                                     </h2>
                                     <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#techAccordion">
                                         <div class="accordion-body">
-                                            采用直方图匹配和泊松融合算法，智能匹配目标面部和源面部的色调、对比度和亮度，边缘羽化处理确保自然融合效果。
+                                            <div class="d-flex">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>采用直方图匹配算法，智能匹配目标面部和源面部的色调、对比度和亮度</div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>应用泊松融合算法，确保面部边缘自然过渡</div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>边缘羽化处理确保自然融合效果</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
-                                            多线程与性能优化
+                                            <i class="bi bi-lightning-charge me-2"></i> 多线程与性能优化
                                         </button>
                                     </h2>
                                     <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#techAccordion">
                                         <div class="accordion-body">
-                                            利用Python的concurrent.futures实现多线程处理，并行计算提升性能。使用ONNX Runtime优化推理速度，支持GPU加速。设计了智能帧缓冲机制确保视频输出顺序。
+                                            <div class="d-flex">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>利用concurrent.futures实现多线程处理，并行计算提升性能</div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>使用ONNX Runtime优化推理速度，支持GPU加速</div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="tech-icon-small me-3" style="min-width: 24px; color: var(--primary);">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+                                                <div>设计了智能帧缓冲机制确保视频输出顺序</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -371,34 +986,82 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2 class="section-title" data-aos="fade-up">成果展示</h2>
-                    <p data-aos="fade-up" data-aos-delay="100">以下是使用本应用处理的一些人脸替换效果展示和界面截图。</p>
+                    <p data-aos="fade-up" data-aos-delay="100" style="color: var(--primary); font-weight: 300; max-width: 700px; margin: 0 auto 40px; text-align: center;">以下是使用本应用处理的人脸替换效果与界面截图，展示了AI技术在视觉创作中的强大潜力。</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
                     <div class="card result-card">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'><rect width='400' height='300' fill='%234287f5'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='24'>人脸替换效果1</text></svg>" alt="人脸替换效果1">
+                        <div class="card-img-overlay-wrapper" style="position: relative; overflow: hidden; border-radius: 15px 15px 0 0;">
+                            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'><rect width='400' height='300' fill='%234287f5'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='24'>人脸替换效果1</text></svg>" alt="人脸替换效果1" style="width: 100%; height: 250px; object-fit: cover; filter: brightness(0.9);">
+                            <div class="tech-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(5, 216, 232, 0.2) 0%, rgba(123, 97, 255, 0.2) 100%); mix-blend-mode: overlay; pointer-events: none;"></div>
+                            <div class="card-img-badges" style="position: absolute; top: 15px; right: 15px;">
+                                <span class="badge rounded-pill" style="background: var(--dark); padding: 8px 15px; backdrop-filter: blur(5px); font-family: 'Orbitron', sans-serif; font-size: 0.8rem;">
+                                    <i class="bi bi-cpu me-1"></i> dlib引擎
+                                </span>
+                            </div>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">基础人脸替换</h5>
-                            <p class="card-text">使用dlib检测器和传统替换方法实现的人脸替换效果，处理速度快。</p>
+                            <h5 class="card-title" style="font-family: 'Orbitron', sans-serif; color: var(--primary);">基础人脸替换</h5>
+                            <p class="card-text">使用dlib检测器和传统替换方法实现的人脸替换效果，处理速度快，适合简单场景。</p>
+                            <div class="mt-3 d-flex justify-content-between align-items-center">
+                                <div class="tech-specs" style="font-size: 0.8rem; color: var(--primary-dark);">
+                                    <i class="bi bi-stopwatch me-1"></i> 处理时间: 0.5s/帧
+                                </div>
+                                <button class="btn" style="color: var(--primary); background: rgba(5, 216, 232, 0.1); border-radius: 30px; padding: 5px 15px; font-size: 0.8rem;">
+                                    <i class="bi bi-zoom-in me-1"></i> 查看详情
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
                     <div class="card result-card">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'><rect width='400' height='300' fill='%232962FF'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='24'>人脸替换效果2</text></svg>" alt="人脸替换效果2">
+                        <div class="card-img-overlay-wrapper" style="position: relative; overflow: hidden; border-radius: 15px 15px 0 0;">
+                            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'><rect width='400' height='300' fill='%232962FF'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='24'>人脸替换效果2</text></svg>" alt="人脸替换效果2" style="width: 100%; height: 250px; object-fit: cover; filter: brightness(0.9);">
+                            <div class="tech-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(5, 216, 232, 0.2) 0%, rgba(123, 97, 255, 0.2) 100%); mix-blend-mode: overlay; pointer-events: none;"></div>
+                            <div class="card-img-badges" style="position: absolute; top: 15px; right: 15px;">
+                                <span class="badge rounded-pill" style="background: var(--dark); padding: 8px 15px; backdrop-filter: blur(5px); font-family: 'Orbitron', sans-serif; font-size: 0.8rem;">
+                                    <i class="bi bi-cpu-fill me-1"></i> InsightFace
+                                </span>
+                            </div>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">高级深度学习替换</h5>
-                            <p class="card-text">使用InsightFace模型实现的高质量人脸替换，细节保留更好。</p>
+                            <h5 class="card-title" style="font-family: 'Orbitron', sans-serif; color: var(--accent-alt);">高级深度学习替换</h5>
+                            <p class="card-text">使用InsightFace模型实现的高质量人脸替换，细节保留更好，适合要求高的场景。</p>
+                            <div class="mt-3 d-flex justify-content-between align-items-center">
+                                <div class="tech-specs" style="font-size: 0.8rem; color: var(--primary-dark);">
+                                    <i class="bi bi-stopwatch me-1"></i> 处理时间: 0.8s/帧
+                                </div>
+                                <button class="btn" style="color: var(--accent-alt); background: rgba(123, 97, 255, 0.1); border-radius: 30px; padding: 5px 15px; font-size: 0.8rem;">
+                                    <i class="bi bi-zoom-in me-1"></i> 查看详情
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
                     <div class="card result-card">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'><rect width='400' height='300' fill='%234CAF50'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='24'>UI界面</text></svg>" alt="应用界面截图">
+                        <div class="card-img-overlay-wrapper" style="position: relative; overflow: hidden; border-radius: 15px 15px 0 0;">
+                            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'><rect width='400' height='300' fill='%2305D8E8'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='24'>UI界面</text></svg>" alt="应用界面截图" style="width: 100%; height: 250px; object-fit: cover; filter: brightness(0.9);">
+                            <div class="tech-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(5, 216, 232, 0.2) 0%, rgba(123, 97, 255, 0.2) 100%); mix-blend-mode: overlay; pointer-events: none;"></div>
+                            <div class="card-img-badges" style="position: absolute; top: 15px; right: 15px;">
+                                <span class="badge rounded-pill" style="background: var(--dark); padding: 8px 15px; backdrop-filter: blur(5px); font-family: 'Orbitron', sans-serif; font-size: 0.8rem;">
+                                    <i class="bi bi-window-desktop me-1"></i> PyQt5界面
+                                </span>
+                            </div>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">现代化用户界面</h5>
-                            <p class="card-text">基于PyQt5的增强版界面，包含视频播放器和直观的控制面板。</p>
+                            <h5 class="card-title" style="font-family: 'Orbitron', sans-serif; color: var(--success);">现代化用户界面</h5>
+                            <p class="card-text">基于PyQt5的增强版界面，包含视频播放器和滚动设计，提供直观的控制面板。</p>
+                            <div class="mt-3 d-flex justify-content-between align-items-center">
+                                <div class="tech-specs" style="font-size: 0.8rem; color: var(--primary-dark);">
+                                    <i class="bi bi-display me-1"></i> 分辨率: 自适应
+                                </div>
+                                <button class="btn" style="color: var(--success); background: rgba(0, 245, 160, 0.1); border-radius: 30px; padding: 5px 15px; font-size: 0.8rem;">
+                                    <i class="bi bi-zoom-in me-1"></i> 查看详情
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -406,59 +1069,109 @@
             
             <div class="row mt-5">
                 <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card">
+                    <div class="card h-100">
                         <div class="card-body">
-                            <h4>用户反馈</h4>
-                            <div class="d-flex align-items-center mb-4">
-                                <div class="me-3">
-                                    <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="50" cy="50" r="50" fill="#E1F5FE"/>
-                                        <circle cx="50" cy="40" r="20" fill="#4287f5"/>
-                                        <path d="M20 90C20 73.4315 33.4315 60 50 60C66.5685 60 80 73.4315 80 90V100H20V90Z" fill="#4287f5"/>
-                                    </svg>
+                            <div class="tech-line" style="position: absolute; top: 20px; right: 20px; width: 80px; height: 80px; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"80\" height=\"80\" viewBox=\"0 0 80 80\"><circle cx=\"40\" cy=\"40\" r=\"35\" stroke=\"rgba(5, 216, 232, 0.2)\" fill=\"none\" stroke-width=\"2\" stroke-dasharray=\"5 3\"/></svg>') no-repeat center center;"></div>
+                            
+                            <h4 style="font-family: 'Orbitron', sans-serif; color: var(--primary);">
+                                <i class="bi bi-chat-square-quote-fill me-2" style="color: var(--accent);"></i>用户反馈
+                            </h4>
+                            
+                            <div class="review-card mt-4 p-3" style="background: rgba(5, 216, 232, 0.05); border-radius: 15px; border-left: 3px solid var(--primary);">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="me-3" style="position: relative;">
+                                        <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="50" cy="50" r="50" fill="rgba(5, 216, 232, 0.1)"/>
+                                            <circle cx="50" cy="40" r="20" fill="rgba(5, 216, 232, 0.8)"/>
+                                            <path d="M20 90C20 73.4315 33.4315 60 50 60C66.5685 60 80 73.4315 80 90V100H20V90Z" fill="rgba(5, 216, 232, 0.8)"/>
+                                        </svg>
+                                        <div style="position: absolute; bottom: -5px; right: -5px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">
+                                            <i class="bi bi-star-fill"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 style="font-size: 1rem; margin-bottom: 0;">张先生 - 视频创作者</h5>
+                                        <div>
+                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
+                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
+                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
+                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
+                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h5>张先生 - 视频创作者</h5>
-                                    <p class="mb-0">"界面设计直观，操作简便，替换效果非常自然，满足了我对创意视频的需求。"</p>
-                                </div>
+                                <p class="mb-0" style="font-size: 0.9rem; padding-left: 10px; border-left: 2px solid rgba(5, 216, 232, 0.3);">"界面设计直观，操作简便，替换效果非常自然，满足了我对创意视频的需求。滚动界面和视频播放器的加入使体验更加完善。"</p>
                             </div>
-                            <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="50" cy="50" r="50" fill="#E8F5E9"/>
-                                        <circle cx="50" cy="40" r="20" fill="#4CAF50"/>
-                                        <path d="M20 90C20 73.4315 33.4315 60 50 60C66.5685 60 80 73.4315 80 90V100H20V90Z" fill="#4CAF50"/>
-                                    </svg>
+                            
+                            <div class="review-card mt-4 p-3" style="background: rgba(123, 97, 255, 0.05); border-radius: 15px; border-left: 3px solid var(--accent-alt);">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="me-3" style="position: relative;">
+                                        <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="50" cy="50" r="50" fill="rgba(123, 97, 255, 0.1)"/>
+                                            <circle cx="50" cy="40" r="20" fill="rgba(123, 97, 255, 0.8)"/>
+                                            <path d="M20 90C20 73.4315 33.4315 60 50 60C66.5685 60 80 73.4315 80 90V100H20V90Z" fill="rgba(123, 97, 255, 0.8)"/>
+                                        </svg>
+                                        <div style="position: absolute; bottom: -5px; right: -5px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">
+                                            <i class="bi bi-star-fill"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 style="font-size: 1rem; margin-bottom: 0;">李女士 - 媒体工作者</h5>
+                                        <div>
+                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
+                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
+                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
+                                            <i class="bi bi-star-fill" style="color: var(--accent); font-size: 0.8rem;"></i>
+                                            <i class="bi bi-star-half" style="color: var(--accent); font-size: 0.8rem;"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h5>李女士 - 媒体工作者</h5>
-                                    <p class="mb-0">"色彩校正功能很棒，即使在光照条件不理想的视频中也能获得专业级效果。"</p>
-                                </div>
+                                <p class="mb-0" style="font-size: 0.9rem; padding-left: 10px; border-left: 2px solid rgba(123, 97, 255, 0.3);">"色彩校正功能很棒，即使在光照条件不理想的视频中也能获得专业级效果。新增的视频播放功能使工作流程更加顺畅。"</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card">
+                    <div class="card h-100">
                         <div class="card-body">
-                            <h4>项目成果数据</h4>
+                            <h4 style="font-family: 'Orbitron', sans-serif; color: var(--primary);">
+                                <i class="bi bi-graph-up me-2" style="color: var(--success);"></i>项目成果数据
+                            </h4>
                             <div class="row mt-4">
                                 <div class="col-6 mb-4 text-center">
-                                    <h2 class="text-primary fw-bold">98%</h2>
-                                    <p>人脸检测准确率</p>
+                                    <div class="stat-circle mb-2 mx-auto" style="width: 90px; height: 90px; border-radius: 50%; background: rgba(5, 216, 232, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--primary); border-right-color: var(--primary); transform: rotate(45deg);"></div>
+                                        <h2 class="text-primary fw-bold mb-0" style="font-family: 'Orbitron', sans-serif;">98%</h2>
+                                    </div>
+                                    <p style="color: var(--light); font-weight: 500;">人脸检测准确率</p>
                                 </div>
                                 <div class="col-6 mb-4 text-center">
-                                    <h2 class="text-primary fw-bold">30+</h2>
-                                    <p>支持的视频格式</p>
+                                    <div class="stat-circle mb-2 mx-auto" style="width: 90px; height: 90px; border-radius: 50%; background: rgba(123, 97, 255, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--accent-alt); border-right-color: var(--accent-alt); transform: rotate(45deg);"></div>
+                                        <h2 class="fw-bold mb-0" style="font-family: 'Orbitron', sans-serif; color: var(--accent-alt);">30+</h2>
+                                    </div>
+                                    <p style="color: var(--light); font-weight: 500;">支持的视频格式</p>
                                 </div>
                                 <div class="col-6 mb-4 text-center">
-                                    <h2 class="text-primary fw-bold">60fps</h2>
-                                    <p>最高视频处理帧率</p>
+                                    <div class="stat-circle mb-2 mx-auto" style="width: 90px; height: 90px; border-radius: 50%; background: rgba(255, 94, 132, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--accent); border-right-color: var(--accent); transform: rotate(45deg);"></div>
+                                        <h2 class="fw-bold mb-0" style="font-family: 'Orbitron', sans-serif; color: var(--accent);">60fps</h2>
+                                    </div>
+                                    <p style="color: var(--light); font-weight: 500;">最高视频处理帧率</p>
                                 </div>
                                 <div class="col-6 mb-4 text-center">
-                                    <h2 class="text-primary fw-bold">4K</h2>
-                                    <p>支持最高分辨率</p>
+                                    <div class="stat-circle mb-2 mx-auto" style="width: 90px; height: 90px; border-radius: 50%; background: rgba(0, 245, 160, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--success); border-right-color: var(--success); transform: rotate(45deg);"></div>
+                                        <h2 class="fw-bold mb-0" style="font-family: 'Orbitron', sans-serif; color: var(--success);">4K</h2>
+                                    </div>
+                                    <p style="color: var(--light); font-weight: 500;">支持最高分辨率</p>
                                 </div>
+                            </div>
+                            
+                            <div class="text-center mt-3">
+                                <button class="btn" style="border: 2px solid var(--primary); color: var(--primary); border-radius: 30px; padding: 8px 25px; font-family: 'Orbitron', sans-serif; transition: all 0.3s ease;">
+                                    <i class="bi bi-download me-2"></i> 下载技术白皮书
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -472,10 +1185,22 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8 text-center" data-aos="fade-up">
-                    <h3>开始体验AI人脸替换技术</h3>
-                    <p class="lead mb-4">无论您是视频创作者、媒体工作者还是技术爱好者，我们的应用都能满足您的需求</p>
-                    <button class="btn btn-primary btn-lg me-2">下载应用</button>
-                    <button class="btn btn-outline-primary btn-lg">联系我们</button>
+                    <div class="cta-wrapper position-relative" style="padding: 60px 40px; border-radius: 20px; overflow: hidden; background: rgba(25, 40, 65, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(5, 216, 232, 0.2);">
+                        <div style="position: absolute; top: -80px; right: -80px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(5, 216, 232, 0.3) 0%, transparent 70%);"></div>
+                        <div style="position: absolute; bottom: -60px; left: -60px; width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, rgba(123, 97, 255, 0.2) 0%, transparent 70%);"></div>
+                        
+                        <h3 style="font-family: 'Orbitron', sans-serif; color: var(--primary);">开始体验AI人脸替换技术</h3>
+                        <p class="lead mb-4" style="color: var(--light); font-weight: 300; max-width: 600px; margin: 15px auto 25px;">无论您是视频创作者、媒体工作者还是技术爱好者，我们的应用都能满足您的需求</p>
+                        
+                        <div class="d-flex flex-wrap justify-content-center gap-3">
+                            <button class="btn btn-primary btn-lg">
+                                <i class="bi bi-download me-2"></i> 下载应用
+                            </button>
+                            <button class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-envelope me-2"></i> 联系我们
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -484,19 +1209,30 @@
     <!-- 页脚 -->
     <footer>
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>AI人脸替换项目</h5>
-                    <p>基于深度学习的高级人脸替换解决方案</p>
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <h4 style="font-family: 'Orbitron', sans-serif; color: var(--primary);">AI<span style="color: var(--accent);">·</span>人脸替换</h4>
+                    <p style="font-weight: 300; font-size: 0.9rem;">基于深度学习的高级人脸替换解决方案</p>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <p>© 2023 AI人脸替换项目 版权所有</p>
+                <div class="col-md-4 text-center" style="border-left: 1px solid rgba(5, 216, 232, 0.1); border-right: 1px solid rgba(5, 216, 232, 0.1);">
+                    <h5 style="color: var(--primary); font-weight: 500; font-size: 1rem;">快速链接</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#about" style="color: var(--light); text-decoration: none; display: inline-block; padding: 4px 0; font-size: 0.9rem; transition: all 0.3s ease;"><i class="bi bi-chevron-right me-1" style="color: var(--primary); font-size: 0.7rem;"></i> 项目简介</a></li>
+                        <li><a href="#tech" style="color: var(--light); text-decoration: none; display: inline-block; padding: 4px 0; font-size: 0.9rem; transition: all 0.3s ease;"><i class="bi bi-chevron-right me-1" style="color: var(--primary); font-size: 0.7rem;"></i> 技术架构</a></li>
+                        <li><a href="#results" style="color: var(--light); text-decoration: none; display: inline-block; padding: 4px 0; font-size: 0.9rem; transition: all 0.3s ease;"><i class="bi bi-chevron-right me-1" style="color: var(--primary); font-size: 0.7rem;"></i> 成果展示</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <h5 style="color: var(--primary); font-weight: 500; font-size: 1rem;">联系信息</h5>
+                    <p style="font-size: 0.9rem; margin-bottom: 5px;"><i class="bi bi-envelope-fill me-2" style="color: var(--primary);"></i> contact@aiface.example.com</p>
+                    <p style="font-size: 0.9rem;"><i class="bi bi-geo-alt-fill me-2" style="color: var(--primary);"></i> 中国, 北京</p>
+                    <p class="mt-4" style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.5);">© 2023 AI人脸替换项目 版权所有</p>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- 脚本 -->
+    <!-- 脚本部分 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script>
@@ -514,6 +1250,56 @@
                     behavior: 'smooth'
                 });
             });
+        });
+        
+        // 数字雨效果
+        function createDigitalRain() {
+            const digitalRain = document.querySelector('.digital-rain');
+            if (!digitalRain) return;
+            
+            const width = digitalRain.offsetWidth;
+            const height = digitalRain.offsetHeight;
+            const fontSize = 12;
+            const columns = Math.floor(width / fontSize);
+            
+            for (let i = 0; i < columns; i++) {
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 2;
+                const fontSize = Math.floor(Math.random() * 12) + 8;
+                
+                const span = document.createElement('span');
+                span.style.left = i * fontSize + 'px';
+                span.style.animationDuration = duration + 's';
+                span.style.animationDelay = delay + 's';
+                span.style.fontSize = fontSize + 'px';
+                span.style.color = 'rgba(5, 216, 232, 0.5)';
+                span.style.position = 'absolute';
+                span.style.top = '-100px';
+                span.style.animationName = 'rain';
+                span.style.animationTimingFunction = 'linear';
+                span.style.animationIterationCount = 'infinite';
+                
+                const chars = ['0', '1'];
+                span.textContent = chars[Math.floor(Math.random() * chars.length)];
+                
+                digitalRain.appendChild(span);
+            }
+            
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+                @keyframes rain {
+                    0% { transform: translateY(0); opacity: 0; }
+                    10% { opacity: 0.5; }
+                    90% { opacity: 0.5; }
+                    100% { transform: translateY(${height}px); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(styleSheet);
+        }
+        
+        // 页面加载完成后初始化效果
+        window.addEventListener('load', () => {
+            createDigitalRain();
         });
     </script>
 </body>
