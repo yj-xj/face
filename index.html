@@ -524,10 +524,10 @@
                     </div>
                     <p class="lead mb-4" style="font-weight: 300; max-width: 90%;">基于深度学习的高级人脸替换工具，结合工业大数据处理技术，将照片中的人脸无缝替换到视频中，提供专业级视觉效果和高效数据处理能力。</p>
                     <div class="d-flex flex-wrap gap-3 mt-4">
-                        <button class="btn btn-primary btn-lg">
+                        <button class="btn btn-primary btn-lg" id="view-demo-btn">
                             <i class="bi bi-play-fill me-1"></i> 查看演示
                         </button>
-                        <button class="btn btn-outline-light btn-lg">
+                        <button class="btn btn-outline-light btn-lg" id="view-tech-btn">
                             <i class="bi bi-code-slash me-1"></i> 了解技术
                         </button>
                     </div>
@@ -1160,9 +1160,6 @@
                             
                             <div class="row mt-4">
                                 <div class="col-md-12 text-center">
-                                    <button class="btn" style="border: 2px solid var(--primary); color: var(--primary); background: rgba(5, 216, 232, 0.05); border-radius: 30px; padding: 8px 25px; font-family: 'Orbitron', sans-serif;">
-                                        <i class="bi bi-download me-2"></i> 下载完整技术文档
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1318,9 +1315,6 @@
                             </div>
                             
                             <div class="text-center mt-3">
-                                <button class="btn" style="border: 2px solid var(--primary); color: var(--primary); border-radius: 30px; padding: 8px 25px; font-family: 'Orbitron', sans-serif; transition: all 0.3s ease;">
-                                    <i class="bi bi-download me-2"></i> 下载技术白皮书
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -1374,6 +1368,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12 mb-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="card h-100">
+                        <video id="demo-video" class="card-img-top" controls poster="image/ui_demo.png" style="width:100%;height:420px;object-fit:contain;background:#000;">
+                            <source src="video/yanshi.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="card-body">
+                            <h5 class="card-title">演示视频</h5>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1391,9 +1396,6 @@
                         <p class="lead mb-4" style="color: var(--light); font-weight: 300; max-width: 600px; margin: 15px auto 25px;">无论您是视频创作者、媒体工作者还是技术爱好者，我们的应用都能满足您的需求</p>
                         
                         <div class="d-flex flex-wrap justify-content-center gap-3">
-                            <button class="btn btn-primary btn-lg">
-                                <i class="bi bi-download me-2"></i> 下载应用
-                            </button>
                             <button class="btn btn-outline-light btn-lg">
                                 <i class="bi bi-envelope me-2"></i> 联系我们
                             </button>
@@ -1423,9 +1425,9 @@
                 </div>
                 <div class="col-md-4 text-md-end">
                     <h5 style="color: var(--primary); font-weight: 500; font-size: 1rem;">联系信息</h5>
-                    <p style="font-size: 0.9rem; margin-bottom: 5px;"><i class="bi bi-envelope-fill me-2" style="color: var(--primary);"></i> contact@aiface.example.com</p>
-                    <p style="font-size: 0.9rem;"><i class="bi bi-geo-alt-fill me-2" style="color: var(--primary);"></i> 中国, 北京</p>
-                    <p class="mt-4" style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.5);">© 2023 AI人脸替换项目 版权所有</p>
+                    <p style="font-size: 0.9rem; margin-bottom: 5px;"><i class="bi bi-envelope-fill me-2" style="color: var(--primary);"></i> 15292050844@qq.com</p>
+                    <p style="font-size: 0.9rem;"><i class="bi bi-geo-alt-fill me-2" style="color: var(--primary);"></i> 中国, 济南</p>
+                    <p class="mt-4" style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.5);">© 2025 AI人脸替换项目 版权所有</p>
                 </div>
             </div>
         </div>
@@ -1500,6 +1502,23 @@
         window.addEventListener('load', () => {
             createDigitalRain();
         });
+        
+        // 让"了解技术"按钮点击后跳转到技术规格详情
+        document.getElementById('view-tech-btn').onclick = function() {
+            const techDetail = document.querySelector('h4 i.bi-file-earmark-code-fill');
+            if (techDetail) {
+                techDetail.scrollIntoView({behavior: 'smooth'});
+            }
+        };
+        
+        // 让"查看演示"按钮点击后跳转到演示视频部分，并自动播放演示视频
+        document.getElementById('view-demo-btn').onclick = function() {
+            const demoVideo = document.getElementById('demo-video');
+            if (demoVideo) {
+                demoVideo.scrollIntoView({behavior: 'smooth'});
+                demoVideo.play();
+            }
+        };
     </script>
 </body>
 </html> 
