@@ -181,7 +181,7 @@ class CameraProcessingThread(QThread):
 
             # 主循环 - 终极优化版 (异步处理 + 多级缓存)
             frame_count = 0
-            skip_frames = 4  # 处理每第5帧，极致流畅
+            skip_frames = 2  # 处理每第3帧，平衡流畅度和质量
             last_target_face = None
             target_face = None
             cached_result = None
@@ -213,7 +213,7 @@ class CameraProcessingThread(QThread):
                         try:
                             if self.face_swap_app.inswapper is not None and self.face_swap_app.face_analyser is not None:
                                 h, w = frame.shape[:2]
-                                process_size = 640  # 平衡分辨率和质量
+                                process_size = 480  # 降低分辨率以减少卡顿
 
                                 if w > process_size:
                                     scale = process_size / w
@@ -224,7 +224,7 @@ class CameraProcessingThread(QThread):
                                     try:
                                         processed_small = self.face_swap_app.insightface_face_swap(small_frame, target_face)
                                         if processed_small is not None:
-                                            # 高质量放大
+                                            # 使用快速插值减少延迟
                                             processed_frame = cv2.resize(processed_small, (w, h),
                                                                    interpolation=cv2.INTER_LINEAR)
                                             self.frame_ready.emit(processed_frame)
@@ -350,6 +350,15 @@ class EnhancedFaceSwapUI(QMainWindow):
         # 根据模型是否可用来动态设置默认方法
         self.original_app.swapper_var = "inswapper" if (self.original_app.inswapper is not None and self.original_app.face_analyser is not None) else "traditional"
         self.original_app.smoothing_var = 50           # 默认平滑度
+
+        # 确保传统方法的predictor被初始化
+        if self.original_app.predictor is None and os.path.exists(self.original_app.predictor_path):
+            try:
+                import dlib
+                self.original_app.predictor = dlib.shape_predictor(self.original_app.predictor_path)
+                print(f"[初始化] 成功加载传统方法predictor: {self.original_app.predictor_path}")
+            except Exception as e:
+                print(f"[警告] 初始化predictor失败: {e}")
 
         # 摄像头相关
         self.camera_thread = None
@@ -1378,10 +1387,10 @@ class EnhancedFaceSwapUI(QMainWindow):
             print(video_info)
             self.statusBar().showMessage(video_info)
             
-            # 计算延迟（毫秒）- 限制最大和最小帧率
-            if self.cv_fps <= 0 or self.cv_fps > 120:
-                self.cv_fps = 30  # 默认30fps
-            delay = int(1000 / (self.cv_fps * self.playback_speed_factor))
+            # 计算延迟（毫秒）- 修复fps范围限制
+            if self.cv_fps <= 0 or self.cv_fps > 240:
+                self.cv_fps = 30  # 默认30fps，但允许高帧率视频正常播放
+            delay = int(1000 / self.cv_fps / self.playback_speed_factor)
             if delay <= 0: # 防止延迟为0或负数
                 delay = 1 # 设置一个最小延迟
             
