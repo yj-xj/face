@@ -213,20 +213,20 @@ class CameraProcessingThread(QThread):
                         try:
                             if self.face_swap_app.inswapper is not None and self.face_swap_app.face_analyser is not None:
                                 h, w = frame.shape[:2]
-                                process_size = 320  # 极小分辨率，速度优先
+                                process_size = 640  # 平衡分辨率和质量
 
                                 if w > process_size:
                                     scale = process_size / w
                                     small_frame = cv2.resize(frame, (0, 0), fx=scale, fy=scale,
-                                                           interpolation=cv2.INTER_NEAREST)
+                                                           interpolation=cv2.INTER_AREA)
 
                                     # 异步处理 - 使用try-catch确保不阻塞
                                     try:
                                         processed_small = self.face_swap_app.insightface_face_swap(small_frame, target_face)
                                         if processed_small is not None:
-                                            # 快速放大
+                                            # 高质量放大
                                             processed_frame = cv2.resize(processed_small, (w, h),
-                                                                   interpolation=cv2.INTER_NEAREST)
+                                                                   interpolation=cv2.INTER_LINEAR)
                                             self.frame_ready.emit(processed_frame)
                                             cached_result = processed_frame
                                         else:
@@ -539,13 +539,14 @@ class EnhancedFaceSwapUI(QMainWindow):
             border: 2px solid #444444;
             border-radius: 5px;
         """)
-        video_frame.setMinimumSize(800, 600)
+        video_frame.setMinimumSize(1200, 900)
         video_layout = QVBoxLayout(video_frame)
         video_layout.setContentsMargins(5, 5, 5, 5)
         
         # 创建视频显示标签
         self.cv_video_label = QLabel()
         self.cv_video_label.setAlignment(Qt.AlignCenter)
+        self.cv_video_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.cv_video_label.setStyleSheet("""
             background-color: #000000;
             border: 1px solid #333333;
