@@ -1,0 +1,13 @@
+Django==4.2.7
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+django-filter==23.5
+Pillow==10.1.0
+opencv-python==4.8.1.78
+numpy==1.24.3
+PyMySQL==1.1.0
+python-decouple==3.8
+drf-yasg==1.21.7
+celery==5.3.4
+redis==5.0.1
+gunicorn==21.2.0
