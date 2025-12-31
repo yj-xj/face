@@ -1825,8 +1825,7 @@ class EnhancedFaceSwapUI(QMainWindow):
 
             if not os.path.exists(video_path):
                 print(f"[双击播放] 错误: 文件不存在 - {video_path}")
-                QMessageBox.warning(self, "警告", f"视频文件不存在:
-{video_path}")
+                QMessageBox.warning(self, "警告", f"视频文件不存在:\n{video_path}")
                 return
 
             filename = os.path.basename(video_path)
@@ -1864,8 +1863,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             print(f"[双击播放] 异常: {e}")
             import traceback
             traceback.print_exc()
-            QMessageBox.critical(self, "错误", f"播放视频时出错:
-{str(e)}")
+            QMessageBox.critical(self, "错误", f"播放视频时出错:\n{str(e)}")
 
 
     def browseOutputPath(self):
