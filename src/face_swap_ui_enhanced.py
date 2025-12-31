@@ -178,23 +178,46 @@ class CameraProcessingThread(QThread):
             else:
                 self.status_signal.emit("未选择目标人脸，仅显示摄像头画面")
 
-            # 主循环
+            # 主循环 - 优化版
+            frame_count = 0
+            skip_frames = 1  # 跳帧处理以提高性能
+
             while self.running:
                 ret, frame = self.camera.read()
                 if not ret:
                     self.error_signal.emit("无法从摄像头读取帧")
                     break
 
+                # 跳帧处理以提高帧率
+                frame_count += 1
+                if frame_count % skip_frames != 0:
+                    # 跳过的帧直接显示原始画面
+                    self.frame_ready.emit(frame)
+                    continue
+
                 # 如果启用了处理且加载了目标人脸
                 if self.processing_enabled and target_face is not None:
                     try:
                         # 使用inswapper模型进行实时换脸
                         if self.face_swap_app.inswapper is not None and self.face_swap_app.face_analyser is not None:
-                            processed_frame = self.face_swap_app.insightface_face_swap(frame, target_face)
-                            if processed_frame is not None:
-                                self.frame_ready.emit(processed_frame)
+                            # 降低分辨率以加快处理速度
+                            h, w = frame.shape[:2]
+                            if w > 640:  # 如果宽度超过640，缩小处理
+                                scale = 640 / w
+                                small_frame = cv2.resize(frame, (0, 0), fx=scale, fy=scale)
+                                processed_small = self.face_swap_app.insightface_face_swap(small_frame, target_face)
+                                if processed_small is not None:
+                                    processed_frame = cv2.resize(processed_small, (w, h))
+                                    self.frame_ready.emit(processed_frame)
+                                else:
+                                    self.frame_ready.emit(frame)
                             else:
-                                self.frame_ready.emit(frame)
+                                # 小尺寸视频直接处理
+                                processed_frame = self.face_swap_app.insightface_face_swap(frame, target_face)
+                                if processed_frame is not None:
+                                    self.frame_ready.emit(processed_frame)
+                                else:
+                                    self.frame_ready.emit(frame)
                         else:
                             # 如果inswapper不可用，显示原始帧
                             self.frame_ready.emit(frame)
@@ -207,9 +230,6 @@ class CameraProcessingThread(QThread):
                 else:
                     # 直接发送原始帧
                     self.frame_ready.emit(frame)
-
-                # 控制帧率，避免CPU占用过高
-                time.sleep(0.01)  # 约100fps
 
         except Exception as e:
             import traceback
@@ -300,7 +320,8 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.original_app.color_correction_var = True   # 默认启用颜色校正
         self.original_app.multi_scale_var = True       # 默认使用多尺度检测
         self.original_app.detector_var = "dlib"        # 默认使用dlib检测器
-        self.original_app.swapper_var = "inswapper"    # 默认使用inswapper
+        # 根据模型是否可用来动态设置默认方法
+        self.original_app.swapper_var = "inswapper" if (self.original_app.inswapper is not None and self.original_app.face_analyser is not None) else "traditional"
         self.original_app.smoothing_var = 50           # 默认平滑度
 
         # 摄像头相关

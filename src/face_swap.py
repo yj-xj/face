@@ -1077,8 +1077,18 @@ class FaceSwapApp:
                     index, frame = frame_data
                     
                     # 获取用户选择的人脸替换方法和参数
-                    swapper_choice = self.swapper_var
-                    detector_choice = self.detector_var
+                    # 兼容处理 tk.StringVar 和普通字符串
+                    swapper_var_val = self.swapper_var
+                    if hasattr(swapper_var_val, 'get'):
+                        swapper_choice = swapper_var_val.get()
+                    else:
+                        swapper_choice = swapper_var_val
+
+                    detector_var_val = self.detector_var
+                    if hasattr(detector_var_val, 'get'):
+                        detector_choice = detector_var_val.get()
+                    else:
+                        detector_choice = detector_var_val
                     target_face_path = self.face_images[self.selected_face_index]
                 
                     # 处理图像 - 这里需要适配你的处理流程
