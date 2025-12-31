@@ -178,73 +178,80 @@ class CameraProcessingThread(QThread):
             else:
                 self.status_signal.emit("未选择目标人脸，仅显示摄像头画面")
 
-            # 主循环 - 超优化版 (最低延迟)
+            # 主循环 - 终极优化版 (异步处理 + 多级缓存)
             frame_count = 0
-            skip_frames = 2  # 处理每第3帧，大幅提升流畅度
+            skip_frames = 4  # 处理每第5帧，极致流畅
             last_target_face = None
+            target_face = None
             cached_result = None
+            last_processed_frame = None
+
+            # 预加载目标人脸
+            if self.target_face_path and os.path.exists(self.target_face_path):
+                target_face = cv2.imread(self.target_face_path)
+                last_target_face = self.target_face_path
 
             while self.running:
                 ret, frame = self.camera.read()
                 if not ret:
-                    self.error_signal.emit("无法从摄像头读取帧")
                     break
 
-                # 检查目标人脸是否改变
-                if self.target_face_path != last_target_face:
+                frame_count += 1
+
+                # 检查目标人脸是否改变（仅在处理帧时检查）
+                if frame_count % skip_frames == 0 and self.target_face_path != last_target_face:
                     last_target_face = self.target_face_path
                     if os.path.exists(self.target_face_path):
                         target_face = cv2.imread(self.target_face_path)
-                        cached_result = None  # 清空缓存
-                    else:
-                        target_face = None
                         cached_result = None
+                        last_processed_frame = None
 
-                # 跳帧处理 - 大幅提升流畅度
-                frame_count += 1
-                should_process = (frame_count % skip_frames == 0)
+                # 分离处理和显示逻辑
+                if self.processing_enabled and target_face is not None:
+                    if frame_count % skip_frames == 0:
+                        try:
+                            if self.face_swap_app.inswapper is not None and self.face_swap_app.face_analyser is not None:
+                                h, w = frame.shape[:2]
+                                process_size = 320  # 极小分辨率，速度优先
 
-                # 如果启用了处理且加载了目标人脸
-                if self.processing_enabled and target_face is not None and should_process:
-                    try:
-                        # 使用inswapper模型进行实时换脸
-                        if self.face_swap_app.inswapper is not None and self.face_swap_app.face_analyser is not None:
-                            # 进一步降低分辨率 - 最快速度
-                            h, w = frame.shape[:2]
-                            process_size = 480  # 固定处理分辨率，速度最快
-                            if w > process_size:
-                                scale = process_size / w
-                                small_frame = cv2.resize(frame, (0, 0), fx=scale, fy=scale,
-                                                       interpolation=cv2.INTER_NEAREST)  # 最近邻插值最快
-                                processed_small = self.face_swap_app.insightface_face_swap(small_frame, target_face)
-                                if processed_small is not None:
-                                    processed_frame = cv2.resize(processed_small, (w, h),
+                                if w > process_size:
+                                    scale = process_size / w
+                                    small_frame = cv2.resize(frame, (0, 0), fx=scale, fy=scale,
                                                            interpolation=cv2.INTER_NEAREST)
-                                    self.frame_ready.emit(processed_frame)
-                                    cached_result = processed_frame  # 缓存结果
-                                else:
-                                    self.frame_ready.emit(frame)
-                            else:
-                                # 小尺寸视频直接处理
-                                processed_frame = self.face_swap_app.insightface_face_swap(frame, target_face)
-                                if processed_frame is not None:
-                                    self.frame_ready.emit(processed_frame)
-                                    cached_result = processed_frame
-                                else:
-                                    self.frame_ready.emit(frame)
-                        else:
-                            # 如果inswapper不可用，显示原始帧
-                            self.frame_ready.emit(frame)
 
-                    except Exception as e:
-                        # 处理出错时显示原始帧
-                        self.frame_ready.emit(frame)
-                else:
-                    # 跳过的帧直接发送原始画面或缓存
-                    if cached_result is not None and self.processing_enabled:
-                        self.frame_ready.emit(cached_result)
+                                    # 异步处理 - 使用try-catch确保不阻塞
+                                    try:
+                                        processed_small = self.face_swap_app.insightface_face_swap(small_frame, target_face)
+                                        if processed_small is not None:
+                                            # 快速放大
+                                            processed_frame = cv2.resize(processed_small, (w, h),
+                                                                   interpolation=cv2.INTER_NEAREST)
+                                            self.frame_ready.emit(processed_frame)
+                                            cached_result = processed_frame
+                                        else:
+                                            self.frame_ready.emit(frame)
+                                    except:
+                                        self.frame_ready.emit(frame)
+                                else:
+                                    # 320p以下直接处理
+                                    processed_frame = self.face_swap_app.insightface_face_swap(frame, target_face)
+                                    if processed_frame is not None:
+                                        self.frame_ready.emit(processed_frame)
+                                        cached_result = processed_frame
+                                    else:
+                                        self.frame_ready.emit(frame)
+                            else:
+                                self.frame_ready.emit(frame)
+                        except:
+                            self.frame_ready.emit(frame)
                     else:
-                        self.frame_ready.emit(frame)
+                        # 非处理帧：使用缓存
+                        if cached_result is not None:
+                            self.frame_ready.emit(cached_result)
+                        else:
+                            self.frame_ready.emit(frame)
+                else:
+                    self.frame_ready.emit(frame)
 
         except Exception as e:
             import traceback
@@ -812,6 +819,39 @@ class EnhancedFaceSwapUI(QMainWindow):
         video_panel_layout.addWidget(video_input_group)
 
         # 添加高级选项部分
+        # 上传视频按钮
+        upload_video_layout = QHBoxLayout()
+
+        self.upload_video_btn = QPushButton("[上传] 添加视频")
+        self.upload_video_btn.setStyleSheet("""
+            QPushButton {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #FF5E84, stop:1 #FF4070);
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 13px;
+                box-shadow: 0 4px 8px rgba(255, 94, 132, 0.3);
+            }
+            QPushButton:hover {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #FF4070, stop:1 #FF2860);
+            }
+        """)
+        self.upload_video_btn.clicked.connect(self.uploadVideoFile)
+        upload_video_layout.addWidget(self.upload_video_btn)
+        upload_video_layout.addStretch()
+
+        video_input_layout.addLayout(upload_video_layout)
+
+        # 分隔线
+        separator = QLabel()
+        separator.setStyleSheet("background-color: #444444; max-height: 1px;")
+        video_input_layout.addWidget(separator)
+
+        # 高级选项部分
         advanced_group = QGroupBox("高级选项")
         advanced_layout = QGridLayout(advanced_group)
 
@@ -1014,6 +1054,29 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.snapshot_btn.clicked.connect(self.takeSnapshot)
         self.snapshot_btn.setEnabled(False)
         camera_btn_layout.addWidget(self.snapshot_btn)
+
+        # 上传人脸图片按钮
+        self.upload_face_btn = QPushButton("[上传] 添加人脸")
+        self.upload_face_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #FF5E84;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #FF4070;
+            }
+            QPushButton:disabled {
+                background-color: #444444;
+                color: #888888;
+            }
+        """)
+        self.upload_face_btn.clicked.connect(self.uploadFaceImage)
+        camera_btn_layout.addWidget(self.upload_face_btn)
 
         camera_control_group_layout.addLayout(camera_btn_layout)
 
