@@ -474,32 +474,46 @@ class EnhancedFaceSwapUI(QMainWindow):
         # 保留QVideoWidget但隐藏它，以兼容旧代码
         self.video_widget = QVideoWidget()
         self.video_widget.hide()
-        
-        # 视频控制栏
-        control_layout = QHBoxLayout()
-        
-        # 添加打开视频按钮
+
+        # ========== 创建独立的控制栏系统 ==========
+        # 使用QStackedWidget管理视频和摄像头的控制栏
+        self.control_bar_stack = QStackedWidget()
+        left_layout.addWidget(self.control_bar_stack)
+
+        # ========== 视频模式控制栏 ==========
+        self.video_control_bar = QWidget()
+        video_control_layout = QHBoxLayout(self.video_control_bar)
+        video_control_layout.setContentsMargins(5, 5, 5, 5)
+        video_control_layout.setSpacing(8)
+
+        # 添加打开视频按钮（带美化动效）
         open_video_btn = QPushButton("打开视频")
         open_video_btn.setIcon(QIcon.fromTheme("document-open"))
         open_video_btn.setStyleSheet("""
             QPushButton {
-                background-color: #2a2a2a;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #4a90e2, stop:1 #357abd);
                 color: white;
-                border: 1px solid #444444;
-                border-radius: 3px;
-                padding: 5px 10px;
+                border: none;
+                border-radius: 6px;
+                padding: 8px 16px;
+                font-weight: bold;
+                font-size: 13px;
             }
             QPushButton:hover {
-                background-color: #3a3a3a;
-                border: 1px solid #555555;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #5a9fff, stop:1 #4682b4);
+                box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
             }
             QPushButton:pressed {
-                background-color: #222222;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #357abd, stop:1 #286090);
             }
         """)
         open_video_btn.clicked.connect(self.openVideo)
-        control_layout.addWidget(open_video_btn)
-        
+        video_control_layout.addWidget(open_video_btn)
+
+        # 播放/暂停按钮
         self.play_pause_button = QPushButton("播放")
         self.play_pause_button.setIcon(QIcon.fromTheme("media-playback-start"))
         self.play_pause_button.setStyleSheet("""
@@ -507,60 +521,161 @@ class EnhancedFaceSwapUI(QMainWindow):
                 background-color: #2a2a2a;
                 color: white;
                 border: 1px solid #444444;
-                border-radius: 3px;
-                padding: 5px 10px;
+                border-radius: 6px;
+                padding: 8px 16px;
+                font-size: 13px;
             }
             QPushButton:hover {
                 background-color: #3a3a3a;
-                border: 1px solid #555555;
+                border: 1px solid #666666;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             }
             QPushButton:pressed {
                 background-color: #222222;
             }
         """)
         self.play_pause_button.clicked.connect(self.togglePlayback)
-        control_layout.addWidget(self.play_pause_button)
-        
-        # 创建停止按钮
+        video_control_layout.addWidget(self.play_pause_button)
+
+        # 停止按钮
         self.stop_button = QPushButton()
         self.stop_button.setIcon(self.style().standardIcon(QStyle.SP_MediaStop))
         self.stop_button.setToolTip("停止")
+        self.stop_button.setStyleSheet("""
+            QPushButton {
+                background-color: #2a2a2a;
+                border: 1px solid #444444;
+                border-radius: 6px;
+                padding: 8px;
+                min-width: 36px;
+            }
+            QPushButton:hover {
+                background-color: #3a3a3a;
+                border: 1px solid #666666;
+            }
+        """)
         self.stop_button.clicked.connect(self.stopPlayback)
-        control_layout.addWidget(self.stop_button)
+        video_control_layout.addWidget(self.stop_button)
 
-        # 创建播放速度控制
+        # 播放速度控制
         self.speed_combo_box = QComboBox()
         self.speed_combo_box.addItems(self.speed_options.keys())
         self.speed_combo_box.setCurrentText("1.0x")
         self.speed_combo_box.setToolTip("调整播放速度")
+        self.speed_combo_box.setStyleSheet("""
+            QComboBox {
+                background-color: #2a2a2a;
+                color: white;
+                border: 1px solid #444444;
+                border-radius: 6px;
+                padding: 5px 10px;
+                min-width: 80px;
+            }
+            QComboBox:hover {
+                border: 1px solid #666666;
+                background-color: #333333;
+            }
+            QComboBox::drop-down {
+                border: none;
+                background-color: #2a2a2a;
+            }
+            QComboBox QAbstractItemView {
+                background-color: #2a2a2a;
+                color: white;
+                selection-background-color: #4287f5;
+                border: 1px solid #444444;
+            }
+        """)
         self.speed_combo_box.currentTextChanged.connect(self.changePlaybackSpeed)
-        control_layout.addWidget(self.speed_combo_box)
-        
+        video_control_layout.addWidget(self.speed_combo_box)
+
+        # 进度条
         self.position_slider = QProgressBar()
         self.position_slider.setTextVisible(False)
         self.position_slider.setRange(0, 100)
         self.position_slider.setValue(0)
         self.position_slider.setStyleSheet("""
             QProgressBar {
-                border: 1px solid #444444;
-                border-radius: 3px;
-                background-color: #2a2a2a;
-                height: 15px;
+                border: none;
+                border-radius: 4px;
+                background-color: #1a1a1a;
+                height: 8px;
+                text-align: center;
             }
             QProgressBar::chunk {
-                background-color: #4287f5;
-                width: 1px;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #4287f5, stop:1 #5a9fff);
+                border-radius: 4px;
             }
         """)
-        
+
+        # 时间标签
         self.time_label = QLabel("00:00 / 00:00")
-        self.time_label.setStyleSheet("color: white;")
-        
-        control_layout.addWidget(self.play_pause_button)
-        control_layout.addWidget(self.position_slider, 1)
-        control_layout.addWidget(self.time_label)
-        
-        left_layout.addLayout(control_layout)
+        self.time_label.setStyleSheet("""
+            QLabel {
+                color: #ffffff;
+                font-size: 12px;
+                padding: 0 8px;
+                background-color: #1a1a1a;
+                border-radius: 4px;
+                padding: 4px 10px;
+            }
+        """)
+
+        video_control_layout.addWidget(self.position_slider, 1)
+        video_control_layout.addWidget(self.time_label)
+
+        # 添加视频控制栏到堆叠窗口
+        self.control_bar_stack.addWidget(self.video_control_bar)
+
+        # ========== 摄像头模式控制栏（简化版） ==========
+        self.camera_control_bar = QWidget()
+        camera_control_layout = QHBoxLayout(self.camera_control_bar)
+        camera_control_layout.setContentsMargins(5, 5, 5, 5)
+        camera_control_layout.setSpacing(8)
+
+        # 摄像头状态指示器
+        self.camera_status_indicator = QLabel()
+        self.camera_status_indicator.setFixedSize(12, 12)
+        self.camera_status_indicator.setStyleSheet("""
+            QLabel {
+                background-color: #666666;
+                border-radius: 6px;
+                border: 2px solid #888888;
+            }
+        """)
+        camera_control_layout.addWidget(self.camera_status_indicator)
+
+        # 摄像头状态文本
+        self.camera_bar_status_label = QLabel("摄像头未启动")
+        self.camera_bar_status_label.setStyleSheet("""
+            QLabel {
+                color: #888888;
+                font-size: 13px;
+                padding: 4px 10px;
+                background-color: #1a1a1a;
+                border-radius: 4px;
+            }
+        """)
+        camera_control_layout.addWidget(self.camera_bar_status_label)
+
+        camera_control_layout.addStretch()
+
+        # 分辨率显示
+        self.camera_resolution_label = QLabel()
+        self.camera_resolution_label.setStyleSheet("""
+            QLabel {
+                color: #666666;
+                font-size: 12px;
+            }
+        """)
+        camera_control_layout.addWidget(self.camera_resolution_label)
+
+        # 添加摄像头控制栏到堆叠窗口
+        self.control_bar_stack.addWidget(self.camera_control_bar)
+
+        # 默认显示视频控制栏
+        self.control_bar_stack.setCurrentWidget(self.video_control_bar)
 
         # ========== 创建右侧控制部分（使用QStackedWidget分离两种模式） ==========
         right_widget = QWidget()
@@ -1601,6 +1716,9 @@ class EnhancedFaceSwapUI(QMainWindow):
             # 切换到视频控制面板
             self.control_stack.setCurrentWidget(self.video_control_panel)
 
+            # 切换到视频控制栏
+            self.control_bar_stack.setCurrentWidget(self.video_control_bar)
+
             self.statusBar().showMessage("已切换到视频模式")
         else:
             self.camera_mode_btn.setChecked(True)
@@ -1609,6 +1727,9 @@ class EnhancedFaceSwapUI(QMainWindow):
 
             # 切换到摄像头控制面板
             self.control_stack.setCurrentWidget(self.camera_control_panel)
+
+            # 切换到摄像头控制栏
+            self.control_bar_stack.setCurrentWidget(self.camera_control_bar)
 
             self.statusBar().showMessage("已切换到摄像头模式")
 
@@ -1754,15 +1875,42 @@ class EnhancedFaceSwapUI(QMainWindow):
                     background-color: #dc3545;
                     color: white;
                     border: none;
-                    padding: 8px 16px;
-                    border-radius: 4px;
+                    padding: 10px 20px;
+                    border-radius: 6px;
                     font-weight: bold;
+                    font-size: 14px;
                 }
                 QPushButton:hover {
                     background-color: #c82333;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
                 }
             """)
 
+            # 更新状态指示器
+            self.camera_status_indicator.setStyleSheet("""
+                QLabel {
+                    background-color: #28a745;
+                    border-radius: 6px;
+                    border: 2px solid #34ce57;
+                    box-shadow: 0 0 8px #28a745;
+                }
+            """)
+
+            # 更新状态文本
+            self.camera_bar_status_label.setText("摄像头运行中")
+            self.camera_bar_status_label.setStyleSheet("""
+                QLabel {
+                    color: #28a745;
+                    font-size: 13px;
+                    font-weight: bold;
+                    padding: 4px 10px;
+                    background-color: #1a2e1a;
+                    border: 1px solid #28a745;
+                    border-radius: 4px;
+                }
+            """)
+
+            self.snapshot_btn.setEnabled(True)
             self.statusBar().showMessage("摄像头已启动")
 
         except Exception as e:
@@ -1796,13 +1944,38 @@ class EnhancedFaceSwapUI(QMainWindow):
                 # 清空显示区域
                 self.cv_video_label.setText("<font color='#888888'>摄像头已关闭</font>")
 
+                # 重置状态指示器
+                self.camera_status_indicator.setStyleSheet("""
+                    QLabel {
+                        background-color: #666666;
+                        border-radius: 6px;
+                        border: 2px solid #888888;
+                    }
+                """)
+
+                # 重置状态文本
+                self.camera_bar_status_label.setText("摄像头未启动")
+                self.camera_bar_status_label.setStyleSheet("""
+                    QLabel {
+                        color: #888888;
+                        font-size: 13px;
+                        padding: 4px 10px;
+                        background-color: #1a1a1a;
+                        border-radius: 4px;
+                    }
+                """)
+
+                # 清空分辨率显示
+                if hasattr(self, 'camera_resolution_label'):
+                    self.camera_resolution_label.setText("")
+
                 self.statusBar().showMessage("摄像头已关闭")
 
         except Exception as e:
             print(f"停止摄像头时出错: {e}")
 
     def displayCameraFrame(self, frame):
-        """显示摄像头捕获的帧（优化版）"""
+        """显示摄像头捕获的帧（全屏显示，不缩放）"""
         try:
             if frame is None:
                 return
@@ -1810,34 +1983,21 @@ class EnhancedFaceSwapUI(QMainWindow):
             # 转换颜色空间
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-            # 获取标签大小
-            label_width = self.cv_video_label.width()
-            label_height = self.cv_video_label.height()
-
-            if label_width < 10 or label_height < 10:
-                label_width = 800
-                label_height = 600
+            # 获取视频原始尺寸
+            h, w, c = frame_rgb.shape
 
             # 转换为QImage
-            h, w, c = frame_rgb.shape
             q_img = QImage(frame_rgb.data, w, h, w * c, QImage.Format_RGB888)
 
-            # 创建QPixmap并调整大小
+            # 创建QPixmap
             pixmap = QPixmap.fromImage(q_img)
 
-            # 计算缩放比例
-            scale_w = label_width / w
-            scale_h = label_height / h
-            scale = min(scale_w, scale_h)
+            # 直接显示原始大小，不进行缩放
+            self.cv_video_label.setPixmap(pixmap)
 
-            display_w = int(w * scale)
-            display_h = int(h * scale)
-
-            # 使用FastTransformation提升性能
-            scaled_pixmap = pixmap.scaled(display_w, display_h, Qt.KeepAspectRatio, Qt.FastTransformation)
-
-            # 设置图像到标签
-            self.cv_video_label.setPixmap(scaled_pixmap)
+            # 更新分辨率显示
+            if hasattr(self, 'camera_resolution_label'):
+                self.camera_resolution_label.setText(f"{w}x{h}")
 
         except Exception as e:
             # 减少日志输出
