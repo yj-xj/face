@@ -1350,8 +1350,14 @@ class EnhancedFaceSwapUI(QMainWindow):
         """使用OpenCV播放视频"""
         try:
             # 检查是否已经有正在运行的播放线程
-            if hasattr(self, 'cv_play_timer') and self.cv_play_timer.isActive():
-                self.cv_play_timer.stop()
+            if hasattr(self, 'cv_play_timer') and self.cv_play_timer is not None:
+                if self.cv_play_timer.isActive():
+                    self.cv_play_timer.stop()
+                # 断开旧的信号连接，防止重复触发
+                try:
+                    self.cv_play_timer.timeout.disconnect()
+                except Exception:
+                    pass  # 如果没有连接，忽略错误
             
             # 释放旧的视频捕获
             if hasattr(self, 'cv_cap') and self.cv_cap is not None and self.cv_cap.isOpened():
@@ -1414,6 +1420,11 @@ class EnhancedFaceSwapUI(QMainWindow):
             else:
                 self.cv_play_timer = QTimer(self)
             
+            # 确保信号只连接一次
+            try:
+                self.cv_play_timer.timeout.disconnect()
+            except Exception:
+                pass
             self.cv_play_timer.timeout.connect(self.showNextFrame)
             print(f"开始定时播放，间隔: {delay}ms, 速度因子: {self.playback_speed_factor}x")
             self.cv_play_timer.start(delay)
