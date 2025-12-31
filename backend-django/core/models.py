@@ -24,13 +24,18 @@ class FaceImage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='face_images')
     filename = models.CharField(max_length=255, unique=True)
     original_filename = models.CharField(max_length=255)
-    file = models.ImageField(upload_to=get_upload_path)
+
+    # 本地文件路径（用于本地处理）
+    local_path = models.CharField(max_length=500, blank=True, null=True, help_text="本地文件系统路径")
+
+    # 服务器文件（可选，用于远程访问）
+    file = models.ImageField(upload_to=get_upload_path, blank=True, null=True)
     thumbnail = models.ImageField(upload_to=get_upload_path, blank=True, null=True)
 
     # Image metadata
     width = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
-    file_size = models.BigInteger(blank=True, null=True)
+    file_size = models.BigIntegerField(blank=True, null=True)
     face_count = models.IntegerField(default=0)
 
     # Status
@@ -66,7 +71,12 @@ class InputVideo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='input_videos')
     filename = models.CharField(max_length=255, unique=True)
     original_filename = models.CharField(max_length=255)
-    file = models.FileField(upload_to=get_upload_path)
+
+    # 本地文件路径（用于本地处理）
+    local_path = models.CharField(max_length=500, blank=True, null=True, help_text="本地文件系统路径")
+
+    # 服务器文件（可选，用于远程访问）
+    file = models.FileField(upload_to=get_upload_path, blank=True, null=True)
     thumbnail = models.ImageField(upload_to=get_upload_path, blank=True, null=True)
 
     # Video metadata
@@ -75,7 +85,7 @@ class InputVideo(models.Model):
     height = models.IntegerField(blank=True, null=True)
     fps = models.FloatField(blank=True, null=True)
     codec = models.CharField(max_length=50, blank=True)
-    file_size = models.BigInteger(blank=True, null=True)
+    file_size = models.BigIntegerField(blank=True, null=True)
 
     # Status
     is_active = models.BooleanField(default=True)
@@ -130,7 +140,7 @@ class OutputVideo(models.Model):
     width = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
     fps = models.FloatField(blank=True, null=True)
-    file_size = models.BigInteger(blank=True, null=True)
+    file_size = models.BigIntegerField(blank=True, null=True)
 
     # Processing info
     processing_method = models.CharField(max_length=20, choices=PROCESSING_METHOD_CHOICES, default='inswapper')

@@ -3,7 +3,6 @@ URL configuration for API app.
 """
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from rest_framework.authtoken import views as auth_views
 from . import views
 
 router = DefaultRouter()
@@ -14,6 +13,4 @@ router.register(r'tasks', views.ProcessingTaskViewSet, basename='processingtask'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('upload/image/', views.FaceImageViewSet.as_view({'post': 'create'})),
-    path('upload/video/', views.InputVideoViewSet.as_view({'post': 'create'})),
 ]

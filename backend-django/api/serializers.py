@@ -14,7 +14,7 @@ class FaceImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FaceImage
         fields = [
-            'id', 'user', 'user_username', 'filename', 'original_filename',
+            'id', 'user', 'user_username', 'filename', 'original_filename', 'local_path',
             'file', 'thumbnail', 'file_url', 'thumbnail_url',
             'width', 'height', 'file_size', 'face_count', 'is_active',
             'created_at', 'updated_at'
@@ -41,7 +41,7 @@ class InputVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = InputVideo
         fields = [
-            'id', 'user', 'user_username', 'filename', 'original_filename',
+            'id', 'user', 'user_username', 'filename', 'original_filename', 'local_path',
             'file', 'thumbnail', 'file_url', 'thumbnail_url',
             'duration', 'width', 'height', 'fps', 'codec', 'file_size', 'is_active',
             'created_at', 'updated_at'
@@ -75,7 +75,7 @@ class OutputVideoSerializer(serializers.ModelSerializer):
             'processing_method', 'processing_time', 'status', 'progress', 'error_message',
             'created_at', 'completed_at'
         ]
-        read_only_fields = ['user', 'file_size', 'created_at', 'completed_at']
+        read_only_fields = ['id', 'user', 'file_size', 'created_at', 'completed_at']
 
     def get_file_url(self, obj):
         if obj.file:

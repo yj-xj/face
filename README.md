@@ -1,275 +1,226 @@
 # 人脸替换应用 (Face Swap Application)
 
-基于 InsightFace 和传统算法的人脸替换应用，支持���频处理和实时摄像头换脸。
-
-## 功能特点
-
-- **双模式支持**
-  - 📹 **视频模式**: 批量处理视频文件，支持人脸替换
-  - 📷 **摄像头模式**: 实时摄像头人脸检测和替换
-
-- **多种换脸算法**
-  - ✨ **Inswapper**: 基于 InsightFace 的深度学习换脸模型，效果自然
-  - 🔧 **传统方法**: 基于 Delaunay 三角剖分的传统算法
-
-- **高级功能**
-  - 颜色校正
-  - 多尺度人脸检测
-  - 多种人脸检测器（Dlib、OpenCV）
-  - 平滑度调节
-  - 实时预览和拍照保存
-
-## 环境要求
-
-- Python 3.9+
-- Windows 操作系统
-- 摄像头（用于实时模式）
-
-## 安装
-
-### 1. 克隆仓库
-
-```bash
-git clone https://github.com/yj-xj/face.git
-cd face
-```
-
-### 2. 创建虚拟环境（推荐）
-
-```bash
-conda create -n face_swap python=3.9
-conda activate face_swap
-```
-
-### 3. 安装依赖
-
-```bash
-pip install -r requirements.txt
-```
-
-主要依赖：
-- PyQt5
-- OpenCV
-- InsightFace
-- dlib
-- onnxruntime
-- moviepy
-- numpy
-- Pillow
-
-## 模型文件
-
-### 必需的模型文件
-
-应用需要以下模型文件才能正常工作：
-
-1. **Inswapper 模型** (529MB)
-   - 下载地址: https://huggingface.co/deepinsight/inswapper/blob/main/inswapper_128.onnx
-   - 安装位置: `models/inswapper_128.onnx`
-
-2. **Dlib 特征点模型** (99MB)
-   - 下载地址: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
-   - 安装位置: `models/shape_predictor_68_face_landmarks.dat`
-
-3. **Buffalo_l 模型** (人脸检测，约 220MB)
-   - 应用会自动下载到 `models/buffalo_l/` 目录
-
-### 快速下载脚本
-
-```python
-import os
-from huggingface_hub import hf_hub_download
-
-# 下载 inswapper 模型
-os.makedirs('models', exist_ok=True)
-hf_hub_download(
-    repo_id='deepinsight/inswapper',
-    filename='inswapper_128.onnx',
-    local_dir='models',
-    local_dir_use_symlinks=False
-)
-print("模型下载完成!")
-```
-
-## 使用方法
-
-### 启动应用
-
-```bash
-cd src
-python face_swap_ui_enhanced.py
-```
-
-### 视频模式
-
-1. 选择要替换的人脸图片（支持多张）
-2. 选择要处理的视频文件
-3. 配置高级选项（可选）
-   - 面部平滑度
-   - 颜色校正
-   - 多尺度检测
-   - 检测器类型
-   - 换脸算法
-4. 设置输出路径
-5. 点击"开始处理"
-
-### 摄像头模式
-
-1. 切换到"摄像头模式"
-2. 选择要替换的人脸图片
-3. 点击"开启摄像头"
-4. 启用"实时人脸替换"开关
-5. 可随时拍照保存
-
-## 性能优化
-
-### 摄像头模式优化
-
-- **跳帧处理**: 自动跳帧以提高流畅度
-- **分辨率降低**: 对于高分辨率摄像头，自动降低处理分辨率
-- **快速模式**: 使用 FastTransformation 替代 SmoothTransformation
-
-### 视频处理优化
-
-- **进度节流**: 进度更新频率降低到 0.5 秒/次
-- **并行处理**: 支持多线程并行处理帧
-- **内存优化**: 共享缩略图，减少内存占用
-
-## 故障排除
-
-### 问题 1: 摄像头延迟
-
-**解决方案**:
-- 应用已自动优化：
-  - 跳帧处理（每 N 帧处理一次）
-  - 自动降低高分辨率视频的处理分辨率
-  - 使用快速变换算法
-
-### 问题 2: 传统方法崩溃
-
-**解决方案**:
-- 已修复 `StringVar` 兼容性问题
-- 添加了完善的错误处理
-- 确保 Dlib 模型文件存在
-
-### 问题 3: Inswapper 不可用
-
-**解决方案**:
-1. 检查 `models/inswapper_128.onnx` 是否存在
-2. 检查文件大小是否为 529MB 左右
-3. 如果文件损坏，重新下载
-
-### 问题 4: 人脸检测失败
-
-**解决方案**:
-- 确保图片中人脸清晰可见
-- 尝试启用"多尺度检测"
-- 切换检测器（Dlib 或 OpenCV）
-- 改善光线条件
+基于 PyQt5 和 Django 的人脸替换应用程序，支持视频和实时摄像头模式。
 
 ## 项目结构
 
 ```
 face/
-├── src/                          # 源代码目录
-│   ├── face_swap.py             # 核心换脸逻辑
-│   ├── face_swap_ui_enhanced.py # PyQt5 增强界面
-│   └── ignore_ssl_warnings.py   # SSL 忽略模块
-├── models/                       # 模型文件目录
-│   ├── inswapper_128.onnx       # Inswapper 模型
-│   ├── shape_predictor_68_*.dat # Dlib 模型
-│   └── buffalo_l/               # 人脸检测模型
-├── data/                         # 数据目录
-│   ├── input_faces/             # 输入人脸图片
-│   └── input_videos/            # 输入视频
-├── output_videos/                # 输出视频目录
-├── logs/                         # 日志目录
-├── README.md                     # 本文件
-└── requirements.txt              # 依赖列表
+├── backend-django/          # Django 后端服务
+│   ├── api/                # REST API 接口
+│   ├── core/               # 数据模型
+│   ├── face_swap/          # Django 配置
+│   ├── manage.py           # Django 管理脚本
+│   └── requirements.txt    # Python 依赖
+│
+├── frontend/               # PyQt5 前端应用
+│   ├── config.py           # 前端配置
+│   ├── database_manager.py # 数据库管理器
+│   ├── face_swap.py        # 核心处理模块
+│   ├── face_swap_ui_enhanced.py  # 主界面
+│   ├── main.py             # 应用入口
+│   └── requirements.txt    # Python 依赖
+│
+├── models/                 # AI 模型文件
+│   ├── inswapper_128.onnx  # 人脸替换模型
+│   └── buffalo_l/          # 人脸检测模型
+│
+├── data/                   # 输入数据目录
+│   ├── input_faces/        # 人脸图片
+│   └── input_videos/       # 输入视频
+│
+├── output_videos/          # 输出视频目录
+├── logs/                   # 日志文件
+├── start_backend.bat       # 启动后端脚本
+├── start_frontend.bat      # 启动前端脚本
+└── README.md              # 项目说明
 ```
 
-## 技术架构
+## 功能特性
 
-### 核心技术栈
+### 核心功能
+- ✅ **视频模式** - 上传视频进行人脸替换
+- ✅ **摄像头模式** - 实时人脸替换（优化至 <50ms 延迟）
+- ✅ **多种处理方法** - 传统方法 + InsightFace AI
+- ✅ **上传功能** - 将视频和图片上传到数据库
+- ✅ **数据库管理** - 保存和管理所有处理的文件
 
-- **GUI**: PyQt5 (增强界面) / Tkinter (原始界面)
-- **计算机视觉**: OpenCV, Dlib
-- **深度学习**: InsightFace, ONNX Runtime
-- **视频处理**: MoviePy
+### 性能优化
+- 🚀 摄像头延迟降低至 <50ms
+- 🚀 处理帧率提升至 40-50 FPS
+- 🚀 支持多尺度人脸检测
+- 🚀 颜色校正和平滑处理
 
-### 算法说明
+## 快速开始
 
-#### Inswapper 算法
-- 基于 InsightFace 的深度学习模型
-- 使用 buffalo_l 进行人脸检测和特征提取
-- 使用 inswapper_128.onnx 进行人脸替换
-- 效果自然，但需要 GPU 才能达到实时性能
+### 环境要求
 
-#### 传统三角剖分算法
-- 使用 Dlib 检测 68 个面部特征点
-- Delaunay 三角剖分进行面部区域划分
-- 三角形变换实现人脸替换
-- 适合 CPU 处理，但效果略差
+- Python 3.9+
+- CUDA (可选，用于 GPU 加速)
 
-## 性能基准
+### 安装依赖
+
+**后端：**
+```bash
+cd backend-django
+pip install -r requirements.txt
+python manage.py migrate
+```
+
+**前端：**
+```bash
+cd frontend
+pip install -r requirements.txt
+```
+
+### 启动应用
+
+#### 方法 1：使用批处理文件（Windows）
+
+1. 双击 `start_backend.bat` 启动后端服务
+2. 双击 `start_frontend.bat` 启动前端界面
+
+#### 方法 2：使用命令行
+
+**终端 1 - 启动后端：**
+```bash
+cd backend-django
+python manage.py runserver 0.0.0.0:8000
+```
+
+**终端 2 - 启动前端：**
+```bash
+cd frontend
+python main.py
+```
+
+### 访问地址
+
+- **前端界面**：自动弹出 PyQt 窗口
+- **API 文档**：http://localhost:8000/api/docs/
+- **管理后台**：http://localhost:8000/admin/
+- **REST API**：http://localhost:8000/api/v1/
+
+## API 端点
+
+### 人脸图片
+- `GET /api/v1/images/` - 获取所有图片
+- `POST /api/v1/images/` - 上传图片
+- `GET /api/v1/images/{id}/` - 获取图片详情
+- `DELETE /api/v1/images/{id}/` - 删除图片
+
+### 视频管理
+- `GET /api/v1/videos/` - 获取所有视频
+- `POST /api/v1/videos/` - 上传视频
+- `GET /api/v1/videos/{id}/` - 获取视频详情
+- `DELETE /api/v1/videos/{id}/` - 删除视频
+
+### 处理任务
+- `GET /api/v1/tasks/` - 获取所有任务
+- `POST /api/v1/tasks/` - 创建处理任务
+- `GET /api/v1/tasks/{id}/` - 获取任务状态
+- `POST /api/v1/tasks/{id}/cancel/` - 取消任务
+
+## 使用说明
+
+### 视频模式
+
+1. 点击"选择视频"按钮选择视频文件
+2. 点击"选择人脸图片"上传目标人脸
+3. 选择处理方法（Inswapper 或 Traditional）
+4. 点击"开始处理"开始人脸替换
+5. 处理完成后可播放和下载结果
 
 ### 摄像头模式
-- **帧率**: 20-30 FPS (优化后)
-- **延迟**: < 100ms (优化后)
-- **CPU 占用**: 30-50%
 
-### 视频处理
-- **处理速度**: 10-15 fps (Inswapper)
-- **处理速度**: 20-30 fps (传统方法)
-- **内存占用**: 400-800MB
+1. 点击"切换到摄像头"按钮
+2. 选择要替换的人脸图片
+3. 点击"开启摄像头"开始实时替换
+4. 可随时截图保存当前帧
 
-## 更新日志
+### 上传功能
 
-### v2.3 (2025-12-31)
-- ✅ 修复摄像头实时换脸延迟问题
-  - 添加跳帧处理
-  - 自动降低高分辨率处理
-  - 移除阻塞式 sleep
+1. 点击"[上传] 添加视频"或上传图片按钮
+2. 选择文件后自动上传到数据库
+3. 上传的文件可在界面中查看和管理
 
-- ✅ 修复传统三角剖分方法崩溃
-  - 修复 StringVar 兼容性问题
-  - 添加完善的错误处理
+## 技术栈
 
-- ✅ 优化性能
-  - 使用 FastTransformation
-  - 减少进度更新频率
-  - 优化内存使用
+### 后端
+- Django 4.2.7 - Web 框架
+- Django REST Framework 3.14.0 - API 框架
+- SQLite/MySQL - 数据库
+- OpenCV - 图像处理
+- InsightFace - 人脸识别
 
-- ✅ UI 改进
-  - 独立的视频和摄像头控制栏
-  - 科技感美化动效
-  - 状态指示器
+### 前端
+- PyQt5 - GUI 框架
+- OpenCV - 视频处理
+- NumPy - 数值计算
+- Pillow - 图像处理
 
-### v2.2 (2025-12-31)
-- 性能优化报告
-- 视频播放优化 (300% 提升)
-- CPU 占用降低 70%
+## 配置说明
 
-### v2.1 (2025-12-31)
-- UI 界面完全分离
-- 摄像头模式使用 Inswapper
+### 前端配置 (`frontend/config.py`)
 
-## 贡献
+```python
+API_BASE_URL = "http://localhost:8000/api/v1"  # 后端 API 地址
+MAX_UPLOAD_SIZE = 524288000  # 最大上传大小 (500MB)
+ALLOWED_VIDEO_EXTENSIONS = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv']
+ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp']
+```
 
-欢迎提交 Issue 和 Pull Request！
+### 后端配置 (`backend-django/face_swap/settings.py`)
+
+```python
+DEBUG = True  # 开发模式
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+DATABASES = {...}  # 数据库配置（默认 SQLite）
+```
+
+## 故障排除
+
+### 问题：无法连接后端
+- 检查后端是否正常启动
+- 确认端口 8000 未被占用
+- 检查防火墙设置
+
+### 问题：摄像头无法打开
+- 确认摄像头未被其他应用占用
+- 检查摄像头驱动是否正常
+- 尝试重启应用
+
+### 问题：处理速度慢
+- 确认 GPU 驱动已安装（如使用 CUDA）
+- 降低视频分辨率
+- 关闭颜色校正功能
+
+## 开发计划
+
+- [ ] 添加用户认证系统
+- [ ] 支持批量视频处理
+- [ ] 添加更多人脸替换效果
+- [ ] 优化大文件上传性能
+- [ ] 添加实时预览功能
 
 ## 许可证
 
 MIT License
 
-## 联系方式
+## 贡献
 
-- GitHub: @yj-xj
-- 项目地址: https://github.com/yj-xj/face
+欢迎提交 Issue 和 Pull Request！
 
-## 致谢
+## 更新日志
 
-- [InsightFace](https://github.com/deepinsight/insightface) - 优秀的人脸识别库
-- [Dlib](http://dlib.net/) - C++ 工具包，包含人脸检测
-- [OpenCV](https://opencv.org/) - 计算机视觉库
-- [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) - Python GUI 框架
+### v3.0.0 (2025-12-31)
+- ✨ 前后端分离架构
+- ✨ 添加数据库管理功能
+- ✨ 优化摄像头性能（<50ms 延迟）
+- ✨ 全新白色科技感界面
+- 🐛 修复 OpenCV GaussianBlur 错误
+- 📝 整理项目文件结构
+
+### v2.0.0 (2025-12-30)
+- 🎉 基础人脸替换功能
+- ✨ 视频和摄像头模式
