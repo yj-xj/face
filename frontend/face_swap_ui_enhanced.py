@@ -181,7 +181,7 @@ class CameraProcessingThread(QThread):
 
             # 主循环 - 终极优化版 (异步处理 + 多级缓存)
             frame_count = 0
-            skip_frames = 2  # 处理每第3帧，平衡流畅度和质量
+            skip_frames = 1  # 每处理1帧跳过1帧，更流畅
             last_target_face = None
             target_face = None
             cached_result = None
@@ -209,22 +209,22 @@ class CameraProcessingThread(QThread):
 
                 # 分离处理和显示逻辑
                 if self.processing_enabled and target_face is not None:
-                    if frame_count % skip_frames == 0:
+                    if frame_count % (skip_frames + 1) == 0:  # 修复：skip_frames=1时每2帧处理1帧
                         try:
                             if self.face_swap_app.inswapper is not None and self.face_swap_app.face_analyser is not None:
                                 h, w = frame.shape[:2]
-                                process_size = 480  # 降低分辨率以减少卡顿
+                                process_size = 320  # 进一步降低分辨率，优先流畅度
 
                                 if w > process_size:
                                     scale = process_size / w
                                     small_frame = cv2.resize(frame, (0, 0), fx=scale, fy=scale,
-                                                           interpolation=cv2.INTER_AREA)
+                                                           interpolation=cv2.INTER_NEAREST)  # 使用最快插值
 
                                     # 异步处理 - 使用try-catch确保不阻塞
                                     try:
                                         processed_small = self.face_swap_app.insightface_face_swap(small_frame, target_face)
                                         if processed_small is not None:
-                                            # 使用快速插值减少延迟
+                                            # 快速放大
                                             processed_frame = cv2.resize(processed_small, (w, h),
                                                                    interpolation=cv2.INTER_LINEAR)
                                             self.frame_ready.emit(processed_frame)
@@ -1387,12 +1387,15 @@ class EnhancedFaceSwapUI(QMainWindow):
             print(video_info)
             self.statusBar().showMessage(video_info)
             
-            # 计算延迟（毫秒）- 修复fps范围限制
-            if self.cv_fps <= 0 or self.cv_fps > 240:
-                self.cv_fps = 30  # 默认30fps，但允许高帧率视频正常播放
+            # 计算延迟（毫秒）- 改进fps验证
+            print(f"[调试] 原始fps: {self.cv_fps:.2f}, 播放速度因子: {self.playback_speed_factor}")
+            if self.cv_fps <= 0 or self.cv_fps > 240 or not (10 <= self.cv_fps <= 120):
+                print(f"[警告] fps异常({self.cv_fps:.2f})，使用默认值30")
+                self.cv_fps = 30  # 默认30fps
             delay = int(1000 / self.cv_fps / self.playback_speed_factor)
-            if delay <= 0: # 防止延迟为0或负数
-                delay = 1 # 设置一个最小延迟
+            if delay < 10: # 最小10ms，防止播放过快
+                delay = 10
+            print(f"[调试] 计算delay: {delay}ms (fps={self.cv_fps:.2f}, speed={self.playback_speed_factor}x)")
             
             # 读取第一帧显示
             ret, frame = self.cv_cap.read()
