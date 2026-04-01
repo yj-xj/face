@@ -1077,7 +1077,10 @@ class FaceSwapApp:
                 def process_frame_task(frame_data):
                     # 解构参数
                     index, frame = frame_data
-                    
+
+                    # 为每个线程创建独立的检测器
+                    thread_face_cascade = cv2.CascadeClassifier(self.cascade_path)
+
                     # 获取用户选择的人脸替换方法和参数
                     # 兼容处理 tk.StringVar 和普通字符串
                     swapper_var_val = self.swapper_var
@@ -1092,17 +1095,17 @@ class FaceSwapApp:
                     else:
                         detector_choice = detector_var_val
                     target_face_path = self.face_images[self.selected_face_index]
-                
+
                     # 处理图像 - 这里需要适配你的处理流程
                     processed_frame = None
-                    
+
                     # 根据不同的处理方法调用不同的函数
                     if swapper_choice == "inswapper" and self.inswapper is not None and self.face_analyser is not None:
                         # 读取目标人脸
                         target_image = cv2.imread(target_face_path)
                         if target_image is None:
                             raise ValueError(f"无法读取人脸图片: {target_face_path}")
-                        
+
                         # 使用InsightFace替换
                         processed_frame = self.insightface_face_swap(frame, target_image)
                     else:
@@ -1111,10 +1114,10 @@ class FaceSwapApp:
                         target_image_rgb = cv2.imread(target_face_path)
                         if target_image_rgb is None:
                             raise ValueError(f"无法读取人脸图片: {target_face_path}")
-                            
+
                         # 处理目标图像的人脸特征点
                         target_landmarks = None
-                        
+
                         # 检测目标人脸
                         target_rgb = cv2.cvtColor(target_image_rgb, cv2.COLOR_BGR2RGB)
                         if detector_choice == "dlib":
@@ -1124,30 +1127,31 @@ class FaceSwapApp:
                                 target_landmarks = self.shape_to_np(target_landmarks)
                         else:  # OpenCV检测器
                             target_gray = cv2.cvtColor(target_image_rgb, cv2.COLOR_BGR2GRAY)
-                            target_faces = self.opencv_detector.detectMultiScale(
-                                target_gray, 
-                                scaleFactor=1.1, 
+                            target_faces = thread_face_cascade.detectMultiScale(
+                                target_gray,
+                                scaleFactor=1.1,
                                 minNeighbors=5,
                                 minSize=(30, 30)
                             )
-                            
-                            if len(target_faces) > 0:
+
+                            if len(target_faces) > 0 and self.predictor is not None:
                                 x, y, w, h = target_faces[0]
                                 target_face_rect = dlib.rectangle(x, y, x+w, y+h)
                                 target_landmarks = self.predictor(target_rgb, target_face_rect)
                                 target_landmarks = self.shape_to_np(target_landmarks)
-                        
+
                         if target_landmarks is None:
                             # 如果没有检测到目标人脸，返回原始帧
                             return (index, frame)
-                        
-                        # 使用传统方法处理帧
+
+                        # 使用传统方法处理帧，传入线程独立的检测器
                         processed_frame = self.process_frame_traditional(
-                            frame, 
-                            target_image_rgb, 
-                            target_landmarks, 
-                            detector_choice, 
-                            use_multi_scale
+                            frame,
+                            target_image_rgb,
+                            target_landmarks,
+                            detector_choice,
+                            use_multi_scale,
+                            thread_face_cascade
                         )
                     
                     # 返回处理后的帧和索引
@@ -1732,11 +1736,22 @@ class FaceSwapApp:
                     
                     # 应用仿射变换
                     warped_triangle = cv2.warpAffine(cropped_target, M, (w, h))
-                    
+
+                    # 颜色匹配优化
+                    if warped_triangle.size > 0 and cropped_triangle.size > 0:
+                        # 匹配亮度和对比度
+                        warped_mean = cv2.mean(warped_triangle, mask=cropped_mask)[:3]
+                        triangle_mean = cv2.mean(cropped_triangle, mask=cropped_mask)[:3]
+
+                        for c in range(3):
+                            if warped_mean[c] > 0:
+                                scale = triangle_mean[c] / warped_mean[c]
+                                warped_triangle[:,:,c] = np.clip(warped_triangle[:,:,c] * scale, 0, 255).astype(np.uint8)
+
                     # 确保掩码和图像大小匹配
                     if cropped_mask.shape[:2] != warped_triangle.shape[:2]:
                         continue
-                    
+
                     warped_triangle = cv2.bitwise_and(warped_triangle, warped_triangle, mask=cropped_mask)
                     
                     # 重建目标图像区域
@@ -1758,7 +1773,7 @@ class FaceSwapApp:
                     continue
             
             # 应用平滑度设置
-            smoothing_factor = self.smoothing_var.get() / 10.0  # 将滑块值转换为合适的平滑因子
+            smoothing_factor = (self.smoothing_var.get() if hasattr(self.smoothing_var, 'get') else self.smoothing_var) / 10.0
             
             # 创建无缝克隆的掩码
             center_face = (rect[0] + rect[2]//2, rect[1] + rect[3]//2)
@@ -1847,7 +1862,8 @@ class FaceSwapApp:
                 seamless_result = result_img.astype(np.uint8)
             
             # 如果启用了颜色校正
-            if self.color_correction_var.get():
+            color_correction = self.color_correction_var.get() if hasattr(self.color_correction_var, 'get') else self.color_correction_var
+            if color_correction:
                 try:
                     # 获取面部区域的掩码
                     face_mask = np.zeros(frame.shape[:2], dtype=np.uint8)
@@ -1949,7 +1965,8 @@ class FaceSwapApp:
             result[y:y+h, x:x+w] = blended_face
             
             # 应用颜色校正
-            if self.color_correction_var.get():
+            color_correction = self.color_correction_var.get() if hasattr(self.color_correction_var, 'get') else self.color_correction_var
+            if color_correction:
                 try:
                     # 创建全局掩码
                     global_mask = np.zeros(frame.shape[:2], dtype=np.uint8)
@@ -2009,7 +2026,8 @@ class FaceSwapApp:
                 result[y:y+h, x:x+w] = face_contrast
                 
                 # 应用颜色校正
-                if self.color_correction_var.get():
+                color_correction = self.color_correction_var.get() if hasattr(self.color_correction_var, 'get') else self.color_correction_var
+                if color_correction:
                     try:
                         result = self.enhanced_color_correct(result, orig_frame, global_mask)
                         # 确保颜色校正后的图像是8位无符号整数类型
@@ -2350,24 +2368,27 @@ class FaceSwapApp:
         new_height = int(height * scale)
         return image.resize((new_width, new_height), Image.LANCZOS)
 
-    def process_frame_traditional(self, frame, target_image_rgb, target_landmarks, detector_choice, use_multi_scale):
+    def process_frame_traditional(self, frame, target_image_rgb, target_landmarks, detector_choice, use_multi_scale, face_cascade=None):
         """使用传统方法处理单个视频帧"""
         try:
+            # 使用传入的检测器或默认检测器
+            if face_cascade is None:
+                face_cascade = self.face_cascade
+
             # 转换帧到RGB格式以供处理
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            
+
             # 检测人脸
             landmarks = None
-            
+
             if detector_choice == "dlib":
                 # 使用dlib人脸检测器
                 upsample = 1 if use_multi_scale else 0
                 faces = self.detector(rgb_frame, upsample)
-                
+
                 if len(faces) == 0:
-                    # 如果未检测到人脸，返回原始帧
                     return frame
-                
+
                 # 从第一个检测到的人脸获取特征点
                 try:
                     shape = self.predictor(rgb_frame, faces[0])
@@ -2378,19 +2399,20 @@ class FaceSwapApp:
             else:
                 # 使用OpenCV人脸检测器
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                faces = self.face_cascade.detectMultiScale(gray, 1.3, 5)
-                
+                faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
                 if len(faces) == 0:
-                    # 如果未检测到人脸，返回原始帧
                     return frame
-                
+
                 # 从第一个检测到的人脸获取特征点
                 try:
                     (x, y, w, h) = faces[0]
-                    face_gray = gray[y:y+h, x:x+w]
-                    face_roi = rgb_frame[y:y+h, x:x+w]
-                    
-                    # 首先尝试使用dlib特征点检测
+
+                    # 检查是否有dlib predictor
+                    if not hasattr(self, 'predictor') or self.predictor is None:
+                        logger.error("dlib predictor未初始化")
+                        return frame
+
                     rect = dlib.rectangle(x, y, x+w, y+h)
                     shape = self.predictor(rgb_frame, rect)
                     landmarks = self.shape_to_np(shape)
@@ -2405,13 +2427,15 @@ class FaceSwapApp:
             
             # 选择换脸方法 - 高级或简单
             try:
-                if self.swap_method_var.get() == "advanced":
-                    result = self.advanced_face_swap(frame, rgb_frame, landmarks, target_image, target_landmarks)
+                swap_method = self.swap_method_var.get() if hasattr(self.swap_method_var, 'get') else self.swap_method_var
+                if swap_method == "advanced":
+                    result = self.advanced_face_swap(frame, rgb_frame, landmarks, target_image_rgb, target_landmarks)
                 else:
-                    result = self.simple_face_swap(frame, rgb_frame, landmarks, target_image, target_landmarks)
-                
+                    result = self.simple_face_swap(frame, rgb_frame, landmarks, target_image_rgb, target_landmarks)
+
                 # 应用颜色校正
-                if self.color_correction_var.get():
+                color_correction = self.color_correction_var.get() if hasattr(self.color_correction_var, 'get') else self.color_correction_var
+                if color_correction:
                     # 创建基于特征点的掩码
                     mask = np.zeros(frame.shape[:2], dtype=np.uint8)
                     hull = cv2.convexHull(landmarks)

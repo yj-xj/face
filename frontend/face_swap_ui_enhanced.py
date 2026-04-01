@@ -4,6 +4,7 @@ import cv2
 import time
 import numpy as np
 from enum import Enum
+from threading import Thread, Lock
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                             QHBoxLayout, QPushButton, QLabel, QFileDialog,
                             QProgressBar, QFrame, QSlider, QStyle, QComboBox,
@@ -126,8 +127,11 @@ class CameraProcessingThread(QThread):
         self.target_face_path = target_face_path
         self.running = False
         self.camera = None
-        self.camera_index = 0  # 默认摄像头索引
-        self.processing_enabled = True  # 是否启用人脸替换
+        self.camera_index = 0
+        self.processing_enabled = True
+        self.latest_result = None
+        self.result_lock = Lock()
+        self.process_thread = None
 
     def set_camera_index(self, index):
         """设置摄像头索引"""
@@ -152,105 +156,60 @@ class CameraProcessingThread(QThread):
         self.wait(3000)  # 等待线程结束，最多3秒
 
     def run(self):
-        """摄像头处理主循环"""
+        """摄像头处理主循环 - 异步零延迟版"""
         try:
-            # 打开摄像头
             self.camera = cv2.VideoCapture(self.camera_index)
             if not self.camera.isOpened():
                 self.error_signal.emit(f"无法打开摄像头 (索引: {self.camera_index})")
                 return
 
-            # 获取摄像头参数
             width = int(self.camera.get(cv2.CAP_PROP_FRAME_WIDTH))
             height = int(self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
             fps = self.camera.get(cv2.CAP_PROP_FPS)
-
             self.status_signal.emit(f"摄像头已启动: {width}x{height} @ {fps}fps")
 
-            # 读取目标人脸
             target_face = None
-
             if self.target_face_path and os.path.exists(self.target_face_path):
                 target_face = cv2.imread(self.target_face_path)
                 if target_face is not None:
-                    self.status_signal.emit("目标人脸已加载 (使用Inswapper模型)")
-                else:
-                    self.error_signal.emit(f"无法读取目标人脸: {self.target_face_path}")
-            else:
-                self.status_signal.emit("未选择目标人脸，仅显示摄像头画面")
+                    self.status_signal.emit("目标人脸已加载")
 
-            # 主循环 - 终极优化版 (异步处理 + 多级缓存)
-            frame_count = 0
-            skip_frames = 1  # 每处理1帧跳过1帧，更流畅
-            last_target_face = None
-            target_face = None
-            cached_result = None
-            last_processed_frame = None
+            def async_process(frame, target):
+                """后台异步处理"""
+                try:
+                    if self.face_swap_app.inswapper and self.face_swap_app.face_analyser:
+                        h, w = frame.shape[:2]
+                        if w > 480:
+                            scale = 480 / w
+                            small = cv2.resize(frame, (0, 0), fx=scale, fy=scale)
+                            result = self.face_swap_app.insightface_face_swap(small, target)
+                            if result is not None:
+                                result = cv2.resize(result, (w, h))
+                        else:
+                            result = self.face_swap_app.insightface_face_swap(frame, target)
 
-            # 预加载目标人脸
-            if self.target_face_path and os.path.exists(self.target_face_path):
-                target_face = cv2.imread(self.target_face_path)
-                last_target_face = self.target_face_path
+                        if result is not None:
+                            with self.result_lock:
+                                self.latest_result = result
+                except:
+                    pass
 
             while self.running:
                 ret, frame = self.camera.read()
                 if not ret:
                     break
 
-                frame_count += 1
-
-                # 检查目标人脸是否改变（仅在处理帧时检查）
-                if frame_count % skip_frames == 0 and self.target_face_path != last_target_face:
-                    last_target_face = self.target_face_path
-                    if os.path.exists(self.target_face_path):
-                        target_face = cv2.imread(self.target_face_path)
-                        cached_result = None
-                        last_processed_frame = None
-
-                # 分离处理和显示逻辑
                 if self.processing_enabled and target_face is not None:
-                    if frame_count % (skip_frames + 1) == 0:  # 修复：skip_frames=1时每2帧处理1帧
-                        try:
-                            if self.face_swap_app.inswapper is not None and self.face_swap_app.face_analyser is not None:
-                                h, w = frame.shape[:2]
-                                process_size = 320  # 进一步降低分辨率，优先流畅度
+                    # 启动异步处理（不等待）
+                    if self.process_thread is None or not self.process_thread.is_alive():
+                        self.process_thread = Thread(target=async_process, args=(frame.copy(), target_face))
+                        self.process_thread.daemon = True
+                        self.process_thread.start()
 
-                                if w > process_size:
-                                    scale = process_size / w
-                                    small_frame = cv2.resize(frame, (0, 0), fx=scale, fy=scale,
-                                                           interpolation=cv2.INTER_NEAREST)  # 使用最快插值
-
-                                    # 异步处理 - 使用try-catch确保不阻塞
-                                    try:
-                                        processed_small = self.face_swap_app.insightface_face_swap(small_frame, target_face)
-                                        if processed_small is not None:
-                                            # 快速放大
-                                            processed_frame = cv2.resize(processed_small, (w, h),
-                                                                   interpolation=cv2.INTER_LINEAR)
-                                            self.frame_ready.emit(processed_frame)
-                                            cached_result = processed_frame
-                                        else:
-                                            self.frame_ready.emit(frame)
-                                    except:
-                                        self.frame_ready.emit(frame)
-                                else:
-                                    # 320p以下直接处理
-                                    processed_frame = self.face_swap_app.insightface_face_swap(frame, target_face)
-                                    if processed_frame is not None:
-                                        self.frame_ready.emit(processed_frame)
-                                        cached_result = processed_frame
-                                    else:
-                                        self.frame_ready.emit(frame)
-                            else:
-                                self.frame_ready.emit(frame)
-                        except:
-                            self.frame_ready.emit(frame)
-                    else:
-                        # 非处理帧：使用缓存
-                        if cached_result is not None:
-                            self.frame_ready.emit(cached_result)
-                        else:
-                            self.frame_ready.emit(frame)
+                    # 立即显示最新结果或原始帧
+                    with self.result_lock:
+                        display_frame = self.latest_result if self.latest_result is not None else frame
+                    self.frame_ready.emit(display_frame)
                 else:
                     self.frame_ready.emit(frame)
 
@@ -259,7 +218,6 @@ class CameraProcessingThread(QThread):
             traceback.print_exc()
             self.error_signal.emit(str(e))
         finally:
-            # 释放摄像头
             if self.camera is not None and self.camera.isOpened():
                 self.camera.release()
                 self.status_signal.emit("摄像头已关闭")
@@ -1820,6 +1778,9 @@ class EnhancedFaceSwapUI(QMainWindow):
         # 实时更新摄像头线程的目标人脸
         if hasattr(self, 'camera_thread') and self.camera_thread is not None and self.camera_thread.isRunning():
             self.camera_thread.set_target_face(self.selected_face_path)
+            # 自动启用换脸
+            self.camera_thread.set_processing_enabled(True)
+            self.camera_processing_check.setChecked(True)
             self.statusBar().showMessage(f"实时更新: 摄像头人脸已切换")
     
     def selectVideoFile(self, item):
@@ -2348,25 +2309,25 @@ class EnhancedFaceSwapUI(QMainWindow):
     def startCamera(self):
         """启动摄像头"""
         try:
-            # 检查是否选择了人脸图片
-            if not hasattr(self, 'selected_face_path'):
-                QMessageBox.warning(self, "警告", "请先选择一张人脸图片")
-                return
-
             # 停止视频播放（如果正在播放）
             self.stopPlayback()
             self.cv_video_label.clear()
 
-            # 创建摄像头线程
+            # 创建摄像头线程（不需要预先选择人脸）
+            target_face = getattr(self, 'selected_face_path', None)
             self.camera_thread = CameraProcessingThread(
                 self.original_app,
-                self.selected_face_path
+                target_face
             )
 
             # 连接信号
             self.camera_thread.frame_ready.connect(self.displayCameraFrame)
             self.camera_thread.status_signal.connect(self.updateCameraStatus)
             self.camera_thread.error_signal.connect(self.handleCameraError)
+
+            # 默认关闭换脸处理
+            self.camera_thread.set_processing_enabled(False)
+            self.camera_processing_check.setChecked(False)
 
             # 启动摄像头
             self.camera_thread.start_camera()
