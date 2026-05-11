@@ -1119,10 +1119,6 @@ class EnhancedFaceSwapUI(QMainWindow):
         video_face_group = QGroupBox("选择人脸图片")
         video_face_layout = QVBoxLayout(video_face_group)
 
-        video_face_label = QLabel("选择要替换的人脸:")
-        video_face_label.setStyleSheet("font-weight: bold;")
-        video_face_layout.addWidget(video_face_label)
-
         self.video_face_list = QListWidget()
         self.video_face_list.setMinimumHeight(96)
         self.video_face_list.setMaximumHeight(120)
@@ -1166,10 +1162,6 @@ class EnhancedFaceSwapUI(QMainWindow):
         # 视频文件选择
         video_input_group = QGroupBox("视频处理")
         video_input_layout = QVBoxLayout(video_input_group)
-
-        video_label = QLabel("选择视频文件:")
-        video_label.setStyleSheet("font-weight: bold;")
-        video_input_layout.addWidget(video_label)
 
         self.video_list = QListWidget()
         self.video_list.setMinimumHeight(120)
