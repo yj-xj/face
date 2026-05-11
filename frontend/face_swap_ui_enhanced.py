@@ -1097,10 +1097,9 @@ class EnhancedFaceSwapUI(QMainWindow):
         tools_layout.setSpacing(4)
         self.main_panel_btn = QPushButton("主操作")
         self.settings_panel_btn = QPushButton("性能")
-        self.assets_panel_btn = QPushButton("素材")
         self.diagnostics_panel_btn = QPushButton("诊断")
         self.experiment_panel_btn = QPushButton("对比")
-        for button in [self.main_panel_btn, self.settings_panel_btn, self.assets_panel_btn, self.diagnostics_panel_btn, self.experiment_panel_btn]:
+        for button in [self.main_panel_btn, self.settings_panel_btn, self.diagnostics_panel_btn, self.experiment_panel_btn]:
             button.setMinimumSize(58, 30)
             button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
             tools_layout.addWidget(button)
@@ -1156,6 +1155,16 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.video_face_list.setSpacing(8)
         self.video_face_list.itemClicked.connect(self.selectFaceImage)
         video_face_layout.addWidget(self.video_face_list)
+        video_face_actions = QHBoxLayout()
+        self.rescan_image_btn = QPushButton("重新扫描图片")
+        self.rescan_image_btn.setStyleSheet(self.defense_button_style)
+        self.rescan_image_btn.clicked.connect(self.rescanImageAssets)
+        self.delete_image_btn = QPushButton("删除选中图片")
+        self.delete_image_btn.setStyleSheet(self.defense_button_style)
+        self.delete_image_btn.clicked.connect(self.deleteSelectedFaceAsset)
+        video_face_actions.addWidget(self.rescan_image_btn)
+        video_face_actions.addWidget(self.delete_image_btn)
+        video_face_layout.addLayout(video_face_actions)
 
         video_panel_layout.addWidget(video_face_group)
 
@@ -1198,6 +1207,10 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.video_list.itemClicked.connect(self.selectVideoFile)
         self.video_list.itemDoubleClicked.connect(self.playVideoFromList)
         video_input_layout.addWidget(self.video_list)
+        self.rescan_video_btn = QPushButton("重新扫描视频")
+        self.rescan_video_btn.setStyleSheet(self.defense_button_style)
+        self.rescan_video_btn.clicked.connect(self.rescanVideoAssets)
+        video_input_layout.addWidget(self.rescan_video_btn)
 
         output_label = QLabel("输出路径：")
         output_label.setStyleSheet("font-weight: bold;")
@@ -1657,28 +1670,6 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.settings_panel_page = self._wrapPanelScroll(self.settings_panel)
         self.control_stack.addWidget(self.settings_panel_page)
 
-        self.assets_panel = QWidget()
-        assets_layout = QVBoxLayout(self.assets_panel)
-        assets_layout.setContentsMargins(10, 10, 10, 10)
-        assets_layout.setSpacing(8)
-        for text, handler in [
-            ("清理失效图片路径", self.cleanupInvalidAssets),
-            ("检查重复图片素材", self.findDuplicateAssets),
-            ("重新扫描图片目录", self.rescanImageAssets),
-            ("重新扫描视频目录", self.rescanVideoAssets),
-            ("删除当前选中图片", self.deleteSelectedFaceAsset),
-        ]:
-            button = QPushButton(text)
-            button.clicked.connect(handler)
-            button.setStyleSheet(self.defense_button_style)
-            assets_layout.addWidget(button)
-        self.assets_status = QTextEdit()
-        self.assets_status.setReadOnly(True)
-        self.assets_status.setMinimumHeight(180)
-        assets_layout.addWidget(self.assets_status)
-        self.assets_panel_page = self._wrapPanelScroll(self.assets_panel)
-        self.control_stack.addWidget(self.assets_panel_page)
-
         self.diagnostics_panel = QWidget()
         diagnostics_layout = QVBoxLayout(self.diagnostics_panel)
         diagnostics_layout.setContentsMargins(10, 10, 10, 10)
@@ -1720,7 +1711,6 @@ class EnhancedFaceSwapUI(QMainWindow):
 
         self.main_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.video_control_page if self.current_mode == AppMode.VIDEO_MODE else self.camera_control_page))
         self.settings_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.settings_panel_page))
-        self.assets_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.assets_panel_page))
         self.diagnostics_panel_btn.clicked.connect(self.refreshDiagnostics)
         self.experiment_panel_btn.clicked.connect(self.refreshExperiments)
 
@@ -1769,18 +1759,6 @@ class EnhancedFaceSwapUI(QMainWindow):
             widget.setPlainText(json.dumps(result, ensure_ascii=False, indent=2))
         except Exception:
             widget.setPlainText(str(result))
-
-    def cleanupInvalidAssets(self):
-        if not self.db_manager:
-            return
-        result = self.db_manager.cleanup_invalid_images()
-        self._showPanelResult(self.assets_status, result)
-        self.loadFaceImages()
-
-    def findDuplicateAssets(self):
-        if not self.db_manager:
-            return
-        self._showPanelResult(self.assets_status, self.db_manager.find_duplicate_images())
 
     def rescanImageAssets(self):
         if not self.db_manager:
