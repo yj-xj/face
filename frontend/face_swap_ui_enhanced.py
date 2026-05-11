@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import os
 import cv2
 import time
@@ -15,7 +15,8 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                             QSizePolicy, QMenu, QToolButton, QAction, QLineEdit,
                             QListWidget, QMessageBox, QButtonGroup, QRadioButton,
                             QListWidgetItem, QGraphicsOpacityEffect, QTextEdit,
-                            QTableWidget, QTableWidgetItem, QSpinBox)
+                            QTableWidget, QTableWidgetItem, QSpinBox,
+                            QHeaderView)
 from PyQt5.QtCore import (Qt, QThread, pyqtSignal, QTimer, QSize, QUrl,
                           QPropertyAnimation, QEasingCurve, QRect, QPoint,
                           QParallelAnimationGroup, QSequentialAnimationGroup)
@@ -700,7 +701,8 @@ class EnhancedFaceSwapUI(QMainWindow):
 
         # 设置窗口属性
         self.setWindowTitle("人脸替换应用 - 增强版 (支持视频/摄像头)")
-        self.resize(1600, 900)  # 更大的窗口尺寸
+        self.resize(1280, 760)
+        self.setMinimumSize(1100, 680)
 
         # 启用拖放功能
         self.setAcceptDrops(True)
@@ -857,7 +859,8 @@ class EnhancedFaceSwapUI(QMainWindow):
             border: 2px solid #444444;
             border-radius: 5px;
         """)
-        video_frame.setMinimumSize(1200, 900)
+        video_frame.setMinimumSize(640, 420)
+        video_frame.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         video_layout = QVBoxLayout(video_frame)
         video_layout.setContentsMargins(5, 5, 5, 5)
         
@@ -1085,16 +1088,21 @@ class EnhancedFaceSwapUI(QMainWindow):
 
         # ========== 创建右侧控制部分（使用QStackedWidget分离两种模式） ==========
         right_widget = QWidget()
+        right_widget.setMinimumWidth(360)
+        right_widget.setMaximumWidth(520)
         right_layout = QVBoxLayout(right_widget)
+        right_layout.setContentsMargins(8, 0, 0, 0)
 
         tools_layout = QHBoxLayout()
+        tools_layout.setSpacing(4)
         self.main_panel_btn = QPushButton("主操作")
-        self.settings_panel_btn = QPushButton("性能/模型")
-        self.assets_panel_btn = QPushButton("素材管理")
-        self.diagnostics_panel_btn = QPushButton("系统诊断")
-        self.experiment_panel_btn = QPushButton("实验对比")
+        self.settings_panel_btn = QPushButton("性能")
+        self.assets_panel_btn = QPushButton("素材")
+        self.diagnostics_panel_btn = QPushButton("诊断")
+        self.experiment_panel_btn = QPushButton("对比")
         for button in [self.main_panel_btn, self.settings_panel_btn, self.assets_panel_btn, self.diagnostics_panel_btn, self.experiment_panel_btn]:
-            button.setMinimumHeight(32)
+            button.setMinimumSize(58, 30)
+            button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
             tools_layout.addWidget(button)
         right_layout.addLayout(tools_layout)
 
@@ -1571,24 +1579,43 @@ class EnhancedFaceSwapUI(QMainWindow):
         splitter.addWidget(right_widget)
         
         # 设置初始分割比例（左:右 = 3:2）
-        splitter.setSizes([900, 600])
+        splitter.setSizes([780, 420])
+        splitter.setStretchFactor(0, 3)
+        splitter.setStretchFactor(1, 2)
         
         # 添加状态栏
         self.statusBar().showMessage("就绪")
         
     def buildDefensePanels(self):
+        self.defense_button_style = """
+            QPushButton {
+                min-height: 30px;
+                padding: 6px 10px;
+                font-size: 12px;
+                border-radius: 4px;
+            }
+        """
+
         self.settings_panel = QWidget()
         settings_layout = QVBoxLayout(self.settings_panel)
+        settings_layout.setContentsMargins(10, 10, 10, 10)
+        settings_layout.setSpacing(10)
+
         provider = ', '.join(getattr(self.original_app, 'realtime_providers', ['CPUExecutionProvider']))
-        self.provider_label = QLabel(f"Provider: {provider}")
-        self.cuda_label = QLabel(f"CUDA available: {'CUDAExecutionProvider' in provider}")
-        self.model_path_label = QLabel(f"Model: {getattr(self.original_app, 'inswapper_path', '-')}")
-        settings_layout.addWidget(self.provider_label)
-        settings_layout.addWidget(self.cuda_label)
-        settings_layout.addWidget(self.model_path_label)
+        model_path = getattr(self.original_app, 'inswapper_path', '-')
+        self.provider_label = QLabel(f"当前推理设备：{provider}")
+        self.cuda_label = QLabel(f"CUDA 加速状态：{'可用' if 'CUDAExecutionProvider' in provider else '不可用，当前使用 CPU'}")
+        self.model_path_label = QLabel(f"换脸模型路径：{model_path}")
+        self.model_path_label.setWordWrap(True)
+        for label in [self.provider_label, self.cuda_label, self.model_path_label]:
+            label.setWordWrap(True)
+            label.setStyleSheet("padding: 6px 8px; background: #1f2933; border: 1px solid #394756; border-radius: 4px;")
+            settings_layout.addWidget(label)
 
         camera_settings = QGroupBox("摄像头实时参数")
         camera_grid = QGridLayout(camera_settings)
+        camera_grid.setHorizontalSpacing(10)
+        camera_grid.setVerticalSpacing(8)
         self.camera_width_spin = QSpinBox()
         self.camera_width_spin.setRange(320, 1920)
         self.camera_width_spin.setValue(640)
@@ -1597,69 +1624,155 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.camera_height_spin.setValue(480)
         self.detect_size_combo = QComboBox()
         self.detect_size_combo.addItems(["320", "480", "640"])
+        self.detect_size_combo.setToolTip("越小越流畅，越大检测更稳但更吃性能")
         self.target_fps_spin = QSpinBox()
         self.target_fps_spin.setRange(5, 60)
         self.target_fps_spin.setValue(30)
-        self.only_largest_face_check = QCheckBox("只换最大人脸")
+        self.only_largest_face_check = QCheckBox("只处理画面中最大的人脸")
         self.only_largest_face_check.setChecked(True)
-        camera_grid.addWidget(QLabel("分辨率宽"), 0, 0)
+        self.apply_camera_settings_btn = QPushButton("应用到摄像头")
+        self.apply_camera_settings_btn.clicked.connect(self.applyCameraRuntimeSettings)
+        self.apply_camera_settings_btn.setStyleSheet(self.defense_button_style)
+        camera_grid.addWidget(QLabel("采集宽度"), 0, 0)
         camera_grid.addWidget(self.camera_width_spin, 0, 1)
-        camera_grid.addWidget(QLabel("分辨率高"), 1, 0)
+        camera_grid.addWidget(QLabel("采集高度"), 1, 0)
         camera_grid.addWidget(self.camera_height_spin, 1, 1)
-        camera_grid.addWidget(QLabel("检测尺寸"), 2, 0)
+        camera_grid.addWidget(QLabel("人脸检测尺寸"), 2, 0)
         camera_grid.addWidget(self.detect_size_combo, 2, 1)
-        camera_grid.addWidget(QLabel("目标 FPS"), 3, 0)
+        camera_grid.addWidget(QLabel("目标帧率"), 3, 0)
         camera_grid.addWidget(self.target_fps_spin, 3, 1)
         camera_grid.addWidget(self.only_largest_face_check, 4, 0, 1, 2)
+        camera_grid.addWidget(self.apply_camera_settings_btn, 5, 0, 1, 2)
         settings_layout.addWidget(camera_settings)
 
         monitor_group = QGroupBox("实时性能监控")
         monitor_layout = QGridLayout(monitor_group)
+        monitor_layout.setHorizontalSpacing(8)
+        monitor_layout.setVerticalSpacing(8)
         self.monitor_labels = {}
-        for row, key in enumerate(["camera_fps", "swap_fps", "inference_ms", "provider", "resolution", "dropped_frames"]):
-            monitor_layout.addWidget(QLabel(key), row, 0)
-            self.monitor_labels[key] = QLabel("-")
-            monitor_layout.addWidget(self.monitor_labels[key], row, 1)
+        monitor_items = [
+            ('camera_fps', '摄像头采集帧率'),
+            ('swap_fps', '换脸输出帧率'),
+            ('inference_ms', '单帧推理耗时'),
+            ('provider', '当前推理设备'),
+            ('resolution', '当前采集分辨率'),
+            ('dropped_frames', '主动丢弃帧数'),
+            ('detect_size', '检测输入尺寸'),
+        ]
+        for index, (key, title) in enumerate(monitor_items):
+            card = self._makeStatusCard(title, '-')
+            self.monitor_labels[key] = card.findChild(QLabel, 'valueLabel')
+            monitor_layout.addWidget(card, index // 2, index % 2)
         settings_layout.addWidget(monitor_group)
         settings_layout.addStretch()
-        self.control_stack.addWidget(self.settings_panel)
+        self.settings_panel_page = self._wrapPanelScroll(self.settings_panel)
+        self.control_stack.addWidget(self.settings_panel_page)
 
         self.assets_panel = QWidget()
         assets_layout = QVBoxLayout(self.assets_panel)
+        assets_layout.setContentsMargins(10, 10, 10, 10)
+        assets_layout.setSpacing(8)
         for text, handler in [
-            ("无效路径自动清理", self.cleanupInvalidAssets),
-            ("重复素材检测", self.findDuplicateAssets),
-            ("重新扫描图片素材", self.rescanImageAssets),
-            ("重新扫描视频素材", self.rescanVideoAssets),
-            ("删除当前图片素材", self.deleteSelectedFaceAsset),
+            ("清理失效图片路径", self.cleanupInvalidAssets),
+            ("检查重复图片素材", self.findDuplicateAssets),
+            ("重新扫描图片目录", self.rescanImageAssets),
+            ("重新扫描视频目录", self.rescanVideoAssets),
+            ("删除当前选中图片", self.deleteSelectedFaceAsset),
         ]:
             button = QPushButton(text)
             button.clicked.connect(handler)
+            button.setStyleSheet(self.defense_button_style)
             assets_layout.addWidget(button)
         self.assets_status = QTextEdit()
         self.assets_status.setReadOnly(True)
+        self.assets_status.setMinimumHeight(180)
         assets_layout.addWidget(self.assets_status)
-        self.control_stack.addWidget(self.assets_panel)
+        self.assets_panel_page = self._wrapPanelScroll(self.assets_panel)
+        self.control_stack.addWidget(self.assets_panel_page)
 
         self.diagnostics_panel = QWidget()
         diagnostics_layout = QVBoxLayout(self.diagnostics_panel)
-        self.diagnostics_text = QTextEdit()
-        self.diagnostics_text.setReadOnly(True)
-        diagnostics_layout.addWidget(self.diagnostics_text)
-        self.control_stack.addWidget(self.diagnostics_panel)
+        diagnostics_layout.setContentsMargins(10, 10, 10, 10)
+        diagnostics_layout.setSpacing(10)
+        self.diagnostic_cards_layout = QGridLayout()
+        self.diagnostic_cards = {}
+        for index, key_title in enumerate([
+            ('backend', '后端服务'),
+            ('database', '数据库记录'),
+            ('cuda', 'CUDA 加速'),
+            ('models', '模型文件'),
+            ('uploads', '上传目录'),
+            ('logs', '最近错误'),
+        ]):
+            key, title = key_title
+            card = self._makeStatusCard(title, '等待检测')
+            self.diagnostic_cards[key] = card.findChild(QLabel, 'valueLabel')
+            self.diagnostic_cards_layout.addWidget(card, index // 2, index % 2)
+        diagnostics_layout.addLayout(self.diagnostic_cards_layout)
+        self.diagnostics_table = QTableWidget(0, 3)
+        self.diagnostics_table.setHorizontalHeaderLabels(["检查项", "状态", "说明"])
+        self.diagnostics_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.diagnostics_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.diagnostics_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
+        self.diagnostics_table.setMinimumHeight(240)
+        diagnostics_layout.addWidget(self.diagnostics_table)
+        self.diagnostics_panel_page = self._wrapPanelScroll(self.diagnostics_panel)
+        self.control_stack.addWidget(self.diagnostics_panel_page)
 
         self.experiment_panel = QWidget()
         experiment_layout = QVBoxLayout(self.experiment_panel)
+        experiment_layout.setContentsMargins(10, 10, 10, 10)
         self.experiment_table = QTableWidget(0, 6)
-        self.experiment_table.setHorizontalHeaderLabels(["模式", "方法", "Provider", "检测尺寸", "FPS", "推理ms"])
+        self.experiment_table.setHorizontalHeaderLabels(["处理模式", "算法方案", "推理设备", "检测尺寸", "平均帧率", "单帧耗时"])
+        self.experiment_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         experiment_layout.addWidget(self.experiment_table)
-        self.control_stack.addWidget(self.experiment_panel)
+        self.experiment_panel_page = self._wrapPanelScroll(self.experiment_panel)
+        self.control_stack.addWidget(self.experiment_panel_page)
 
         self.main_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.video_control_panel if self.current_mode == AppMode.VIDEO_MODE else self.camera_control_panel))
-        self.settings_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.settings_panel))
-        self.assets_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.assets_panel))
+        self.settings_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.settings_panel_page))
+        self.assets_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.assets_panel_page))
         self.diagnostics_panel_btn.clicked.connect(self.refreshDiagnostics)
         self.experiment_panel_btn.clicked.connect(self.refreshExperiments)
+
+    def _wrapPanelScroll(self, panel):
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QFrame.NoFrame)
+        scroll.setWidget(panel)
+        return scroll
+
+    def _makeStatusCard(self, title, value):
+        card = QFrame()
+        card.setMinimumHeight(64)
+        card.setStyleSheet("""
+            QFrame {
+                background-color: #1f2933;
+                border: 1px solid #394756;
+                border-radius: 6px;
+            }
+            QLabel {
+                border: none;
+                background: transparent;
+            }
+        """)
+        layout = QVBoxLayout(card)
+        layout.setContentsMargins(10, 8, 10, 8)
+        title_label = QLabel(title)
+        title_label.setStyleSheet("color: #9fb3c8; font-size: 12px;")
+        value_label = QLabel(str(value))
+        value_label.setObjectName('valueLabel')
+        value_label.setWordWrap(True)
+        value_label.setStyleSheet("color: #f0f4f8; font-size: 15px; font-weight: bold;")
+        layout.addWidget(title_label)
+        layout.addWidget(value_label)
+        return card
+
+    def _setDiagnosticCard(self, key, value, ok=True):
+        label = self.diagnostic_cards.get(key) if hasattr(self, 'diagnostic_cards') else None
+        if label:
+            label.setText(str(value))
+            label.setStyleSheet(f"color: {'#6ee7b7' if ok else '#fca5a5'}; font-size: 15px; font-weight: bold;")
 
     def _showPanelResult(self, widget, result):
         try:
@@ -1706,35 +1819,128 @@ class EnhancedFaceSwapUI(QMainWindow):
         else:
             QMessageBox.warning(self, "素材管理", "删除失败")
 
+    def applyCameraRuntimeSettings(self):
+        width = self.camera_width_spin.value()
+        height = self.camera_height_spin.value()
+        detect_size = int(self.detect_size_combo.currentText())
+        target_fps = self.target_fps_spin.value()
+        only_largest = self.only_largest_face_check.isChecked()
+        if self.camera_thread and hasattr(self.camera_thread, 'configure_runtime'):
+            self.camera_thread.configure_runtime(width, height, detect_size, target_fps, only_largest)
+        if self.camera_active:
+            self.statusBar().showMessage("正在重启摄像头以应用新的实时参数...")
+            self.stopCamera()
+            self.startCamera()
+        else:
+            self.statusBar().showMessage(f"摄像头参数已保存：{width}x{height}，检测尺寸 {detect_size}，目标 {target_fps} FPS")
+
     def refreshDiagnostics(self):
-        self.control_stack.setCurrentWidget(self.diagnostics_panel)
+        self.control_stack.setCurrentWidget(self.diagnostics_panel_page)
         if not self.db_manager:
-            self.diagnostics_text.setPlainText("Backend not connected")
+            self._setDiagnosticCard('backend', '连接失败', False)
+            self._fillDiagnosticsTable([('后端连接状态', '异常', '无法连接到 Django API 服务')])
             return
-        self._showPanelResult(self.diagnostics_text, self.db_manager.get_diagnostics())
+        result = self.db_manager.get_diagnostics()
+        if result.get('error'):
+            self._setDiagnosticCard('backend', '连接失败', False)
+            self._fillDiagnosticsTable([('后端连接状态', '异常', result.get('error'))])
+            return
+        self._renderDiagnostics(result)
+
+    def _renderDiagnostics(self, data):
+        database = data.get('database', {})
+        providers = data.get('providers', {})
+        models = data.get('models', {})
+        upload_dirs = data.get('upload_dirs', {})
+        recent_logs = data.get('recent_logs', [])
+
+        db_text = f"图片 {database.get('images', 0)} / 视频 {database.get('videos', 0)} / 输出 {database.get('outputs', 0)}"
+        model_ok = all(item.get('exists') for item in models.values()) if models else False
+        upload_ok = all(item.get('writable') for item in upload_dirs.values()) if upload_dirs else False
+        cuda_ok = bool(providers.get('cuda_available'))
+        active_provider = ', '.join(providers.get('active') or ['CPUExecutionProvider'])
+
+        self._setDiagnosticCard('backend', '运行正常', True)
+        self._setDiagnosticCard('database', db_text, True)
+        self._setDiagnosticCard('cuda', f"{'可用' if cuda_ok else '不可用'}：{active_provider}", cuda_ok)
+        self._setDiagnosticCard('models', '全部存在' if model_ok else '存在缺失', model_ok)
+        self._setDiagnosticCard('uploads', '可写' if upload_ok else '不可写', upload_ok)
+        self._setDiagnosticCard('logs', f"{len(recent_logs)} 条记录" if recent_logs else '暂无错误日志', True)
+
+        rows = [
+            ('后端连接状态', '正常', data.get('backend', {}).get('time', '-')),
+            ('数据库素材数量', '正常', db_text),
+            ('CUDA 加速检测', '可用' if cuda_ok else '不可用', active_provider),
+        ]
+        for name, item in models.items():
+            rows.append((f"模型文件：{self._friendlyDiagnosticName(name)}", '存在' if item.get('exists') else '缺失', item.get('path', '-')))
+        for name, item in upload_dirs.items():
+            rows.append((f"目录权限：{self._friendlyDiagnosticName(name)}", '可写' if item.get('writable') else '不可写', item.get('path', '-')))
+        if recent_logs:
+            for log in recent_logs[-5:]:
+                rows.append(('最近日志', '记录', log))
+        else:
+            rows.append(('最近错误日志', '正常', '没有检测到最近错误'))
+        self._fillDiagnosticsTable(rows)
+
+    def _friendlyDiagnosticName(self, key):
+        names = {
+            'input_faces': '图片上传目录',
+            'input_videos': '视频素材目录',
+            'output_videos': '输出视频目录',
+            'media': '媒体文件目录',
+            'inswapper_128': 'InsightFace 换脸模型',
+            'cascade': '传统人脸检测模型',
+            'landmarks': '人脸关键点模型',
+            'buffalo_l': 'InsightFace 人脸分析模型包',
+        }
+        return names.get(key, key)
+
+    def _fillDiagnosticsTable(self, rows):
+        self.diagnostics_table.setRowCount(len(rows))
+        for row_index, row in enumerate(rows):
+            for col, value in enumerate(row):
+                item = QTableWidgetItem(str(value))
+                if col == 1:
+                    ok = str(value) in ['正常', '存在', '可写', '可用', '记录']
+                    item.setForeground(QColor('#6ee7b7' if ok else '#fca5a5'))
+                self.diagnostics_table.setItem(row_index, col, item)
+        self.diagnostics_table.resizeRowsToContents()
 
     def refreshExperiments(self):
-        self.control_stack.setCurrentWidget(self.experiment_panel)
+        self.control_stack.setCurrentWidget(self.experiment_panel_page)
         if not self.db_manager:
             return
         rows = self.db_manager.get_experiments().get('results', [])
+        mode_names = {'camera': '摄像头实时换脸', 'video': '视频文件处理'}
+        method_names = {'traditional': '传统融合方法', 'InsightFace': 'InsightFace 模型'}
         self.experiment_table.setRowCount(len(rows))
         for row_index, row in enumerate(rows):
             values = [
-                row.get('mode', ''),
-                row.get('method', ''),
+                mode_names.get(row.get('mode', ''), row.get('mode', '')),
+                method_names.get(row.get('method', ''), row.get('method', '')),
                 row.get('provider', ''),
-                row.get('detect_size', ''),
-                row.get('fps', ''),
-                row.get('inference_ms', ''),
+                f"{row.get('detect_size', '')} px",
+                f"{row.get('fps', '')} FPS",
+                f"{row.get('inference_ms', '')} ms",
             ]
             for col, value in enumerate(values):
                 self.experiment_table.setItem(row_index, col, QTableWidgetItem(str(value)))
+        self.experiment_table.resizeRowsToContents()
 
     def updateCameraStats(self, stats):
         self.camera_runtime_stats.update(stats)
+        display_values = {
+            'camera_fps': f"{self.camera_runtime_stats.get('camera_fps', 0)} FPS",
+            'swap_fps': f"{self.camera_runtime_stats.get('swap_fps', 0)} FPS",
+            'inference_ms': f"{self.camera_runtime_stats.get('inference_ms', 0)} ms",
+            'provider': self.camera_runtime_stats.get('provider', '-'),
+            'resolution': self.camera_runtime_stats.get('resolution', '-'),
+            'dropped_frames': f"{self.camera_runtime_stats.get('dropped_frames', 0)} 帧",
+            'detect_size': f"{self.camera_runtime_stats.get('detect_size', '-')} px",
+        }
         for key, label in getattr(self, 'monitor_labels', {}).items():
-            label.setText(str(self.camera_runtime_stats.get(key, '-')))
+            label.setText(str(display_values.get(key, '-')))
 
     def initMediaPlayer(self):
         """初始化媒体播放器"""
