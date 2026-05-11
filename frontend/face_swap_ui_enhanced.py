@@ -1164,13 +1164,9 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.video_face_list.itemClicked.connect(self.selectFaceImage)
         video_face_layout.addWidget(self.video_face_list)
         video_face_actions = QHBoxLayout()
-        self.rescan_image_btn = QPushButton("重新扫描图片")
-        self.rescan_image_btn.setStyleSheet(self.defense_button_style)
-        self.rescan_image_btn.clicked.connect(self.rescanImageAssets)
         self.delete_image_btn = QPushButton("删除选中图片")
         self.delete_image_btn.setStyleSheet(self.defense_button_style)
         self.delete_image_btn.clicked.connect(self.deleteSelectedFaceAsset)
-        video_face_actions.addWidget(self.rescan_image_btn)
         video_face_actions.addWidget(self.delete_image_btn)
         video_face_layout.addLayout(video_face_actions)
 
@@ -1215,10 +1211,10 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.video_list.itemClicked.connect(self.selectVideoFile)
         self.video_list.itemDoubleClicked.connect(self.playVideoFromList)
         video_input_layout.addWidget(self.video_list)
-        self.rescan_video_btn = QPushButton("重新扫描视频")
-        self.rescan_video_btn.setStyleSheet(self.defense_button_style)
-        self.rescan_video_btn.clicked.connect(self.rescanVideoAssets)
-        video_input_layout.addWidget(self.rescan_video_btn)
+        self.delete_video_btn = QPushButton("删除选中视频")
+        self.delete_video_btn.setStyleSheet(self.defense_button_style)
+        self.delete_video_btn.clicked.connect(self.deleteSelectedVideoAsset)
+        video_input_layout.addWidget(self.delete_video_btn)
 
         output_label = QLabel("输出路径：")
         output_label.setStyleSheet("font-weight: bold;")
@@ -1453,6 +1449,16 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.face_list.setSpacing(10)
         self.face_list.itemClicked.connect(self.selectFaceImage)
         camera_input_layout.addWidget(self.face_list)
+        camera_face_actions = QHBoxLayout()
+        self.camera_delete_image_btn = QPushButton("删除选中图片")
+        self.camera_delete_image_btn.setStyleSheet(self.defense_button_style)
+        self.camera_delete_image_btn.clicked.connect(self.deleteSelectedFaceAsset)
+        self.camera_delete_video_btn = QPushButton("删除选中视频")
+        self.camera_delete_video_btn.setStyleSheet(self.defense_button_style)
+        self.camera_delete_video_btn.clicked.connect(self.deleteSelectedVideoAsset)
+        camera_face_actions.addWidget(self.camera_delete_image_btn)
+        camera_face_actions.addWidget(self.camera_delete_video_btn)
+        camera_input_layout.addLayout(camera_face_actions)
 
         camera_panel_layout.addWidget(camera_input_group)
 
@@ -1760,20 +1766,6 @@ class EnhancedFaceSwapUI(QMainWindow):
         except Exception:
             widget.setPlainText(str(result))
 
-    def rescanImageAssets(self):
-        if not self.db_manager:
-            return
-        result = self.db_manager.rescan_images()
-        self._showPanelResult(self.assets_status, result)
-        self.loadFaceImages()
-
-    def rescanVideoAssets(self):
-        if not self.db_manager:
-            return
-        result = self.db_manager.rescan_videos()
-        self._showPanelResult(self.assets_status, result)
-        self.loadVideos()
-
     def deleteSelectedFaceAsset(self):
         item = self.face_list.currentItem() if hasattr(self, 'face_list') else None
         image_id = item.data(Qt.UserRole + 1) if item else None
@@ -1781,10 +1773,22 @@ class EnhancedFaceSwapUI(QMainWindow):
             QMessageBox.warning(self, "素材管理", "请先选择一个已入库图片素材")
             return
         if self.db_manager and self.db_manager.delete_image(image_id):
-            self.assets_status.setPlainText(f"已删除图片素材 ID: {image_id}")
+            self.statusBar().showMessage(f"已删除图片素材 ID: {image_id}")
             self.loadFaceImages()
         else:
-            QMessageBox.warning(self, "素材管理", "删除失败")
+            QMessageBox.warning(self, "素材管理", "图片删除失败")
+
+    def deleteSelectedVideoAsset(self):
+        item = self.video_list.currentItem() if hasattr(self, 'video_list') else None
+        video_id = item.data(Qt.UserRole + 1) if item else None
+        if not video_id:
+            QMessageBox.warning(self, "素材管理", "请先选择一个已入库视频素材")
+            return
+        if self.db_manager and self.db_manager.delete_video(video_id):
+            self.statusBar().showMessage(f"已删除视频素材 ID: {video_id}")
+            self.loadVideos()
+        else:
+            QMessageBox.warning(self, "素材管理", "视频删除失败")
 
     def applyCameraRuntimeSettings(self):
         width = self.camera_width_spin.value()
@@ -2340,6 +2344,7 @@ class EnhancedFaceSwapUI(QMainWindow):
                     # 创建列表项
                     item = QListWidgetItem()
                     item.setData(Qt.UserRole, local_path)
+                    item.setData(Qt.UserRole + 1, video.get('id'))
                     item.setText(video.get('original_filename', video.get('filename', 'Unknown')))
                     item.setSizeHint(QSize(220, 180))
 
