@@ -1104,7 +1104,7 @@ class EnhancedFaceSwapUI(QMainWindow):
         tools_layout = QHBoxLayout()
         tools_layout.setSpacing(4)
         self.main_panel_btn = QPushButton("主操作")
-        self.settings_panel_btn = QPushButton("性能")
+        self.settings_panel_btn = QPushButton("视频设置")
         self.diagnostics_panel_btn = QPushButton("诊断")
         self.experiment_panel_btn = QPushButton("对比")
         for button in [self.main_panel_btn, self.settings_panel_btn, self.diagnostics_panel_btn, self.experiment_panel_btn]:
@@ -1615,8 +1615,54 @@ class EnhancedFaceSwapUI(QMainWindow):
         
     def buildDefensePanels(self):
 
-        self.settings_panel = QWidget()
-        settings_layout = QVBoxLayout(self.settings_panel)
+        self.video_settings_panel = QWidget()
+        video_settings_layout = QVBoxLayout(self.video_settings_panel)
+        video_settings_layout.setContentsMargins(10, 10, 10, 10)
+        video_settings_layout.setSpacing(10)
+
+        video_status_group = QGroupBox("视频处理设置")
+        video_status_layout = QGridLayout(video_status_group)
+        video_status_layout.setHorizontalSpacing(8)
+        video_status_layout.setVerticalSpacing(8)
+        self.video_settings_labels = {}
+        video_status_items = [
+            ('method', '换脸算法'),
+            ('detector', '人脸检测器'),
+            ('quality', '画面融合质量'),
+            ('color', '颜色校正'),
+            ('multi_scale', '多尺度检测'),
+            ('provider', '推理设备'),
+        ]
+        for index, (key, title) in enumerate(video_status_items):
+            card = self._makeStatusCard(title, '-')
+            self.video_settings_labels[key] = card.findChild(QLabel, 'valueLabel')
+            video_status_layout.addWidget(card, index // 2, index % 2)
+        video_settings_layout.addWidget(video_status_group)
+
+        video_file_group = QGroupBox("当前视频信息")
+        video_file_layout = QGridLayout(video_file_group)
+        video_file_layout.setHorizontalSpacing(8)
+        video_file_layout.setVerticalSpacing(8)
+        self.video_file_labels = {}
+        video_file_items = [
+            ('source', '源视频'),
+            ('resolution', '视频分辨率'),
+            ('fps', '原始帧率'),
+            ('frames', '总帧数'),
+            ('output', '输出位置'),
+            ('estimate', '预计耗时'),
+        ]
+        for index, (key, title) in enumerate(video_file_items):
+            card = self._makeStatusCard(title, '-')
+            self.video_file_labels[key] = card.findChild(QLabel, 'valueLabel')
+            video_file_layout.addWidget(card, index // 2, index % 2)
+        video_settings_layout.addWidget(video_file_group)
+        video_settings_layout.addStretch()
+        self.video_settings_panel_page = self._wrapPanelScroll(self.video_settings_panel)
+        self.control_stack.addWidget(self.video_settings_panel_page)
+
+        self.camera_settings_panel = QWidget()
+        settings_layout = QVBoxLayout(self.camera_settings_panel)
         settings_layout.setContentsMargins(10, 10, 10, 10)
         settings_layout.setSpacing(10)
 
@@ -1673,8 +1719,8 @@ class EnhancedFaceSwapUI(QMainWindow):
             monitor_layout.addWidget(card, index // 2, index % 2)
         settings_layout.addWidget(monitor_group)
         settings_layout.addStretch()
-        self.settings_panel_page = self._wrapPanelScroll(self.settings_panel)
-        self.control_stack.addWidget(self.settings_panel_page)
+        self.camera_settings_panel_page = self._wrapPanelScroll(self.camera_settings_panel)
+        self.control_stack.addWidget(self.camera_settings_panel_page)
 
         self.diagnostics_panel = QWidget()
         diagnostics_layout = QVBoxLayout(self.diagnostics_panel)
@@ -1716,7 +1762,7 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.control_stack.addWidget(self.experiment_panel_page)
 
         self.main_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.video_control_page if self.current_mode == AppMode.VIDEO_MODE else self.camera_control_page))
-        self.settings_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.settings_panel_page))
+        self.settings_panel_btn.clicked.connect(self.showModeSettingsPanel)
         self.diagnostics_panel_btn.clicked.connect(self.refreshDiagnostics)
         self.experiment_panel_btn.clicked.connect(self.refreshExperiments)
 
@@ -1752,6 +1798,59 @@ class EnhancedFaceSwapUI(QMainWindow):
         layout.addWidget(title_label)
         layout.addWidget(value_label)
         return card
+
+    def showModeSettingsPanel(self):
+        if self.current_mode == AppMode.CAMERA_MODE:
+            self.control_stack.setCurrentWidget(self.camera_settings_panel_page)
+        else:
+            self.refreshVideoSettingsPanel()
+            self.control_stack.setCurrentWidget(self.video_settings_panel_page)
+
+    def _setStatusLabel(self, labels, key, value):
+        label = labels.get(key) if labels else None
+        if label:
+            label.setText(str(value))
+
+    def _getInferenceProviderText(self):
+        providers = getattr(self.original_app, 'realtime_providers', None) or []
+        if providers:
+            return ' / '.join(providers)
+        if getattr(self.original_app, 'inswapper', None) is not None:
+            return 'InsightFace provider ready'
+        return 'CPU / traditional'
+
+    def refreshVideoSettingsPanel(self):
+        method = 'InsightFace Inswapper' if getattr(self, 'inswapper_radio', None) and self.inswapper_radio.isChecked() else '传统换脸'
+        detector = 'Dlib' if getattr(self, 'dlib_radio', None) and self.dlib_radio.isChecked() else 'OpenCV'
+        smooth_value = self.smooth_slider.value() if hasattr(self, 'smooth_slider') else getattr(self.original_app, 'smoothing_var', 50)
+        color_text = '已开启' if getattr(self, 'color_correction_check', None) and self.color_correction_check.isChecked() else '已关闭'
+        multi_text = '已开启' if getattr(self, 'multi_scale_check', None) and self.multi_scale_check.isChecked() else '已关闭'
+        self._setStatusLabel(self.video_settings_labels, 'method', method)
+        self._setStatusLabel(self.video_settings_labels, 'detector', detector)
+        self._setStatusLabel(self.video_settings_labels, 'quality', f'{smooth_value}%')
+        self._setStatusLabel(self.video_settings_labels, 'color', color_text)
+        self._setStatusLabel(self.video_settings_labels, 'multi_scale', multi_text)
+        self._setStatusLabel(self.video_settings_labels, 'provider', self._getInferenceProviderText())
+
+        video_path = getattr(self, 'selected_video_path', None)
+        output_path = self.output_path_edit.text() if hasattr(self, 'output_path_edit') else ''
+        source_name = os.path.basename(video_path) if video_path else '未选择视频'
+        self._setStatusLabel(self.video_file_labels, 'source', source_name)
+        self._setStatusLabel(self.video_file_labels, 'output', output_path or '未设置')
+        self._setStatusLabel(self.video_file_labels, 'estimate', self.estimateVideoProcessingTime() if video_path else '选择视频后显示')
+
+        width = height = fps = frame_count = 0
+        if video_path and os.path.exists(video_path):
+            cap = cv2.VideoCapture(video_path)
+            if cap.isOpened():
+                width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                fps = cap.get(cv2.CAP_PROP_FPS)
+                frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            cap.release()
+        self._setStatusLabel(self.video_file_labels, 'resolution', f'{width}x{height}' if width and height else '-')
+        self._setStatusLabel(self.video_file_labels, 'fps', f'{fps:.2f} FPS' if fps else '-')
+        self._setStatusLabel(self.video_file_labels, 'frames', frame_count if frame_count else '-')
 
     def _setDiagnosticCard(self, key, value, ok=True):
         label = self.diagnostic_cards.get(key) if hasattr(self, 'diagnostic_cards') else None
@@ -2630,6 +2729,8 @@ class EnhancedFaceSwapUI(QMainWindow):
 
     def estimateVideoProcessingTime(self):
         try:
+            if not hasattr(self, 'selected_video_path') or not self.selected_video_path:
+                return "选择视频后显示"
             cap = cv2.VideoCapture(self.selected_video_path)
             fps = cap.get(cv2.CAP_PROP_FPS)
             frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -2918,6 +3019,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             self.video_mode_btn.setChecked(True)
             self.camera_mode_btn.setChecked(False)
             self.updateModeButtonStyles(AppMode.VIDEO_MODE)
+            self.settings_panel_btn.setText("视频设置")
 
             # 切换到视频控制面板
             self.control_stack.setCurrentWidget(self.video_control_page)
@@ -2930,6 +3032,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             self.camera_mode_btn.setChecked(True)
             self.video_mode_btn.setChecked(False)
             self.updateModeButtonStyles(AppMode.CAMERA_MODE)
+            self.settings_panel_btn.setText("摄像头设置")
 
             # 切换到摄像头控制面板
             self.control_stack.setCurrentWidget(self.camera_control_page)
