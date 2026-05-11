@@ -1601,17 +1601,6 @@ class EnhancedFaceSwapUI(QMainWindow):
         settings_layout.setContentsMargins(10, 10, 10, 10)
         settings_layout.setSpacing(10)
 
-        provider = ', '.join(getattr(self.original_app, 'realtime_providers', ['CPUExecutionProvider']))
-        model_path = getattr(self.original_app, 'inswapper_path', '-')
-        self.provider_label = QLabel(f"当前推理设备：{provider}")
-        self.cuda_label = QLabel(f"CUDA 加速状态：{'可用' if 'CUDAExecutionProvider' in provider else '不可用，当前使用 CPU'}")
-        self.model_path_label = QLabel(f"换脸模型路径：{model_path}")
-        self.model_path_label.setWordWrap(True)
-        for label in [self.provider_label, self.cuda_label, self.model_path_label]:
-            label.setWordWrap(True)
-            label.setStyleSheet("padding: 6px 8px; background: #1f2933; border: 1px solid #394756; border-radius: 4px;")
-            settings_layout.addWidget(label)
-
         camera_settings = QGroupBox("摄像头实时参数")
         camera_grid = QGridLayout(camera_settings)
         camera_grid.setHorizontalSpacing(10)
