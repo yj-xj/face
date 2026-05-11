@@ -709,8 +709,8 @@ class EnhancedFaceSwapUI(QMainWindow):
 
         # 设置窗口属性
         self.setWindowTitle("人脸替换应用 - 增强版 (支持视频/摄像头)")
-        self.resize(1280, 760)
-        self.setMinimumSize(1100, 680)
+        self.resize(1320, 820)
+        self.setMinimumSize(1180, 720)
 
         # 启用拖放功能
         self.setAcceptDrops(True)
@@ -1127,8 +1127,8 @@ class EnhancedFaceSwapUI(QMainWindow):
         video_face_layout = QVBoxLayout(video_face_group)
 
         self.video_face_list = QListWidget()
-        self.video_face_list.setMinimumHeight(96)
-        self.video_face_list.setMaximumHeight(120)
+        self.video_face_list.setMinimumHeight(180)
+        self.video_face_list.setMaximumHeight(220)
         self.video_face_list.setStyleSheet("""
             QListWidget {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -1158,7 +1158,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             }
         """)
         self.video_face_list.setViewMode(QListWidget.IconMode)
-        self.video_face_list.setIconSize(QSize(88, 88))
+        self.video_face_list.setIconSize(QSize(110, 110))
         self.video_face_list.setResizeMode(QListWidget.Adjust)
         self.video_face_list.setSpacing(8)
         self.video_face_list.itemClicked.connect(self.selectFaceImage)
@@ -1177,8 +1177,8 @@ class EnhancedFaceSwapUI(QMainWindow):
         video_input_layout = QVBoxLayout(video_input_group)
 
         self.video_list = QListWidget()
-        self.video_list.setMinimumHeight(120)
-        self.video_list.setMaximumHeight(160)
+        self.video_list.setMinimumHeight(200)
+        self.video_list.setMaximumHeight(260)
         self.video_list.setStyleSheet("""
             QListWidget {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -1207,7 +1207,7 @@ class EnhancedFaceSwapUI(QMainWindow):
                     stop:1 rgba(102, 126, 234, 0.4));
             }
         """)
-        self.video_list.setIconSize(QSize(150, 100))
+        self.video_list.setIconSize(QSize(180, 130))
         self.video_list.itemClicked.connect(self.selectVideoFile)
         self.video_list.itemDoubleClicked.connect(self.playVideoFromList)
         video_input_layout.addWidget(self.video_list)
@@ -1413,8 +1413,8 @@ class EnhancedFaceSwapUI(QMainWindow):
         camera_input_layout.addWidget(face_label)
 
         self.face_list = QListWidget()
-        self.face_list.setMinimumHeight(130)
-        self.face_list.setMaximumHeight(180)
+        self.face_list.setMinimumHeight(220)
+        self.face_list.setMaximumHeight(280)
         self.face_list.setStyleSheet("""
             QListWidget {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -1444,7 +1444,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             }
         """)
         self.face_list.setViewMode(QListWidget.IconMode)
-        self.face_list.setIconSize(QSize(96, 96))
+        self.face_list.setIconSize(QSize(120, 120))
         self.face_list.setResizeMode(QListWidget.Adjust)
         self.face_list.setSpacing(10)
         self.face_list.itemClicked.connect(self.selectFaceImage)
