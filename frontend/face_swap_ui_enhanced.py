@@ -634,6 +634,14 @@ class EnhancedFaceSwapUI(QMainWindow):
         # 保存上传线程引用，防止被过早销毁
         self.upload_threads = []
         self.load_threads = []  # 保存数据库加载线程引用
+        self.defense_button_style = """
+            QPushButton {
+                min-height: 30px;
+                padding: 6px 10px;
+                font-size: 12px;
+                border-radius: 4px;
+            }
+        """
 
         # ========== 模式管理 ==========
         self.current_mode = AppMode.VIDEO_MODE  # 默认视频模式
@@ -1600,14 +1608,6 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.statusBar().showMessage("就绪")
         
     def buildDefensePanels(self):
-        self.defense_button_style = """
-            QPushButton {
-                min-height: 30px;
-                padding: 6px 10px;
-                font-size: 12px;
-                border-radius: 4px;
-            }
-        """
 
         self.settings_panel = QWidget()
         settings_layout = QVBoxLayout(self.settings_panel)
