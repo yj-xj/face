@@ -56,6 +56,14 @@ logs/
 *.tmp
 *.bak
 debug/
+~$*
+*.tmp.*
+*.cache
+.pytest_cache/
+
+# Generated thesis/export artifacts kept out of source backup by default
+thesis_assets_generated/
+midterm_face_swap_defense_template_optimized_v2.*
 
 # OS
 .DS_Store

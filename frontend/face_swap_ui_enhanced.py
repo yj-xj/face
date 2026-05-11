@@ -3,8 +3,10 @@ import os
 import cv2
 import time
 import numpy as np
+import shutil
+import uuid
 from enum import Enum
-from threading import Thread, Lock
+from threading import Thread, Lock, Event
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                             QHBoxLayout, QPushButton, QLabel, QFileDialog,
                             QProgressBar, QFrame, QSlider, QStyle, QComboBox,
@@ -34,6 +36,7 @@ except ImportError:
 # 导入原始的人脸替换功能
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from face_swap import FaceSwapApp as OriginalFaceSwapApp
+from config import API_BASE_URL
 from database_manager import DatabaseManager
 
 # 尝试导入dlib（如果可用）
@@ -145,6 +148,15 @@ class CameraProcessingThread(QThread):
         """设置是否启用人脸替换"""
         self.processing_enabled = enabled
 
+    def _imread_unicode(self, file_path):
+        try:
+            data = np.fromfile(file_path, dtype=np.uint8)
+            if data.size == 0:
+                return None
+            return cv2.imdecode(data, cv2.IMREAD_COLOR)
+        except Exception:
+            return None
+
     def start_camera(self):
         """启动摄像头"""
         self.running = True
@@ -169,8 +181,11 @@ class CameraProcessingThread(QThread):
             self.status_signal.emit(f"摄像头已启动: {width}x{height} @ {fps}fps")
 
             target_face = None
+            last_face_path = None
+
             if self.target_face_path and os.path.exists(self.target_face_path):
-                target_face = cv2.imread(self.target_face_path)
+                target_face = self._imread_unicode(self.target_face_path)
+                last_face_path = self.target_face_path
                 if target_face is not None:
                     self.status_signal.emit("目标人脸已加载")
 
@@ -199,6 +214,15 @@ class CameraProcessingThread(QThread):
                 if not ret:
                     break
 
+                # 检查目标人脸是否改变，重新加载
+                if self.target_face_path != last_face_path:
+                    if self.target_face_path and os.path.exists(self.target_face_path):
+                        target_face = self._imread_unicode(self.target_face_path)
+                        last_face_path = self.target_face_path
+                        with self.result_lock:
+                            self.latest_result = None
+                        self.status_signal.emit(f"已切换人脸: {os.path.basename(self.target_face_path)}")
+
                 if self.processing_enabled and target_face is not None:
                     # 启动异步处理（不等待）
                     if self.process_thread is None or not self.process_thread.is_alive():
@@ -221,6 +245,294 @@ class CameraProcessingThread(QThread):
             if self.camera is not None and self.camera.isOpened():
                 self.camera.release()
                 self.status_signal.emit("摄像头已关闭")
+
+
+class RealtimeCameraProcessingThread(QThread):
+    """Low-latency camera preview and full-resolution face swap pipeline."""
+    frame_ready = pyqtSignal(np.ndarray)
+    status_signal = pyqtSignal(str)
+    error_signal = pyqtSignal(str)
+
+    def __init__(self, face_swap_app, target_face_path):
+        super().__init__()
+        self.face_swap_app = face_swap_app
+        self.target_face_path = target_face_path
+        self.running = False
+        self.camera = None
+        self.camera_index = 0
+        self.processing_enabled = True
+        self.latest_result = None
+        self.current_frame = None
+        self.result_lock = Lock()
+        self.frame_lock = Lock()
+        self.source_lock = Lock()
+        self.processing_event = Event()
+        self.stop_event = Event()
+        self.process_thread = None
+        self.pending_frame = None
+        self.source_face = None
+        self.last_face_path = None
+        self.last_display_time = 0
+        self.display_interval = 1.0 / 30.0
+        self.detect_size = (320, 320)
+        self.camera_analyser = None
+        self.camera_analyser_ready = False
+        self.max_swap_faces = 1
+        self.last_process_start = 0
+        self.min_process_interval = 1.0 / 24.0
+        self.last_stats_time = time.time()
+        self.display_frames = 0
+        self.processed_frames = 0
+        self.last_process_ms = 0.0
+
+    def set_camera_index(self, index):
+        self.camera_index = index
+
+    def set_target_face(self, face_path):
+        self.target_face_path = face_path
+        self._load_source_face(force=True)
+
+    def set_processing_enabled(self, enabled):
+        self.processing_enabled = enabled
+        if enabled:
+            self.processing_event.set()
+        else:
+            with self.frame_lock:
+                self.pending_frame = None
+            with self.result_lock:
+                self.latest_result = None
+
+    def start_camera(self):
+        self.running = True
+        self.stop_event.clear()
+        self.start()
+
+    def stop_camera(self):
+        self.running = False
+        self.stop_event.set()
+        self.processing_event.set()
+        self.wait(3000)
+
+    def _load_source_face(self, force=False):
+        face_path = self.target_face_path
+        if not face_path or not os.path.exists(face_path):
+            with self.source_lock:
+                self.source_face = None
+                self.last_face_path = face_path
+            return False
+
+        with self.source_lock:
+            if not force and face_path == self.last_face_path and self.source_face is not None:
+                return True
+
+        source_img = self._imread_unicode(face_path)
+        source_face = None
+        if source_img is not None and self.face_swap_app.face_analyser is not None:
+            try:
+                source_rgb = cv2.cvtColor(source_img, cv2.COLOR_BGR2RGB)
+                faces = self.face_swap_app.face_analyser.get(source_rgb)
+                if faces:
+                    source_face = faces[0]
+            except Exception as e:
+                self.status_signal.emit(f"目标人脸预处理失败: {e}")
+
+        with self.source_lock:
+            self.source_face = source_face
+            self.last_face_path = face_path
+        with self.result_lock:
+            self.latest_result = None
+
+        if source_img is None:
+            self.status_signal.emit("目标图片读取失败")
+            return False
+        if source_face is None:
+            self.status_signal.emit("目标图片未检测到人脸")
+            return False
+
+        self.status_signal.emit(f"已加载目标人脸: {os.path.basename(face_path)}")
+        return True
+
+    def _imread_unicode(self, file_path):
+        try:
+            data = np.fromfile(file_path, dtype=np.uint8)
+            if data.size == 0:
+                return None
+            return cv2.imdecode(data, cv2.IMREAD_COLOR)
+        except Exception:
+            return None
+
+    def _ensure_camera_analyser(self):
+        if self.camera_analyser_ready:
+            return self.camera_analyser is not None
+
+        self.camera_analyser_ready = True
+        try:
+            import insightface
+            providers = getattr(self.face_swap_app, 'realtime_providers', None)
+            if providers is None:
+                try:
+                    import onnxruntime
+                    available = onnxruntime.get_available_providers()
+                    providers = [
+                        provider for provider in (
+                            'CUDAExecutionProvider',
+                            'DmlExecutionProvider',
+                            'CPUExecutionProvider',
+                        )
+                        if provider in available
+                    ] or ['CPUExecutionProvider']
+                except Exception:
+                    providers = ['CPUExecutionProvider']
+
+            ctx_id = getattr(
+                self.face_swap_app,
+                'insightface_ctx_id',
+                0 if providers and providers[0] != 'CPUExecutionProvider' else -1,
+            )
+            self.camera_analyser = insightface.app.FaceAnalysis(
+                name="buffalo_l",
+                root=getattr(self.face_swap_app, 'models_folder', None),
+                providers=providers,
+                allowed_modules=['detection', 'recognition'],
+            )
+            self.camera_analyser.prepare(ctx_id=ctx_id, det_size=self.detect_size)
+            self.status_signal.emit(f"实时检测器已启用: {self.detect_size[0]}x{self.detect_size[1]}")
+        except Exception as e:
+            self.camera_analyser = self.face_swap_app.face_analyser
+            self.status_signal.emit(f"实时检测器回退到默认检测器: {e}")
+
+        return self.camera_analyser is not None
+
+    def _swap_frame_realtime(self, frame):
+        if self.face_swap_app.inswapper is None:
+            return frame
+
+        with self.source_lock:
+            source_face = self.source_face
+
+        if source_face is None:
+            return frame
+
+        analyser = self.camera_analyser if self._ensure_camera_analyser() else self.face_swap_app.face_analyser
+        if analyser is None:
+            return frame
+
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        faces = analyser.get(rgb_frame)
+        if not faces:
+            return frame
+
+        faces = sorted(
+            faces,
+            key=lambda face: (face.bbox[2] - face.bbox[0]) * (face.bbox[3] - face.bbox[1]),
+            reverse=True,
+        )[:self.max_swap_faces]
+        result = frame.copy()
+        for face in faces:
+            result = self.face_swap_app.inswapper.get(result, face, source_face, paste_back=True)
+        return result
+
+    def _process_latest_frames(self):
+        while not self.stop_event.is_set():
+            self.processing_event.wait(0.05)
+            self.processing_event.clear()
+
+            if self.stop_event.is_set() or not self.processing_enabled:
+                continue
+
+            with self.frame_lock:
+                frame = self.pending_frame
+                self.pending_frame = None
+
+            if frame is None or not self._load_source_face():
+                continue
+
+            now = time.time()
+            wait_time = self.min_process_interval - (now - self.last_process_start)
+            if wait_time > 0:
+                time.sleep(wait_time)
+
+            self.last_process_start = time.time()
+            start_time = time.time()
+            try:
+                result = self._swap_frame_realtime(frame)
+            except Exception as e:
+                self.status_signal.emit(f"实时换脸失败: {e}")
+                continue
+
+            with self.result_lock:
+                self.latest_result = result
+            self.processed_frames += 1
+            self.last_process_ms = (time.time() - start_time) * 1000
+
+    def run(self):
+        try:
+            self.camera = cv2.VideoCapture(self.camera_index, cv2.CAP_DSHOW)
+            if not self.camera.isOpened():
+                self.camera = cv2.VideoCapture(self.camera_index)
+            if not self.camera.isOpened():
+                self.error_signal.emit(f"无法打开摄像头: {self.camera_index}")
+                return
+
+            self.camera.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+            self.camera.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+            self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+            self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+            self.camera.set(cv2.CAP_PROP_FPS, 30)
+
+            width = int(self.camera.get(cv2.CAP_PROP_FRAME_WIDTH))
+            height = int(self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            fps = self.camera.get(cv2.CAP_PROP_FPS)
+            self.status_signal.emit(f"摄像头已启动: {width}x{height} @ {fps:.1f}fps")
+            self._load_source_face(force=True)
+
+            self.process_thread = Thread(target=self._process_latest_frames, daemon=True)
+            self.process_thread.start()
+
+            while self.running:
+                ret, frame = self.camera.read()
+                if not ret:
+                    break
+
+                self.current_frame = frame.copy()
+                if self.processing_enabled:
+                    now = time.time()
+                    if now - self.last_process_start >= self.min_process_interval:
+                        with self.frame_lock:
+                            self.pending_frame = frame.copy()
+                        self.processing_event.set()
+
+                now = time.time()
+                if now - self.last_display_time >= self.display_interval:
+                    with self.result_lock:
+                        display_frame = self.latest_result.copy() if self.latest_result is not None else frame
+                    self.frame_ready.emit(display_frame)
+                    self.last_display_time = now
+                    self.display_frames += 1
+
+                if now - self.last_stats_time >= 1.0:
+                    self.status_signal.emit(
+                        f"实时预览 {self.display_frames}fps | 换脸 {self.processed_frames}fps | 推理 {self.last_process_ms:.0f}ms"
+                    )
+                    self.display_frames = 0
+                    self.processed_frames = 0
+                    self.last_stats_time = now
+
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            self.error_signal.emit(str(e))
+        finally:
+            self.stop_event.set()
+            self.processing_event.set()
+            if self.process_thread is not None and self.process_thread.is_alive():
+                self.process_thread.join(timeout=1.0)
+            if self.camera is not None and self.camera.isOpened():
+                self.camera.release()
+            self.status_signal.emit("摄像头已停止")
+
+
+CameraProcessingThread = RealtimeCameraProcessingThread
 
 
 class CircularProgressBar(QWidget):
@@ -333,7 +645,7 @@ class EnhancedFaceSwapUI(QMainWindow):
 
         # Initialize database manager
         try:
-            self.db_manager = DatabaseManager(base_url="http://localhost:8000/api")
+            self.db_manager = DatabaseManager(base_url=API_BASE_URL)
             # 连接数据库管理器信号
             self.db_manager.videos_loaded.connect(self.onVideosLoaded)
             self.db_manager.images_loaded.connect(self.onImagesLoaded)
@@ -1149,6 +1461,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             }
         """)
         self.camera_processing_check.setEnabled(True)
+        self.camera_processing_check.toggled.connect(self.toggleCameraProcessing)
         camera_control_group_layout.addWidget(self.camera_processing_check)
 
         # 摄像头状态信息
@@ -1426,7 +1739,10 @@ class EnhancedFaceSwapUI(QMainWindow):
             q_img = QImage(frame_rgb.data, w, h, w * c, QImage.Format_RGB888)
 
             # 创建QPixmap并调整大小以适应视频标签
-            pixmap = QPixmap.fromImage(q_img)
+            pixmap = QPixmap.fromImage(q_img.copy())
+            label_size = self.cv_video_label.size()
+            if label_size.width() > 0 and label_size.height() > 0:
+                pixmap = pixmap.scaled(label_size, Qt.KeepAspectRatio, Qt.SmoothTransformation)
 
             # 计算缩放比例，保持视频的原始宽高比
             scale_w = label_width / w
@@ -2306,6 +2622,14 @@ class EnhancedFaceSwapUI(QMainWindow):
         else:
             self.startCamera()
 
+    def toggleCameraProcessing(self, enabled):
+        """Enable or disable realtime camera face swap without restarting capture."""
+        if hasattr(self, 'camera_thread') and self.camera_thread is not None and self.camera_thread.isRunning():
+            self.camera_thread.set_processing_enabled(enabled)
+            if enabled and getattr(self, 'selected_face_path', None):
+                self.camera_thread.set_target_face(self.selected_face_path)
+            self.statusBar().showMessage("实时换脸已开启" if enabled else "实时换脸已关闭")
+
     def startCamera(self):
         """启动摄像头"""
         try:
@@ -2326,8 +2650,11 @@ class EnhancedFaceSwapUI(QMainWindow):
             self.camera_thread.error_signal.connect(self.handleCameraError)
 
             # 默认关闭换脸处理
-            self.camera_thread.set_processing_enabled(False)
-            self.camera_processing_check.setChecked(False)
+            processing_enabled = bool(target_face)
+            self.camera_processing_check.blockSignals(True)
+            self.camera_processing_check.setChecked(processing_enabled)
+            self.camera_processing_check.blockSignals(False)
+            self.camera_thread.set_processing_enabled(processing_enabled)
 
             # 启动摄像头
             self.camera_thread.start_camera()
@@ -2455,7 +2782,10 @@ class EnhancedFaceSwapUI(QMainWindow):
             q_img = QImage(frame_rgb.data, w, h, w * c, QImage.Format_RGB888)
 
             # 创建QPixmap
-            pixmap = QPixmap.fromImage(q_img)
+            pixmap = QPixmap.fromImage(q_img.copy())
+            label_size = self.cv_video_label.size()
+            if label_size.width() > 0 and label_size.height() > 0:
+                pixmap = pixmap.scaled(label_size, Qt.KeepAspectRatio, Qt.SmoothTransformation)
 
             # 直接显示原始大小，不进行缩放
             self.cv_video_label.setPixmap(pixmap)
@@ -2690,8 +3020,11 @@ class EnhancedFaceSwapUI(QMainWindow):
             "Image Files (*.jpg *.jpeg *.png *.bmp);;All Files (*)"
         )
         if file_path:
+            imported_path = self.prepareUploadedFaceImage(file_path)
+            if not imported_path:
+                return
             if self.db_manager:
-                uploader = self.db_manager.upload_image(file_path)
+                uploader = self.db_manager.upload_image(imported_path)
                 if uploader:
                     # 保存线程引用，防止被销毁
                     self.upload_threads.append(uploader)
@@ -2733,8 +3066,11 @@ class EnhancedFaceSwapUI(QMainWindow):
             "Image Files (*.jpg *.jpeg *.png *.bmp);;All Files (*)"
         )
         if file_path:
+            imported_path = self.prepareUploadedFaceImage(file_path)
+            if not imported_path:
+                return
             if self.db_manager:
-                uploader = self.db_manager.upload_image(file_path)
+                uploader = self.db_manager.upload_image(imported_path)
                 if uploader:
                     # 保存线程引用，防止被销毁
                     self.upload_threads.append(uploader)
@@ -2742,6 +3078,67 @@ class EnhancedFaceSwapUI(QMainWindow):
                     uploader.error.connect(lambda error_msg, thread=uploader: self.onImageUploadError(error_msg, thread))
             else:
                 QMessageBox.warning(self, "Error", "Database manager not initialized")
+
+    def prepareUploadedFaceImage(self, file_path):
+        """Import an uploaded face image into the project asset folder."""
+        try:
+            if not os.path.exists(file_path):
+                QMessageBox.warning(self, "上传失败", "图片文件不存在")
+                return None
+
+            image = self.imreadUnicode(file_path)
+            if image is None or image.size == 0:
+                QMessageBox.warning(self, "上传失败", "无法读取该图片，请选择 jpg/png/bmp 格式图片")
+                return None
+
+            has_face = True
+            if self.original_app.face_analyser is not None:
+                try:
+                    rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                    has_face = len(self.original_app.face_analyser.get(rgb_image)) > 0
+                except Exception:
+                    has_face = True
+            elif getattr(self.original_app, 'face_cascade', None) is not None:
+                gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                faces = self.original_app.face_cascade.detectMultiScale(gray, 1.1, 4)
+                has_face = len(faces) > 0
+
+            if not has_face:
+                QMessageBox.warning(self, "上传失败", "未检测到人脸，请选择清晰、正脸的人脸图片")
+                return None
+
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            output_dir = os.path.join(base_dir, "data", "input_faces")
+            os.makedirs(output_dir, exist_ok=True)
+
+            _, ext = os.path.splitext(file_path)
+            ext = ext.lower() if ext.lower() in ['.jpg', '.jpeg', '.png', '.bmp'] else '.png'
+            safe_name = f"uploaded_face_{int(time.time())}_{uuid.uuid4().hex[:8]}{ext}"
+            output_path = os.path.join(output_dir, safe_name)
+
+            if ext in ['.jpg', '.jpeg']:
+                cv2.imwrite(output_path, image, [cv2.IMWRITE_JPEG_QUALITY, 95])
+            elif ext == '.png':
+                cv2.imwrite(output_path, image, [cv2.IMWRITE_PNG_COMPRESSION, 3])
+            else:
+                shutil.copy2(file_path, output_path)
+
+            return output_path
+        except Exception as e:
+            QMessageBox.critical(self, "上传失败", f"导入人脸图片失败: {e}")
+            import traceback
+            traceback.print_exc()
+            return None
+
+    def imreadUnicode(self, file_path):
+        """Read images from Windows paths containing Chinese or other Unicode text."""
+        try:
+            data = np.fromfile(file_path, dtype=np.uint8)
+            if data.size == 0:
+                return None
+            return cv2.imdecode(data, cv2.IMREAD_COLOR)
+        except Exception:
+            return None
 
     def onFaceImageUploadSuccess(self, result, thread):
         """Face image upload success callback"""

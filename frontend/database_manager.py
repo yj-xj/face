@@ -19,7 +19,7 @@ class DatabaseManager(QObject):
     upload_progress = pyqtSignal(int, str)
     error_occurred = pyqtSignal(str)
 
-    def __init__(self, base_url="http://localhost:8000/api"):
+    def __init__(self, base_url="http://localhost:8008/api"):
         super().__init__()
         self.base_url = base_url
         self.user_id = 1  # 默认用户ID

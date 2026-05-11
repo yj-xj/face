@@ -4,6 +4,8 @@ API views for face_swap application.
 import os
 import cv2
 import numpy as np
+import shutil
+import uuid
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -47,6 +49,25 @@ class FaceImageViewSet(viewsets.ModelViewSet):
 
         try:
             # 读取图片获取元数据
+            project_root = os.path.abspath(os.path.join(settings.BASE_DIR, '..'))
+            face_dir = os.path.join(project_root, 'data', 'input_faces')
+            os.makedirs(face_dir, exist_ok=True)
+            stable_root = os.path.normcase(os.path.abspath(face_dir))
+            source_path = os.path.abspath(local_path)
+
+            if not os.path.exists(source_path):
+                return Response({'error': f'file not found: {local_path}'}, status=status.HTTP_400_BAD_REQUEST)
+
+            if not os.path.normcase(source_path).startswith(stable_root):
+                ext = os.path.splitext(original_filename)[1].lower()
+                if ext not in ['.jpg', '.jpeg', '.png', '.bmp']:
+                    ext = '.png'
+                stable_filename = f"uploaded_face_{timezone.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}{ext}"
+                stable_path = os.path.join(face_dir, stable_filename)
+                shutil.copy2(source_path, stable_path)
+                local_path = stable_path
+                original_filename = stable_filename
+
             img = PILImage.open(local_path)
             width, height = img.size
             file_size = os.path.getsize(local_path)
@@ -103,7 +124,6 @@ class FaceImageViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
 
 class InputVideoViewSet(viewsets.ModelViewSet):
     """输入视频视图集"""
@@ -207,7 +227,6 @@ class InputVideoViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
 
 class OutputVideoViewSet(viewsets.ModelViewSet):
     """输出视频视图集"""

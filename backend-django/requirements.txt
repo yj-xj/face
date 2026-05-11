@@ -8,6 +8,7 @@ numpy==1.24.3
 PyMySQL==1.1.0
 python-decouple==3.8
 drf-yasg==1.21.7
+PyYAML==6.0.2
 celery==5.3.4
 redis==5.0.1
 gunicorn==21.2.0

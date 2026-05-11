@@ -17,6 +17,29 @@ if site_packages not in sys.path:
     sys.path.append(site_packages)
 
 # 将当前目录添加到系统路径
+def add_nvidia_dll_directories():
+    nvidia_root = os.path.join(site_packages, 'nvidia')
+    dll_dirs = []
+    if os.path.isdir(nvidia_root):
+        for package_name in os.listdir(nvidia_root):
+            dll_dir = os.path.join(nvidia_root, package_name, 'bin')
+            if os.path.isdir(dll_dir):
+                dll_dirs.append(dll_dir)
+    existing_path = os.environ.get('PATH', '')
+    for dll_dir in dll_dirs:
+        if not os.path.isdir(dll_dir):
+            continue
+        if hasattr(os, 'add_dll_directory'):
+            try:
+                os.add_dll_directory(dll_dir)
+            except OSError:
+                pass
+        if dll_dir not in existing_path:
+            existing_path = dll_dir + os.pathsep + existing_path
+    os.environ['PATH'] = existing_path
+
+add_nvidia_dll_directories()
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.append(current_dir)
@@ -152,10 +175,22 @@ try:
     try:
         import insightface
         import onnxruntime
+        available_providers = onnxruntime.get_available_providers()
+        preferred_providers = [
+            provider for provider in (
+                'CUDAExecutionProvider',
+                'DmlExecutionProvider',
+                'CPUExecutionProvider',
+            )
+            if provider in available_providers
+        ] or ['CPUExecutionProvider']
+        insightface_ctx_id = 0 if preferred_providers[0] != 'CPUExecutionProvider' else -1
         INSIGHTFACE_AVAILABLE = True
         print("成功导入InsightFace模块")
     except ImportError as e:
         INSIGHTFACE_AVAILABLE = False
+        preferred_providers = ['CPUExecutionProvider']
+        insightface_ctx_id = -1
         print(f"导入InsightFace模块时出错: {e}")
         print("请安装InsightFace: pip install insightface onnx onnxruntime")
         
@@ -251,6 +286,8 @@ class FaceSwapApp:
         # 初始化InsightFace模型
         self.face_analyser = None
         self.inswapper = None
+        self.realtime_providers = preferred_providers
+        self.insightface_ctx_id = insightface_ctx_id
         
         if INSIGHTFACE_AVAILABLE:
             try:
@@ -263,10 +300,10 @@ class FaceSwapApp:
                         self.face_analyser = insightface.app.FaceAnalysis(
                             name="buffalo_l", 
                             root=self.models_folder,
-                            providers=['CPUExecutionProvider'],
+                            providers=preferred_providers,
                             allowed_modules=['detection', 'recognition']
                         )
-                        self.face_analyser.prepare(ctx_id=0, det_size=(640, 640))
+                        self.face_analyser.prepare(ctx_id=insightface_ctx_id, det_size=(640, 640))
                     except Exception as e:
                         logger.warning(f"使用正常方式初始化face_analyser失败: {e}")
                         # 尝试直接加载buffalo_l目录下的模型
@@ -276,11 +313,11 @@ class FaceSwapApp:
                                 self.face_analyser = insightface.app.FaceAnalysis(
                                     name="buffalo_l", 
                                     root=self.models_folder,
-                                    providers=['CPUExecutionProvider'],
+                                    providers=preferred_providers,
                                     allowed_modules=['detection', 'recognition'],
                                     download=False  # 禁止下载
                                 )
-                                self.face_analyser.prepare(ctx_id=0, det_size=(640, 640))
+                                self.face_analyser.prepare(ctx_id=insightface_ctx_id, det_size=(640, 640))
                                 logger.info("成功从本地加载buffalo_l模型")
                             except Exception as e2:
                                 logger.error(f"从本地加载buffalo_l模型失败: {e2}")
@@ -294,7 +331,7 @@ class FaceSwapApp:
                         try:
                             self.inswapper = insightface.model_zoo.get_model(
                                 self.inswapper_path, 
-                                providers=['CPUExecutionProvider'],
+                                providers=preferred_providers,
                                 download=False,
                                 download_zip=False
                             )

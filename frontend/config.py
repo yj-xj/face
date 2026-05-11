@@ -5,7 +5,7 @@
 from decouple import config
 
 # API 配置
-API_BASE_URL = config('API_BASE_URL', default='http://localhost:8000/api')
+API_BASE_URL = config('API_BASE_URL', default='http://localhost:8008/api')
 API_TIMEOUT = config('API_TIMEOUT', default=30, cast=int)
 UPLOAD_TIMEOUT = config('UPLOAD_TIMEOUT', default=600, cast=int)  # 10分钟
 DOWNLOAD_TIMEOUT = config('DOWNLOAD_TIMEOUT', default=300, cast=int)  # 5分钟
