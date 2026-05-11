@@ -1088,8 +1088,8 @@ class EnhancedFaceSwapUI(QMainWindow):
 
         # ========== 创建右侧控制部分（使用QStackedWidget分离两种模式） ==========
         right_widget = QWidget()
-        right_widget.setMinimumWidth(360)
-        right_widget.setMaximumWidth(520)
+        right_widget.setMinimumWidth(430)
+        right_widget.setMaximumWidth(560)
         right_layout = QVBoxLayout(right_widget)
         right_layout.setContentsMargins(8, 0, 0, 0)
 
@@ -1124,7 +1124,8 @@ class EnhancedFaceSwapUI(QMainWindow):
         video_face_layout.addWidget(video_face_label)
 
         self.video_face_list = QListWidget()
-        self.video_face_list.setFixedHeight(150)
+        self.video_face_list.setMinimumHeight(96)
+        self.video_face_list.setMaximumHeight(120)
         self.video_face_list.setStyleSheet("""
             QListWidget {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -1154,7 +1155,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             }
         """)
         self.video_face_list.setViewMode(QListWidget.IconMode)
-        self.video_face_list.setIconSize(QSize(100, 100))
+        self.video_face_list.setIconSize(QSize(88, 88))
         self.video_face_list.setResizeMode(QListWidget.Adjust)
         self.video_face_list.setSpacing(8)
         self.video_face_list.itemClicked.connect(self.selectFaceImage)
@@ -1171,7 +1172,8 @@ class EnhancedFaceSwapUI(QMainWindow):
         video_input_layout.addWidget(video_label)
 
         self.video_list = QListWidget()
-        self.video_list.setFixedHeight(200)
+        self.video_list.setMinimumHeight(120)
+        self.video_list.setMaximumHeight(160)
         self.video_list.setStyleSheet("""
             QListWidget {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -1200,14 +1202,12 @@ class EnhancedFaceSwapUI(QMainWindow):
                     stop:1 rgba(102, 126, 234, 0.4));
             }
         """)
-        self.video_list.setIconSize(QSize(200, 150))
+        self.video_list.setIconSize(QSize(150, 100))
         self.video_list.itemClicked.connect(self.selectVideoFile)
         self.video_list.itemDoubleClicked.connect(self.playVideoFromList)
         video_input_layout.addWidget(self.video_list)
 
-        # 输出文件选择
-        output_layout = QHBoxLayout()
-        output_label = QLabel("输出路径:")
+        output_label = QLabel("输出路径：")
         output_label.setStyleSheet("font-weight: bold;")
         self.output_path_edit = QLineEdit()
         self.output_path_edit.setPlaceholderText("选择或输入输出视频路径...")
@@ -1221,14 +1221,15 @@ class EnhancedFaceSwapUI(QMainWindow):
             }
         """)
 
-        browse_output_btn = QPushButton("浏览...")
+        browse_output_btn = QPushButton("浏览")
+        browse_output_btn.setMinimumWidth(72)
         browse_output_btn.clicked.connect(self.browseOutputPath)
 
-        output_layout.addWidget(output_label)
-        output_layout.addWidget(self.output_path_edit, 1)
-        output_layout.addWidget(browse_output_btn)
-
-        video_input_layout.addLayout(output_layout)
+        output_row = QHBoxLayout()
+        output_row.addWidget(self.output_path_edit, 1)
+        output_row.addWidget(browse_output_btn)
+        video_input_layout.addWidget(output_label)
+        video_input_layout.addLayout(output_row)
         video_panel_layout.addWidget(video_input_group)
 
         # 添加高级选项部分
@@ -1385,6 +1386,9 @@ class EnhancedFaceSwapUI(QMainWindow):
 
         # 添加视频面板到堆叠窗口
         self.control_stack.addWidget(self.video_control_panel)
+        self.video_control_page = self._wrapPanelScroll(self.video_control_panel)
+        self.control_stack.removeWidget(self.video_control_panel)
+        self.control_stack.addWidget(self.video_control_page)
 
         # ========== 创建摄像头模式控制面板 ==========
         self.camera_control_panel = QWidget()
@@ -1400,7 +1404,8 @@ class EnhancedFaceSwapUI(QMainWindow):
         camera_input_layout.addWidget(face_label)
 
         self.face_list = QListWidget()
-        self.face_list.setFixedHeight(250)
+        self.face_list.setMinimumHeight(130)
+        self.face_list.setMaximumHeight(180)
         self.face_list.setStyleSheet("""
             QListWidget {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -1430,7 +1435,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             }
         """)
         self.face_list.setViewMode(QListWidget.IconMode)
-        self.face_list.setIconSize(QSize(130, 130))
+        self.face_list.setIconSize(QSize(96, 96))
         self.face_list.setResizeMode(QListWidget.Adjust)
         self.face_list.setSpacing(10)
         self.face_list.itemClicked.connect(self.selectFaceImage)
@@ -1568,20 +1573,23 @@ class EnhancedFaceSwapUI(QMainWindow):
 
         # 添加摄像头面板到堆叠窗口
         self.control_stack.addWidget(self.camera_control_panel)
+        self.camera_control_page = self._wrapPanelScroll(self.camera_control_panel)
+        self.control_stack.removeWidget(self.camera_control_panel)
+        self.control_stack.addWidget(self.camera_control_page)
 
         self.buildDefensePanels()
 
         # 默认显示视频面板
-        self.control_stack.setCurrentWidget(self.video_control_panel)
+        self.control_stack.setCurrentWidget(self.video_control_page)
 
         # 添加到分割器
         splitter.addWidget(left_widget)
         splitter.addWidget(right_widget)
         
         # 设置初始分割比例（左:右 = 3:2）
-        splitter.setSizes([780, 420])
-        splitter.setStretchFactor(0, 3)
-        splitter.setStretchFactor(1, 2)
+        splitter.setSizes([760, 500])
+        splitter.setStretchFactor(0, 2)
+        splitter.setStretchFactor(1, 1)
         
         # 添加状态栏
         self.statusBar().showMessage("就绪")
@@ -1729,7 +1737,7 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.experiment_panel_page = self._wrapPanelScroll(self.experiment_panel)
         self.control_stack.addWidget(self.experiment_panel_page)
 
-        self.main_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.video_control_panel if self.current_mode == AppMode.VIDEO_MODE else self.camera_control_panel))
+        self.main_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.video_control_page if self.current_mode == AppMode.VIDEO_MODE else self.camera_control_page))
         self.settings_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.settings_panel_page))
         self.assets_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.assets_panel_page))
         self.diagnostics_panel_btn.clicked.connect(self.refreshDiagnostics)
@@ -2948,7 +2956,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             self.updateModeButtonStyles(AppMode.VIDEO_MODE)
 
             # 切换到视频控制面板
-            self.control_stack.setCurrentWidget(self.video_control_panel)
+            self.control_stack.setCurrentWidget(self.video_control_page)
 
             # 切换到视频控制栏
             self.control_bar_stack.setCurrentWidget(self.video_control_bar)
@@ -2960,7 +2968,7 @@ class EnhancedFaceSwapUI(QMainWindow):
             self.updateModeButtonStyles(AppMode.CAMERA_MODE)
 
             # 切换到摄像头控制面板
-            self.control_stack.setCurrentWidget(self.camera_control_panel)
+            self.control_stack.setCurrentWidget(self.camera_control_page)
 
             # 切换到摄像头控制栏
             self.control_bar_stack.setCurrentWidget(self.camera_control_bar)
