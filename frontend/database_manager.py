@@ -84,7 +84,7 @@ class DatabaseManager(QObject):
         """删除图片"""
         try:
             response = requests.delete(f"{self.base_url}/images/{image_id}")
-            return response.status_code == 200
+            return response.status_code in [200, 202, 204]
         except Exception as e:
             print(f"删除图片失败: {e}")
             return False
@@ -93,10 +93,42 @@ class DatabaseManager(QObject):
         """删除视频"""
         try:
             response = requests.delete(f"{self.base_url}/videos/{video_id}")
-            return response.status_code == 200
+            return response.status_code in [200, 202, 204]
         except Exception as e:
             print(f"删除视频失败: {e}")
             return False
+
+    def get_json(self, path, timeout=30):
+        try:
+            response = requests.get(f"{self.base_url}/{path.lstrip('/')}", timeout=timeout)
+            return response.json() if response.status_code == 200 else {'error': response.text[:300]}
+        except Exception as e:
+            return {'error': str(e)}
+
+    def post_json(self, path, data=None, timeout=60):
+        try:
+            response = requests.post(f"{self.base_url}/{path.lstrip('/')}", json=data or {}, timeout=timeout)
+            return response.json() if response.status_code in [200, 201] else {'error': response.text[:300]}
+        except Exception as e:
+            return {'error': str(e)}
+
+    def get_diagnostics(self):
+        return self.get_json('diagnostics/', timeout=20)
+
+    def cleanup_invalid_images(self):
+        return self.post_json('images/cleanup_invalid/', timeout=60)
+
+    def find_duplicate_images(self):
+        return self.get_json('images/duplicates/', timeout=60)
+
+    def rescan_images(self):
+        return self.post_json('images/rescan/', timeout=120)
+
+    def rescan_videos(self):
+        return self.post_json('videos/rescan/', timeout=120)
+
+    def get_experiments(self):
+        return self.get_json('experiments/', timeout=30)
 
     def save_output_video(self, output_path, input_video_id, face_image_id, processing_method='inswapper'):
         """保存输出视频到数据库"""

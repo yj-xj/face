@@ -14,7 +14,8 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                             QSplitter, QStackedWidget, QDialog, QSpacerItem,
                             QSizePolicy, QMenu, QToolButton, QAction, QLineEdit,
                             QListWidget, QMessageBox, QButtonGroup, QRadioButton,
-                            QListWidgetItem, QGraphicsOpacityEffect)
+                            QListWidgetItem, QGraphicsOpacityEffect, QTextEdit,
+                            QTableWidget, QTableWidgetItem, QSpinBox)
 from PyQt5.QtCore import (Qt, QThread, pyqtSignal, QTimer, QSize, QUrl,
                           QPropertyAnimation, QEasingCurve, QRect, QPoint,
                           QParallelAnimationGroup, QSequentialAnimationGroup)
@@ -252,6 +253,7 @@ class RealtimeCameraProcessingThread(QThread):
     frame_ready = pyqtSignal(np.ndarray)
     status_signal = pyqtSignal(str)
     error_signal = pyqtSignal(str)
+    stats_signal = pyqtSignal(dict)
 
     def __init__(self, face_swap_app, target_face_path):
         super().__init__()
@@ -284,6 +286,11 @@ class RealtimeCameraProcessingThread(QThread):
         self.display_frames = 0
         self.processed_frames = 0
         self.last_process_ms = 0.0
+        self.dropped_frames = 0
+        self.camera_width = 640
+        self.camera_height = 480
+        self.target_fps = 30
+        self.provider_name = 'CPUExecutionProvider'
 
     def set_camera_index(self, index):
         self.camera_index = index
@@ -301,6 +308,17 @@ class RealtimeCameraProcessingThread(QThread):
                 self.pending_frame = None
             with self.result_lock:
                 self.latest_result = None
+
+    def configure_runtime(self, width=640, height=480, detect_size=320, target_fps=30, only_largest=True):
+        self.camera_width = int(width)
+        self.camera_height = int(height)
+        self.detect_size = (int(detect_size), int(detect_size))
+        self.target_fps = max(1, int(target_fps))
+        self.display_interval = 1.0 / self.target_fps
+        self.min_process_interval = 1.0 / self.target_fps
+        self.max_swap_faces = 1 if only_largest else 8
+        self.camera_analyser = None
+        self.camera_analyser_ready = False
 
     def start_camera(self):
         self.running = True
@@ -383,6 +401,7 @@ class RealtimeCameraProcessingThread(QThread):
                     ] or ['CPUExecutionProvider']
                 except Exception:
                     providers = ['CPUExecutionProvider']
+            self.provider_name = providers[0] if providers else 'CPUExecutionProvider'
 
             ctx_id = getattr(
                 self.face_swap_app,
@@ -476,9 +495,9 @@ class RealtimeCameraProcessingThread(QThread):
 
             self.camera.set(cv2.CAP_PROP_BUFFERSIZE, 1)
             self.camera.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
-            self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-            self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-            self.camera.set(cv2.CAP_PROP_FPS, 30)
+            self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.camera_width)
+            self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.camera_height)
+            self.camera.set(cv2.CAP_PROP_FPS, self.target_fps)
 
             width = int(self.camera.get(cv2.CAP_PROP_FRAME_WIDTH))
             height = int(self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -499,6 +518,8 @@ class RealtimeCameraProcessingThread(QThread):
                     now = time.time()
                     if now - self.last_process_start >= self.min_process_interval:
                         with self.frame_lock:
+                            if self.pending_frame is not None:
+                                self.dropped_frames += 1
                             self.pending_frame = frame.copy()
                         self.processing_event.set()
 
@@ -511,6 +532,15 @@ class RealtimeCameraProcessingThread(QThread):
                     self.display_frames += 1
 
                 if now - self.last_stats_time >= 1.0:
+                    self.stats_signal.emit({
+                        'camera_fps': self.display_frames,
+                        'swap_fps': self.processed_frames,
+                        'inference_ms': round(self.last_process_ms, 1),
+                        'provider': self.provider_name,
+                        'resolution': f'{width}x{height}',
+                        'dropped_frames': self.dropped_frames,
+                        'detect_size': self.detect_size[0],
+                    })
                     self.status_signal.emit(
                         f"实时预览 {self.display_frames}fps | 换脸 {self.processed_frames}fps | 推理 {self.last_process_ms:.0f}ms"
                     )
@@ -634,6 +664,15 @@ class EnhancedFaceSwapUI(QMainWindow):
         self.camera_thread = None
         self.camera_active = False
         self.camera_processing_enabled = True
+        self.camera_runtime_stats = {
+            'camera_fps': 0,
+            'swap_fps': 0,
+            'inference_ms': 0,
+            'provider': 'unknown',
+            'resolution': '-',
+            'dropped_frames': 0,
+        }
+        self.video_process_started_at = None
 
         # 播放速度控制
         self.playback_speed_factor = 1.0
@@ -1048,6 +1087,17 @@ class EnhancedFaceSwapUI(QMainWindow):
         right_widget = QWidget()
         right_layout = QVBoxLayout(right_widget)
 
+        tools_layout = QHBoxLayout()
+        self.main_panel_btn = QPushButton("主操作")
+        self.settings_panel_btn = QPushButton("性能/模型")
+        self.assets_panel_btn = QPushButton("素材管理")
+        self.diagnostics_panel_btn = QPushButton("系统诊断")
+        self.experiment_panel_btn = QPushButton("实验对比")
+        for button in [self.main_panel_btn, self.settings_panel_btn, self.assets_panel_btn, self.diagnostics_panel_btn, self.experiment_panel_btn]:
+            button.setMinimumHeight(32)
+            tools_layout.addWidget(button)
+        right_layout.addLayout(tools_layout)
+
         # 创建堆叠窗口部件用于模式切换
         self.control_stack = QStackedWidget()
         right_layout.addWidget(self.control_stack)
@@ -1310,9 +1360,13 @@ class EnhancedFaceSwapUI(QMainWindow):
 
         self.process_button = GlowingButton("开始处理")
         self.process_button.clicked.connect(self.startProcessing)
+        self.cancel_process_btn = QPushButton("取消任务")
+        self.cancel_process_btn.setEnabled(False)
+        self.cancel_process_btn.clicked.connect(self.cancelVideoProcessing)
 
         status_layout.addWidget(self.status_label)
         status_layout.addWidget(self.process_button)
+        status_layout.addWidget(self.cancel_process_btn)
         status_layout.addStretch()
 
         progress_layout.addWidget(self.circular_progress)
@@ -1507,6 +1561,8 @@ class EnhancedFaceSwapUI(QMainWindow):
         # 添加摄像头面板到堆叠窗口
         self.control_stack.addWidget(self.camera_control_panel)
 
+        self.buildDefensePanels()
+
         # 默认显示视频面板
         self.control_stack.setCurrentWidget(self.video_control_panel)
 
@@ -1520,6 +1576,166 @@ class EnhancedFaceSwapUI(QMainWindow):
         # 添加状态栏
         self.statusBar().showMessage("就绪")
         
+    def buildDefensePanels(self):
+        self.settings_panel = QWidget()
+        settings_layout = QVBoxLayout(self.settings_panel)
+        provider = ', '.join(getattr(self.original_app, 'realtime_providers', ['CPUExecutionProvider']))
+        self.provider_label = QLabel(f"Provider: {provider}")
+        self.cuda_label = QLabel(f"CUDA available: {'CUDAExecutionProvider' in provider}")
+        self.model_path_label = QLabel(f"Model: {getattr(self.original_app, 'inswapper_path', '-')}")
+        settings_layout.addWidget(self.provider_label)
+        settings_layout.addWidget(self.cuda_label)
+        settings_layout.addWidget(self.model_path_label)
+
+        camera_settings = QGroupBox("摄像头实时参数")
+        camera_grid = QGridLayout(camera_settings)
+        self.camera_width_spin = QSpinBox()
+        self.camera_width_spin.setRange(320, 1920)
+        self.camera_width_spin.setValue(640)
+        self.camera_height_spin = QSpinBox()
+        self.camera_height_spin.setRange(240, 1080)
+        self.camera_height_spin.setValue(480)
+        self.detect_size_combo = QComboBox()
+        self.detect_size_combo.addItems(["320", "480", "640"])
+        self.target_fps_spin = QSpinBox()
+        self.target_fps_spin.setRange(5, 60)
+        self.target_fps_spin.setValue(30)
+        self.only_largest_face_check = QCheckBox("只换最大人脸")
+        self.only_largest_face_check.setChecked(True)
+        camera_grid.addWidget(QLabel("分辨率宽"), 0, 0)
+        camera_grid.addWidget(self.camera_width_spin, 0, 1)
+        camera_grid.addWidget(QLabel("分辨率高"), 1, 0)
+        camera_grid.addWidget(self.camera_height_spin, 1, 1)
+        camera_grid.addWidget(QLabel("检测尺寸"), 2, 0)
+        camera_grid.addWidget(self.detect_size_combo, 2, 1)
+        camera_grid.addWidget(QLabel("目标 FPS"), 3, 0)
+        camera_grid.addWidget(self.target_fps_spin, 3, 1)
+        camera_grid.addWidget(self.only_largest_face_check, 4, 0, 1, 2)
+        settings_layout.addWidget(camera_settings)
+
+        monitor_group = QGroupBox("实时性能监控")
+        monitor_layout = QGridLayout(monitor_group)
+        self.monitor_labels = {}
+        for row, key in enumerate(["camera_fps", "swap_fps", "inference_ms", "provider", "resolution", "dropped_frames"]):
+            monitor_layout.addWidget(QLabel(key), row, 0)
+            self.monitor_labels[key] = QLabel("-")
+            monitor_layout.addWidget(self.monitor_labels[key], row, 1)
+        settings_layout.addWidget(monitor_group)
+        settings_layout.addStretch()
+        self.control_stack.addWidget(self.settings_panel)
+
+        self.assets_panel = QWidget()
+        assets_layout = QVBoxLayout(self.assets_panel)
+        for text, handler in [
+            ("无效路径自动清理", self.cleanupInvalidAssets),
+            ("重复素材检测", self.findDuplicateAssets),
+            ("重新扫描图片素材", self.rescanImageAssets),
+            ("重新扫描视频素材", self.rescanVideoAssets),
+            ("删除当前图片素材", self.deleteSelectedFaceAsset),
+        ]:
+            button = QPushButton(text)
+            button.clicked.connect(handler)
+            assets_layout.addWidget(button)
+        self.assets_status = QTextEdit()
+        self.assets_status.setReadOnly(True)
+        assets_layout.addWidget(self.assets_status)
+        self.control_stack.addWidget(self.assets_panel)
+
+        self.diagnostics_panel = QWidget()
+        diagnostics_layout = QVBoxLayout(self.diagnostics_panel)
+        self.diagnostics_text = QTextEdit()
+        self.diagnostics_text.setReadOnly(True)
+        diagnostics_layout.addWidget(self.diagnostics_text)
+        self.control_stack.addWidget(self.diagnostics_panel)
+
+        self.experiment_panel = QWidget()
+        experiment_layout = QVBoxLayout(self.experiment_panel)
+        self.experiment_table = QTableWidget(0, 6)
+        self.experiment_table.setHorizontalHeaderLabels(["模式", "方法", "Provider", "检测尺寸", "FPS", "推理ms"])
+        experiment_layout.addWidget(self.experiment_table)
+        self.control_stack.addWidget(self.experiment_panel)
+
+        self.main_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.video_control_panel if self.current_mode == AppMode.VIDEO_MODE else self.camera_control_panel))
+        self.settings_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.settings_panel))
+        self.assets_panel_btn.clicked.connect(lambda: self.control_stack.setCurrentWidget(self.assets_panel))
+        self.diagnostics_panel_btn.clicked.connect(self.refreshDiagnostics)
+        self.experiment_panel_btn.clicked.connect(self.refreshExperiments)
+
+    def _showPanelResult(self, widget, result):
+        try:
+            import json
+            widget.setPlainText(json.dumps(result, ensure_ascii=False, indent=2))
+        except Exception:
+            widget.setPlainText(str(result))
+
+    def cleanupInvalidAssets(self):
+        if not self.db_manager:
+            return
+        result = self.db_manager.cleanup_invalid_images()
+        self._showPanelResult(self.assets_status, result)
+        self.loadFaceImages()
+
+    def findDuplicateAssets(self):
+        if not self.db_manager:
+            return
+        self._showPanelResult(self.assets_status, self.db_manager.find_duplicate_images())
+
+    def rescanImageAssets(self):
+        if not self.db_manager:
+            return
+        result = self.db_manager.rescan_images()
+        self._showPanelResult(self.assets_status, result)
+        self.loadFaceImages()
+
+    def rescanVideoAssets(self):
+        if not self.db_manager:
+            return
+        result = self.db_manager.rescan_videos()
+        self._showPanelResult(self.assets_status, result)
+        self.loadVideos()
+
+    def deleteSelectedFaceAsset(self):
+        item = self.face_list.currentItem() if hasattr(self, 'face_list') else None
+        image_id = item.data(Qt.UserRole + 1) if item else None
+        if not image_id:
+            QMessageBox.warning(self, "素材管理", "请先选择一个已入库图片素材")
+            return
+        if self.db_manager and self.db_manager.delete_image(image_id):
+            self.assets_status.setPlainText(f"已删除图片素材 ID: {image_id}")
+            self.loadFaceImages()
+        else:
+            QMessageBox.warning(self, "素材管理", "删除失败")
+
+    def refreshDiagnostics(self):
+        self.control_stack.setCurrentWidget(self.diagnostics_panel)
+        if not self.db_manager:
+            self.diagnostics_text.setPlainText("Backend not connected")
+            return
+        self._showPanelResult(self.diagnostics_text, self.db_manager.get_diagnostics())
+
+    def refreshExperiments(self):
+        self.control_stack.setCurrentWidget(self.experiment_panel)
+        if not self.db_manager:
+            return
+        rows = self.db_manager.get_experiments().get('results', [])
+        self.experiment_table.setRowCount(len(rows))
+        for row_index, row in enumerate(rows):
+            values = [
+                row.get('mode', ''),
+                row.get('method', ''),
+                row.get('provider', ''),
+                row.get('detect_size', ''),
+                row.get('fps', ''),
+                row.get('inference_ms', ''),
+            ]
+            for col, value in enumerate(values):
+                self.experiment_table.setItem(row_index, col, QTableWidgetItem(str(value)))
+
+    def updateCameraStats(self, stats):
+        self.camera_runtime_stats.update(stats)
+        for key, label in getattr(self, 'monitor_labels', {}).items():
+            label.setText(str(self.camera_runtime_stats.get(key, '-')))
+
     def initMediaPlayer(self):
         """初始化媒体播放器"""
         try:
@@ -2046,6 +2262,7 @@ class EnhancedFaceSwapUI(QMainWindow):
                     # 为摄像头模式创建项
                     item_camera = QListWidgetItem()
                     item_camera.setData(Qt.UserRole, local_path)
+                    item_camera.setData(Qt.UserRole + 1, image.get('id'))
 
                     # 加载图片并设置为图标
                     try:
@@ -2064,6 +2281,7 @@ class EnhancedFaceSwapUI(QMainWindow):
                     if hasattr(self, 'video_face_list'):
                         item_video = QListWidgetItem()
                         item_video.setData(Qt.UserRole, local_path)
+                        item_video.setData(Qt.UserRole + 1, image.get('id'))
 
                         # 使用相同的图标
                         if item_camera.icon():
@@ -2209,6 +2427,9 @@ class EnhancedFaceSwapUI(QMainWindow):
         
         # 禁用处理按钮
         self.process_button.setEnabled(False)
+        self.cancel_process_btn.setEnabled(True)
+        self.video_process_started_at = time.time()
+        self.statusBar().showMessage(self.estimateVideoProcessingTime())
         self.process_button.setText("处理中...")
         self.status_label.setText("正在处理...")
         
@@ -2228,6 +2449,32 @@ class EnhancedFaceSwapUI(QMainWindow):
         
         # 启动线程
         self.processing_thread.start()
+
+    def estimateVideoProcessingTime(self):
+        try:
+            cap = cv2.VideoCapture(self.selected_video_path)
+            fps = cap.get(cv2.CAP_PROP_FPS)
+            frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            cap.release()
+            seconds = frame_count / fps if fps > 0 else 0
+            factor = 0.6 if self.inswapper_radio.isChecked() else 1.2
+            estimate = max(1, int(seconds * factor))
+            return f"预计处理耗时约 {estimate} 秒，视频时长 {seconds:.1f} 秒"
+        except Exception:
+            return "预计耗时计算失败"
+
+    def cancelVideoProcessing(self):
+        if hasattr(self, 'processing_thread') and self.processing_thread and self.processing_thread.isRunning():
+            try:
+                self.processing_thread.terminate()
+                self.processing_thread.wait(1500)
+            except Exception:
+                pass
+        self.process_button.setEnabled(True)
+        self.cancel_process_btn.setEnabled(False)
+        self.cancel_process_btn.setEnabled(False)
+        self.status_label.setText("任务已取消")
+        self.statusBar().showMessage("视频处理任务已取消")
     
     def updateProgress(self, value):
         """更新进度条"""
@@ -2645,9 +2892,19 @@ class EnhancedFaceSwapUI(QMainWindow):
             )
 
             # 连接信号
+            if hasattr(self.camera_thread, 'configure_runtime'):
+                self.camera_thread.configure_runtime(
+                    width=self.camera_width_spin.value(),
+                    height=self.camera_height_spin.value(),
+                    detect_size=int(self.detect_size_combo.currentText()),
+                    target_fps=self.target_fps_spin.value(),
+                    only_largest=self.only_largest_face_check.isChecked()
+                )
             self.camera_thread.frame_ready.connect(self.displayCameraFrame)
             self.camera_thread.status_signal.connect(self.updateCameraStatus)
             self.camera_thread.error_signal.connect(self.handleCameraError)
+            if hasattr(self.camera_thread, 'stats_signal'):
+                self.camera_thread.stats_signal.connect(self.updateCameraStats)
 
             # 默认关闭换脸处理
             processing_enabled = bool(target_face)

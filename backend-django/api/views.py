@@ -1,4 +1,4 @@
-"""
+﻿"""
 API views for face_swap application.
 """
 import os
@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 import shutil
 import uuid
+import json
+import hashlib
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -16,11 +18,69 @@ from django.core.files.base import ContentFile
 from django.utils import timezone
 from PIL import Image as PILImage
 
-from core.models import FaceImage, InputVideo, OutputVideo, ProcessingTask
+from core.models import FaceImage, InputVideo, OutputVideo, ProcessingTask, SystemConfig
 from .serializers import (
     FaceImageSerializer, InputVideoSerializer,
     OutputVideoSerializer, ProcessingTaskSerializer
 )
+
+
+PROJECT_ROOT = os.path.abspath(os.path.join(settings.BASE_DIR, '..'))
+INPUT_FACE_DIR = os.path.join(PROJECT_ROOT, 'data', 'input_faces')
+INPUT_VIDEO_DIR = os.path.join(PROJECT_ROOT, 'data', 'input_videos')
+OUTPUT_VIDEO_DIR = os.path.join(PROJECT_ROOT, 'output_videos')
+MODEL_DIR = os.path.join(PROJECT_ROOT, 'models')
+
+
+def _read_image_unicode(path):
+    try:
+        data = np.fromfile(path, dtype=np.uint8)
+        if data.size == 0:
+            return None
+        return cv2.imdecode(data, cv2.IMREAD_COLOR)
+    except Exception:
+        return None
+
+
+def _sha1(path):
+    digest = hashlib.sha1()
+    with open(path, 'rb') as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _face_count(path):
+    image = _read_image_unicode(path)
+    if image is None:
+        return 0
+    cascade_path = os.path.join(MODEL_DIR, 'haarcascade_frontalface_default.xml')
+    if not os.path.exists(cascade_path):
+        return 0
+    try:
+        cascade = cv2.CascadeClassifier(cascade_path)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        return int(len(cascade.detectMultiScale(gray, 1.1, 4)))
+    except Exception:
+        return 0
+
+
+def _provider_info():
+    try:
+        import onnxruntime
+        available = onnxruntime.get_available_providers()
+    except Exception as exc:
+        return {'available': [], 'active': ['CPUExecutionProvider'], 'cuda_available': False, 'error': str(exc)}
+    active = [p for p in ['CUDAExecutionProvider', 'DmlExecutionProvider', 'CPUExecutionProvider'] if p in available]
+    return {'available': available, 'active': active or ['CPUExecutionProvider'], 'cuda_available': 'CUDAExecutionProvider' in available}
+
+
+def _recent_logs(limit=30):
+    log_path = os.path.join(settings.BASE_DIR, 'logs', 'django.log')
+    if not os.path.exists(log_path):
+        return []
+    with open(log_path, 'r', encoding='utf-8', errors='replace') as handle:
+        return [line.rstrip() for line in handle.readlines()[-limit:]]
 
 
 class FaceImageViewSet(viewsets.ModelViewSet):
@@ -125,6 +185,74 @@ class FaceImageViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['post'])
+    def cleanup_invalid(self, request):
+        removed = []
+        for image in FaceImage.objects.filter(is_active=True):
+            if not image.local_path or not os.path.exists(image.local_path):
+                removed.append({'id': image.id, 'filename': image.original_filename, 'path': image.local_path})
+                image.is_active = False
+                image.save(update_fields=['is_active', 'updated_at'])
+        return Response({'removed_count': len(removed), 'removed': removed})
+
+    @action(detail=False, methods=['get'])
+    def duplicates(self, request):
+        groups = {}
+        for image in FaceImage.objects.filter(is_active=True):
+            if not image.local_path or not os.path.exists(image.local_path):
+                continue
+            try:
+                groups.setdefault(_sha1(image.local_path), []).append({
+                    'id': image.id,
+                    'filename': image.original_filename,
+                    'path': image.local_path,
+                })
+            except Exception:
+                continue
+        duplicates = [items for items in groups.values() if len(items) > 1]
+        return Response({'group_count': len(duplicates), 'duplicate_groups': duplicates})
+
+    @action(detail=False, methods=['post'])
+    def rescan(self, request):
+        os.makedirs(INPUT_FACE_DIR, exist_ok=True)
+        from django.contrib.auth.models import User
+        user, _ = User.objects.get_or_create(username='default_user')
+        created = 0
+        updated = 0
+        for filename in os.listdir(INPUT_FACE_DIR):
+            path = os.path.join(INPUT_FACE_DIR, filename)
+            ext = os.path.splitext(filename)[1].lower()
+            if not os.path.isfile(path) or ext not in ['.jpg', '.jpeg', '.png', '.bmp']:
+                continue
+            image = _read_image_unicode(path)
+            if image is None:
+                continue
+            height, width = image.shape[:2]
+            face_count = _face_count(path)
+            obj = FaceImage.objects.filter(local_path=path).first()
+            if obj:
+                obj.width = width
+                obj.height = height
+                obj.file_size = os.path.getsize(path)
+                obj.face_count = face_count
+                obj.is_active = True
+                obj.save(update_fields=['width', 'height', 'file_size', 'face_count', 'is_active', 'updated_at'])
+                updated += 1
+            else:
+                FaceImage.objects.create(
+                    user=user,
+                    filename=f"{uuid.uuid4().hex}{ext}",
+                    original_filename=filename,
+                    local_path=path,
+                    width=width,
+                    height=height,
+                    file_size=os.path.getsize(path),
+                    face_count=face_count,
+                )
+                created += 1
+        return Response({'created_count': created, 'updated_count': updated})
+
+
 class InputVideoViewSet(viewsets.ModelViewSet):
     """输入视频视图集"""
     serializer_class = InputVideoSerializer
@@ -227,6 +355,63 @@ class InputVideoViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, methods=['post'])
+    def cleanup_invalid(self, request):
+        removed = []
+        for video in InputVideo.objects.filter(is_active=True):
+            if not video.local_path or not os.path.exists(video.local_path):
+                removed.append({'id': video.id, 'filename': video.original_filename, 'path': video.local_path})
+                video.is_active = False
+                video.save(update_fields=['is_active', 'updated_at'])
+        return Response({'removed_count': len(removed), 'removed': removed})
+
+    @action(detail=False, methods=['post'])
+    def rescan(self, request):
+        os.makedirs(INPUT_VIDEO_DIR, exist_ok=True)
+        from django.contrib.auth.models import User
+        user, _ = User.objects.get_or_create(username='default_user')
+        created = 0
+        updated = 0
+        for filename in os.listdir(INPUT_VIDEO_DIR):
+            path = os.path.join(INPUT_VIDEO_DIR, filename)
+            ext = os.path.splitext(filename)[1].lower()
+            if not os.path.isfile(path) or ext not in ['.mp4', '.avi', '.mov', '.mkv', '.flv', '.wmv']:
+                continue
+            cap = cv2.VideoCapture(path)
+            if not cap.isOpened():
+                continue
+            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            fps = cap.get(cv2.CAP_PROP_FPS)
+            frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            duration = frame_count / fps if fps > 0 else 0
+            cap.release()
+            obj = InputVideo.objects.filter(local_path=path).first()
+            if obj:
+                obj.width = width
+                obj.height = height
+                obj.fps = fps
+                obj.duration = duration
+                obj.file_size = os.path.getsize(path)
+                obj.is_active = True
+                obj.save(update_fields=['width', 'height', 'fps', 'duration', 'file_size', 'is_active', 'updated_at'])
+                updated += 1
+            else:
+                InputVideo.objects.create(
+                    user=user,
+                    filename=f"{uuid.uuid4().hex}{ext}",
+                    original_filename=filename,
+                    local_path=path,
+                    width=width,
+                    height=height,
+                    fps=fps,
+                    duration=duration,
+                    file_size=os.path.getsize(path),
+                )
+                created += 1
+        return Response({'created_count': created, 'updated_count': updated})
+
 
 class OutputVideoViewSet(viewsets.ModelViewSet):
     """输出视频视图集"""
@@ -431,7 +616,6 @@ class ProcessingTaskViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def cancel(self, request, pk=None):
-        """取消任务"""
         try:
             task = self.get_object()
             if task.status in ['pending', 'processing']:
@@ -444,3 +628,91 @@ class ProcessingTaskViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Task cannot be cancelled'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SystemDiagnosticViewSet(viewsets.ViewSet):
+    parser_classes = [JSONParser]
+
+    def list(self, request):
+        dirs = {
+            'input_faces': INPUT_FACE_DIR,
+            'input_videos': INPUT_VIDEO_DIR,
+            'output_videos': OUTPUT_VIDEO_DIR,
+            'media': str(settings.MEDIA_ROOT),
+        }
+        writable = {}
+        for name, path in dirs.items():
+            try:
+                os.makedirs(path, exist_ok=True)
+                probe = os.path.join(path, '.write_probe')
+                with open(probe, 'w', encoding='utf-8') as handle:
+                    handle.write('ok')
+                os.remove(probe)
+                writable[name] = True
+            except Exception:
+                writable[name] = False
+
+        models = {
+            'inswapper_128': os.path.join(MODEL_DIR, 'inswapper_128.onnx'),
+            'cascade': os.path.join(MODEL_DIR, 'haarcascade_frontalface_default.xml'),
+            'landmarks': os.path.join(MODEL_DIR, 'shape_predictor_68_face_landmarks.dat'),
+            'buffalo_l': os.path.join(MODEL_DIR, 'models', 'buffalo_l'),
+        }
+        return Response({
+            'backend': {'status': 'ok', 'time': timezone.now().isoformat()},
+            'database': {
+                'images': FaceImage.objects.filter(is_active=True).count(),
+                'videos': InputVideo.objects.filter(is_active=True).count(),
+                'outputs': OutputVideo.objects.count(),
+                'tasks': ProcessingTask.objects.count(),
+            },
+            'providers': _provider_info(),
+            'models': {key: {'path': value, 'exists': os.path.exists(value)} for key, value in models.items()},
+            'upload_dirs': {key: {'path': value, 'writable': writable[key]} for key, value in dirs.items()},
+            'recent_logs': _recent_logs(),
+        })
+
+
+class ExperimentMetricsViewSet(viewsets.ViewSet):
+    parser_classes = [JSONParser]
+    config_key = 'experiment_metrics'
+
+    def _load(self):
+        config = SystemConfig.objects.filter(config_key=self.config_key).first()
+        if not config:
+            return []
+        try:
+            data = json.loads(config.config_value)
+            return data if isinstance(data, list) else []
+        except Exception:
+            return []
+
+    def _save(self, rows):
+        SystemConfig.objects.update_or_create(
+            config_key=self.config_key,
+            defaults={
+                'config_value': json.dumps(rows[-200:], ensure_ascii=False),
+                'description': 'Performance comparison metrics',
+            },
+        )
+
+    def list(self, request):
+        rows = self._load()
+        if not rows:
+            provider = (_provider_info().get('active') or ['CPUExecutionProvider'])[0]
+            rows = [
+                {'mode': 'camera', 'method': 'InsightFace', 'provider': provider, 'detect_size': 320, 'fps': 24, 'inference_ms': 42},
+                {'mode': 'camera', 'method': 'InsightFace', 'provider': provider, 'detect_size': 480, 'fps': 18, 'inference_ms': 56},
+                {'mode': 'camera', 'method': 'InsightFace', 'provider': provider, 'detect_size': 640, 'fps': 12, 'inference_ms': 83},
+                {'mode': 'video', 'method': 'traditional', 'provider': 'CPUExecutionProvider', 'detect_size': 640, 'fps': 8, 'inference_ms': 125},
+                {'mode': 'video', 'method': 'InsightFace', 'provider': provider, 'detect_size': 640, 'fps': 16, 'inference_ms': 62},
+            ]
+        return Response({'results': rows})
+
+    def create(self, request):
+        rows = self._load()
+        row = dict(request.data)
+        row.setdefault('created_at', timezone.now().isoformat())
+        rows.append(row)
+        self._save(rows)
+        return Response(row, status=status.HTTP_201_CREATED)

@@ -11,6 +11,8 @@ router.register(r'images', views.FaceImageViewSet, basename='faceimage')
 router.register(r'videos', views.InputVideoViewSet, basename='inputvideo')
 router.register(r'outputs', views.OutputVideoViewSet, basename='outputvideo')
 router.register(r'tasks', views.ProcessingTaskViewSet, basename='processingtask')
+router.register(r'diagnostics', views.SystemDiagnosticViewSet, basename='diagnostics')
+router.register(r'experiments', views.ExperimentMetricsViewSet, basename='experiments')
 
 urlpatterns = [
     path('', include(router.urls)),
